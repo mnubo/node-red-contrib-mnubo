@@ -1,0 +1,61 @@
+<script type="text/javascript">
+   RED.nodes.registerType('mnubo owners',{
+      category: 'mnubo',
+      color: '#00a1e0',
+      defaults: {
+            name: {value:""},
+            mnuboconfig: {value:"", type:"mnubo-credentials", required:true},
+            functionselection: {value:"create", required:true},
+            inputtext: {value:"",type: 'text'},
+      },
+      inputs:1,
+      outputs:1,
+      icon: "mnubo_20x30.png",
+      label: function() {
+            return this.name||"owners "+this.functionselection;
+      },
+      button: {
+         onclick: function() {
+               $.ajax({
+                  url: "owners/"+this.id+"/button",
+                  type:"POST",
+               });
+         }
+      },
+   });
+</script>
+
+<script type="text/x-red" data-template-name="mnubo owners">
+   <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+   </div>
+   <div class="form-row">
+      <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
+      <input type="text" id="node-input-mnuboconfig">
+   </div>
+   <div class="form-row">
+      <label for="node-input-functionselection"><i class="fa fa-list"></i> Function</label>
+         <select type="text" id="node-input-functionselection" style="width:72%;">
+            <option value="create">Create</option>
+            <option value="update">Update</option>
+            <option value="delete">Delete</option>
+            <option value="claim">Claim</option>
+         </select>
+   </div>
+   <div class="form-row">
+      <label for="node-input-inputtext"><i class="fa fa-pencil"></i> Input</label>
+      <textarea id="node-input-inputtext" rows="10" cols="80" placeholder="JSON's String query"></textarea>
+   </div>
+</script>
+
+<script type="text/x-red" data-help-name="mnubo owners">
+   <p>This is a Mnubo Ingestion Owners node/p>
+   <p>There is 4 functionality : Create, Update, Delete, Claim</p>
+   <p><b>Create:</b> Create an Owner, input is valid owner JSON String attributes list, with mandantory "username" and "x_password"</p>
+   <p><b>Update:</b> Update an Owner field, input is a valied owner "username", followed by a comma ",", followed by valid owner JSON String attributes (list, or single attributes)</p>
+   <p><b>Delete:</b> Delete an Owner, input is valid owner "username"</p>
+   <p><b>Claim Object:</b> Claim an Object to the Owner, input is the owner "username", followed by a comma ",", followed by the object "x_device_id"</p>
+   <p>This node have an alternate input: you can press the button to request restitution using this node optional input, or you can inject the input parameters (JSON String)</p>
+   <p>This node require to have a configure mnubo configuration, with valid Environment, Consumer ID, and Consumer Secret</p>
+</script>

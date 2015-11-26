@@ -11,7 +11,7 @@ module.exports = function(RED) {
       
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
       {
-         ConfigMnuboUtils.MnuboConfigUpdateStatusMsg(thisNode,"missing config/credentials");
+         ConfigMnuboUtils.MnuboConfigUpdateStatusErrMsg(thisNode,"missing config/credentials");
          return;
       }
       

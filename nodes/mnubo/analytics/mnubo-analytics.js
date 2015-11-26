@@ -57,14 +57,10 @@ module.exports = function(RED) {
    function GetDatasetsFromSdk(thisNode, msg, return_promise) {      
       return_promise = return_promise || 0;
       msg = msg || { payload: "GetDatasetsFromSdk" };
-      //if (msg == null)
-      //{
-      //   msg = { payload: "GetDatasetsFromSdk" };
-      //}
       
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
       {
-         ConfigMnuboUtils.MnuboConfigUpdateStatusMsg(thisNode,"missing config/credentials");
+         ConfigMnuboUtils.MnuboConfigUpdateStatusErrMsg(thisNode,"missing config/credentials");
          return;
       }
       
@@ -99,13 +95,13 @@ module.exports = function(RED) {
       
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
       {
-         ConfigMnuboUtils.MnuboConfigUpdateStatusMsg(thisNode,"missing config/credentials");
+         ConfigMnuboUtils.MnuboConfigUpdateStatusErrMsg(thisNode,"missing config/credentials");
          return;
       }
       
       if (msg == null || msg.payload == null || msg.payload == "")
       {
-         ConfigMnuboUtils.MnuboConfigUpdateStatusMsg(thisNode,"missing input query");
+         ConfigMnuboUtils.MnuboConfigUpdateStatusErrMsg(thisNode,"missing input query");
          return;
       }
       
@@ -153,7 +149,7 @@ module.exports = function(RED) {
       }
       else
       {
-         ConfigMnuboUtils.MnuboConfigUpdateStatusMsg(thisNode,"unknown searchtype");
+         ConfigMnuboUtils.MnuboConfigUpdateStatusErrMsg(thisNode,"unknown searchtype");
       }
    }
    

@@ -42,7 +42,17 @@ function MnuboConfigUpdateStatusResponseError(thisNode,error) {
 }
 exports.MnuboConfigUpdateStatusResponseError = MnuboConfigUpdateStatusResponseError;
 
-function MnuboConfigUpdateStatusMsg(thisNode,msg) {
+function MnuboConfigUpdateStatusErrMsg(thisNode,msg) {
    thisNode.status({fill:"red", shape:"ring", text:msg});
 }
-exports.MnuboConfigUpdateStatusMsg = MnuboConfigUpdateStatusMsg;
+exports.MnuboConfigUpdateStatusErrMsg = MnuboConfigUpdateStatusErrMsg;
+
+function MnuboConfigUpdateStatusWarnMsg(thisNode,msg) {
+   thisNode.status({fill:"yellow", shape:"ring", text:msg});
+}
+exports.MnuboConfigUpdateStatusWarnMsg = MnuboConfigUpdateStatusWarnMsg;
+
+function MnuboConfigUpdateStatusLogMsg(thisNode,msg) {
+   thisNode.status({fill:"green", shape:"ring", text:msg});
+}
+exports.MnuboConfigUpdateStatusLogMsg = MnuboConfigUpdateStatusLogMsg;
