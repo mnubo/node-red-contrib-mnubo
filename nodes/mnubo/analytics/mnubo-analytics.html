@@ -1,0 +1,59 @@
+<script type="text/javascript">
+   RED.nodes.registerType('mnubo analytics',{
+      category: 'mnubo',
+      color: '#00a1e0',
+      defaults: {
+            name: {value:""},
+            mnuboconfig: {value:"", type:"mnubo-credentials", required:true},
+            searchtype: {value:"createBasicQuery", required:true},
+            inputquery: {value:"",type: 'text'},
+      },
+      inputs:1,
+      outputs:1,
+      icon: "mnubo_20x30.png",
+      label: function() {
+            return this.name||"mnubo analytics";
+      },
+      button: {
+         onclick: function() {
+               $.ajax({
+                  url: "analytics/"+this.id+"/button",
+                  type:"POST",
+               });
+         }
+      },
+   });
+</script>
+
+<script type="text/x-red" data-template-name="mnubo analytics">
+   <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+   </div>
+   <div class="form-row">
+      <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
+      <input type="text" id="node-input-mnuboconfig">
+   </div>
+   <div class="form-row">
+      <label for="node-input-searchtype"><i class="fa fa-search"></i> Search Type</label>
+         <select type="text" id="node-input-searchtype" style="width:72%;">
+            <option value="getDatasets">get datasets</option>
+            <option value="getDatamodel">get data model</option>
+            <option value="createBasicQuery">create basic query</option>
+         </select>
+   </div>
+   <div class="form-row">
+      <label for="node-input-inputquery"><i class="fa fa-pencil"></i> Query</label>
+      <textarea id="node-input-inputquery" rows="10" cols="80" placeholder="JSON's String query"></textarea>
+   </div>
+</script>
+
+<script type="text/x-red" data-help-name="mnubo analytics">
+   <p>This node will request a Mnubo restitution search</p>
+   <p>There is 3 type of restitution search: getDatasets, getDatamodel, CreateBasicQuery</p>
+   <p><b>getDatasets:</b> Get the data sets from mnubo</p>
+   <p><b>getDatamodel:</b> Get the data sets from mnubo, and parse the output to a data model type</p>
+   <p><b>CeateBasicQuery:</b> Execute a mnubo DB basic query, see mnubo's Search API for detail</p>
+   <p>CeateBasicQuery have an alternate input: you can press the button to request restitution using this node optional query, or you can inject a search query (JSON String)</p>
+   <p>This node require to have a configure mnubo configuration, with valid Environment, Consumer ID, and Consumer Secret</p>
+</script>

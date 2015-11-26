@@ -1,0 +1,47 @@
+<script type="text/javascript">
+    RED.nodes.registerType('mnubo-credentials',{
+        category: 'config',
+        defaults: {
+            name: {value:""},
+            env: {value:"sandbox"},
+        },
+        credentials: {
+            id: {value:"", type: 'text', required:true},
+            secret: {value:"", type: 'password', required:true},
+            access_token: {value:"", type: 'password'},
+            access_token_expiry: {value:"", type: 'text'},
+        },
+        label: function() {
+            return this.name||this.env;
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="mnubo-credentials">
+    <div class="form-row">
+        <ul style="background: #fff; min-width: 600px; margin-bottom: 20px;" id="node-config-mnubo-win"></ul>
+    </div>
+
+    <div id="node-config-mnubo-win-content" style="min-height: 170px;">
+      <div class="form-row">
+          <label for="node-config-input-name"><i class="icon-tag"></i> Name</label>
+          <input type="text" id="node-config-input-name">
+      </div>
+      <div class="form-row">
+          <label for="node-config-input-env"><i class="fa fa-globe"></i> Environment</label>
+          <select type="text" id="node-config-input-env" style="width:72%;">
+              <option value="sandbox">sandbox</option>
+              <option value="production">production</option>
+          </select>
+      </div>
+      <div class="form-row">
+          <label for="node-config-input-id"><i class="fa fa-user"></i> Consumer Id</label>
+          <input type="text" id="node-config-input-id">
+      </div>
+      <div class="form-row">
+          <label for="node-config-input-secret"><i class="fa fa-key"></i> Consumer Secret</label>
+          <input type="password" id="node-config-input-secret">
+      </div>
+    </div>
+
+</script>
