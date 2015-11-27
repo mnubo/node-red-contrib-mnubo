@@ -7,8 +7,8 @@ module.exports = function(RED) {
    
    
    //If return_promise is 1, this function will return the promise result
-   function CreateOwnerFromSdk(thisNode, msg, return_promise) {    
-      //console.log('CreateOwnerFromSdk');
+   function CreateObjectFromSdk(thisNode, msg, return_promise) {    
+      //console.log('CreateObjectFromSdk');
       return_promise = return_promise || 0;
       
       var client = new mnubo.Client({
@@ -19,11 +19,11 @@ module.exports = function(RED) {
       
       if (return_promise==1)
       {
-         return client.owners.create(msg.payload);
+         return client.objects.create(msg.payload);
       }
       else
       {
-         client.owners.create(msg.payload)
+         client.objects.create(msg.payload)
          .then(function(data) { 
             ConfigMnuboUtils.MnuboConfigUpdateStatusResponseOK(thisNode,data);
             msg.payload = data; 
@@ -37,8 +37,8 @@ module.exports = function(RED) {
    }  
    
    //If return_promise is 1, this function will return the promise result
-   function UpdateOwnerFromSdk(thisNode, msg, return_promise) {  
-      //console.log('UpdateOwnerFromSdk');
+   function UpdateObjectFromSdk(thisNode, msg, return_promise) {  
+      //console.log('UpdateObjectFromSdk');
       return_promise = return_promise || 0;
       
       var client = new mnubo.Client({
@@ -47,18 +47,18 @@ module.exports = function(RED) {
          env: thisNode.mnuboconfig.env
       });
       
-      var owner = msg.payload.substr(0,msg.payload.indexOf(','));
+      var object = msg.payload.substr(0,msg.payload.indexOf(','));
       var input = msg.payload.substr(msg.payload.indexOf(",")+1);
       if (return_promise==1)
       {
-         return client.owners.update(owner, input);
+         return client.objects.update(object, input);
       }
       else
       {
-         client.owners.update(owner, input)
+         client.objects.update(object, input)
          .then(function(data) { 
             ConfigMnuboUtils.MnuboConfigUpdateStatusResponseOK(thisNode,data);
-            msg.payload =  data || "Owner Updated"; 
+            msg.payload =  data || "Object Updated"; 
             thisNode.send(msg);} )
          .catch(function(error) { 
             ConfigMnuboUtils.MnuboConfigUpdateStatusResponseError(thisNode,error); 
@@ -68,8 +68,8 @@ module.exports = function(RED) {
    }  
    
    //If return_promise is 1, this function will return the promise result
-   function DeleteOwnerFromSdk(thisNode, msg, return_promise) {  
-      //console.log('DeleteOwnerFromSdk');
+   function DeleteObjectFromSdk(thisNode, msg, return_promise) {  
+      //console.log('DeleteObjectFromSdk');
       return_promise = return_promise || 0;
       
       var client = new mnubo.Client({
@@ -80,14 +80,14 @@ module.exports = function(RED) {
       
       if (return_promise==1)
       {
-         return client.owners.create(msg.payload);
+         return client.objects.create(msg.payload);
       }
       else
       {
-         client.owners.delete(msg.payload)
+         client.objects.delete(msg.payload)
          .then(function(data) { 
             ConfigMnuboUtils.MnuboConfigUpdateStatusResponseOK(thisNode,data);
-            msg.payload =  data || "Owner Deleted"; 
+            msg.payload =  data || "Object Deleted"; 
             thisNode.send(msg);} )
          .catch(function(error) { 
             ConfigMnuboUtils.MnuboConfigUpdateStatusResponseError(thisNode,error); 
@@ -95,41 +95,6 @@ module.exports = function(RED) {
             thisNode.send(msg);} );
       }
    }  
-   
-   //If return_promise is 1, this function will return the promise result
-   function ClaimOwnerFromSdk(thisNode, msg, return_promise) {  
-      console.log('ClaimOwnerFromSdk');
-      return_promise = return_promise || 0;
-      
-      var client = new mnubo.Client({
-         id: thisNode.mnuboconfig.credentials.id,
-         secret: thisNode.mnuboconfig.credentials.secret,
-         env: thisNode.mnuboconfig.env
-      });
-      
-      var owner = msg.payload.substr(0,msg.payload.indexOf(','));
-      var input = msg.payload.substr(msg.payload.indexOf(",")+1);
-      console.log('owner=',owner);
-      console.log('input=',input);
-      if (return_promise==1)
-      {
-         return client.owners.claim(owner, input);
-      }
-      else
-      {
-         client.owners.claim(owner, input)
-         .then(function(data) { 
-            ConfigMnuboUtils.MnuboConfigUpdateStatusResponseOK(thisNode,data);
-            msg.payload =  data || "Owner Claimed"; 
-            thisNode.send(msg);} )
-         .catch(function(error) { 
-            console.log('error=',error);
-            ConfigMnuboUtils.MnuboConfigUpdateStatusResponseError(thisNode,error); 
-            msg.payload = error;  
-            thisNode.send(msg);} );
-      }
-   }  
-   
    
    
    function MnuboRequest(thisNode, msg) {
@@ -150,22 +115,17 @@ module.exports = function(RED) {
       if (thisNode.functionselection == "create")
       {
          ConfigMnuboUtils.MnuboConfigUpdateStatusLogMsg(thisNode,"create...");
-         CreateOwnerFromSdk(thisNode, msg);
+         CreateObjectFromSdk(thisNode, msg);
       }
       else if (thisNode.functionselection == "update")
       {
          ConfigMnuboUtils.MnuboConfigUpdateStatusLogMsg(thisNode,"update...");
-         UpdateOwnerFromSdk(thisNode, msg);
+         UpdateObjectFromSdk(thisNode, msg);
       }
       else if (thisNode.functionselection == "delete")
       {
          ConfigMnuboUtils.MnuboConfigUpdateStatusLogMsg(thisNode,"delete...");
-         DeleteOwnerFromSdk(thisNode, msg);
-      }
-      else if (thisNode.functionselection == "claim")
-      {
-         ConfigMnuboUtils.MnuboConfigUpdateStatusLogMsg(thisNode,"claim...");
-         ClaimOwnerFromSdk(thisNode, msg);
+         DeleteObjectFromSdk(thisNode, msg);
       }
       else
       {
@@ -194,9 +154,9 @@ module.exports = function(RED) {
    }
    
    
-   RED.nodes.registerType("mnubo owners", MnuboAnalytics);
+   RED.nodes.registerType("mnubo objects", MnuboAnalytics);
    
-   RED.httpAdmin.post("/owners/:id/button", RED.auth.needsPermission("mnubo owners.write"), function(req,res) {
+   RED.httpAdmin.post("/objects/:id/button", RED.auth.needsPermission("mnubo objects.write"), function(req,res) {
       var thisNode = RED.nodes.getNode(req.params.id);
       //console.log('thisNode=',thisNode);
       msg = { payload: thisNode.inputtext };

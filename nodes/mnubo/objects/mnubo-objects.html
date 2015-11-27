@@ -1,5 +1,5 @@
 <script type="text/javascript">
-   RED.nodes.registerType('mnubo owners',{
+   RED.nodes.registerType('mnubo objects',{
       category: 'mnubo',
       color: '#00a1e0',
       defaults: {
@@ -12,12 +12,12 @@
       outputs:1,
       icon: "mnubo_20x30.png",
       label: function() {
-            return this.name||"owners "+this.functionselection;
+            return this.name||"objects "+this.functionselection;
       },
       button: {
          onclick: function() {
                $.ajax({
-                  url: "owners/"+this.id+"/button",
+                  url: "objects/"+this.id+"/button",
                   type:"POST",
                });
          }
@@ -25,7 +25,7 @@
    });
 </script>
 
-<script type="text/x-red" data-template-name="mnubo owners">
+<script type="text/x-red" data-template-name="mnubo objects">
    <div class="form-row">
       <label for="node-input-name"><i class="icon-tag"></i> Name</label>
       <input type="text" id="node-input-name" placeholder="Name">
@@ -40,7 +40,6 @@
             <option value="create">Create</option>
             <option value="update">Update</option>
             <option value="delete">Delete</option>
-            <option value="claim">Claim</option>
          </select>
    </div>
    <div class="form-row">
@@ -49,13 +48,12 @@
    </div>
 </script>
 
-<script type="text/x-red" data-help-name="mnubo owners">
-   <p>This is a Mnubo Ingestion Owners node/p>
-   <p>There is 4 functionality : Create, Update, Delete, Claim</p>
-   <p><b>Create:</b> Create an Owner, input is valid owner JSON String attributes list, with mandantory "username" and "x_password"</p>
-   <p><b>Update:</b> Update an Owner attributes, input is a valied owner "username", followed by a comma ",", followed by valid owner JSON String attributes (list, or single attributes)</p>
-   <p><b>Delete:</b> Delete an Owner, input is valid owner "username"</p>
-   <p><b>Claim Object:</b> Claim an Object to the Owner, input is the owner "username", followed by a comma ",", followed by the object "x_device_id"</p>
+<script type="text/x-red" data-help-name="mnubo objects">
+   <p>This is a Mnubo Ingestion Object node/p>
+   <p>There is 3 functionality : Create, Update, Delete</p>
+   <p><b>Create:</b> Create an Object, input is valid object JSON String attributes list, with mandantory "x_device_id" and "x_object_type"</p>
+   <p><b>Update:</b> Update an Object attributes, input is a valid object "x_device_id", followed by a comma ",", followed by valid owner JSON String attributes (list, or single attributes)</p>
+   <p><b>Delete:</b> Delete an Object, input is valid object "x_device_id"</p>
    <p>This node have an alternate input: you can press the button to request restitution using this node optional input, or you can inject the input parameters (JSON String)</p>
    <p>This node require to have a configure mnubo configuration, with valid Environment, Consumer ID, and Consumer Secret</p>
 </script>
