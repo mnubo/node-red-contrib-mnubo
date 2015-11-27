@@ -1,4 +1,4 @@
-function MnuboConfigUpdateStatus(thisNode) {
+function UpdateStatus(thisNode) {
    if (thisNode ==  null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
    {
       thisNode.status({fill:"red", shape:"ring", text:"no mnubo config"});
@@ -29,30 +29,53 @@ function MnuboConfigUpdateStatus(thisNode) {
       thisNode.status({fill:"green", shape:"ring", text:"valid token"});
    }
 }
-exports.MnuboConfigUpdateStatus = MnuboConfigUpdateStatus;
+exports.UpdateStatus = UpdateStatus;
 
 
-function MnuboConfigUpdateStatusResponseOK(thisNode,data) {
+function UpdateStatusResponseOK(thisNode,data) {
    thisNode.status({fill:"green", shape:"dot", text:"OK"});
 }
-exports.MnuboConfigUpdateStatusResponseOK = MnuboConfigUpdateStatusResponseOK;
+exports.UpdateStatusResponseOK = UpdateStatusResponseOK;
 
-function MnuboConfigUpdateStatusResponseError(thisNode,error) {
+function UpdateStatusResponseError(thisNode,error) {
    thisNode.status({fill:"red", shape:"dot", text:error.errorCode+":"+error.message});
 }
-exports.MnuboConfigUpdateStatusResponseError = MnuboConfigUpdateStatusResponseError;
+exports.UpdateStatusResponseError = UpdateStatusResponseError;
 
-function MnuboConfigUpdateStatusErrMsg(thisNode,msg) {
+function UpdateStatusErrMsg(thisNode,msg) {
    thisNode.status({fill:"red", shape:"ring", text:msg});
 }
-exports.MnuboConfigUpdateStatusErrMsg = MnuboConfigUpdateStatusErrMsg;
+exports.UpdateStatusErrMsg = UpdateStatusErrMsg;
 
-function MnuboConfigUpdateStatusWarnMsg(thisNode,msg) {
+function UpdateStatusWarnMsg(thisNode,msg) {
    thisNode.status({fill:"yellow", shape:"ring", text:msg});
 }
-exports.MnuboConfigUpdateStatusWarnMsg = MnuboConfigUpdateStatusWarnMsg;
+exports.UpdateStatusWarnMsg = UpdateStatusWarnMsg;
 
-function MnuboConfigUpdateStatusLogMsg(thisNode,msg) {
+function UpdateStatusLogMsg(thisNode,msg) {
    thisNode.status({fill:"green", shape:"ring", text:msg});
 }
-exports.MnuboConfigUpdateStatusLogMsg = MnuboConfigUpdateStatusLogMsg;
+exports.UpdateStatusLogMsg = UpdateStatusLogMsg;
+
+var debug = true;
+function DebugLog() {
+   if (debug) {
+      date = new Date();
+      var args_vals="";
+      if (arguments.length > 0) {
+         for(var i=0; i<arguments.length; i++) {
+            if (typeof(arguments[i]) == 'string')
+            {
+               args_vals += arguments[i]
+            }
+            else
+            {
+               //let JSON stringify the object
+               args_vals += JSON.stringify(arguments[i]);
+            }
+         }
+      }
+      console.log(date.toISOString()+":", arguments.callee.caller.name, args_vals);
+   }
+}
+exports.DebugLog = DebugLog;

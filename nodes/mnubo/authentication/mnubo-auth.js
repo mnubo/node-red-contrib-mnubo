@@ -11,7 +11,7 @@ module.exports = function(RED) {
       
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
       {
-         ConfigMnuboUtils.MnuboConfigUpdateStatusErrMsg(thisNode,"missing config/credentials");
+         ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
          return;
       }
       
@@ -34,12 +34,12 @@ module.exports = function(RED) {
          thisNode.mnuboconfig.credentials.access_token_expiry = (new Date()).getTime()/1000 + data.expires_in;
          RED.nodes.addCredentials(thisNode.id,thisNode.mnuboconfig.credentials);
          
-         ConfigMnuboUtils.MnuboConfigUpdateStatusResponseOK(thisNode,data);
+         ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
          msg.payload = data; 
          thisNode.send(msg);
       } )
       .catch(function(error) { 
-         ConfigMnuboUtils.MnuboConfigUpdateStatusResponseError(thisNode,error); 
+         ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
          msg.payload = error;  
          thisNode.send(msg); 
       } )
@@ -55,7 +55,7 @@ module.exports = function(RED) {
       this.mnuboconfig = RED.nodes.getNode(thisNode.mnuboconfig);
       //console.log('mnuboconfig=',this.mnuboconfig);
       
-      ConfigMnuboUtils.MnuboConfigUpdateStatus(this);
+      ConfigMnuboUtils.UpdateStatus(this);
       
       this.on('input', function(msg) {
          this.mnuboconfig = RED.nodes.getNode(thisNode.mnuboconfig);

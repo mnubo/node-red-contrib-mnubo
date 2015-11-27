@@ -6,9 +6,11 @@ module.exports = function(RED) {
    var ConfigMnuboUtils = require('../config/mnubo-utils');
    
    
+   
+   
    //If return_promise is 1, this function will return the promise result
-   function CreateObjectFromSdk(thisNode, msg, return_promise) {    
-      //console.log('CreateObjectFromSdk');
+   function PostEventFromSdk(thisNode, msg, return_promise) {    
+      //console.log('PostEventFromSdk');
       return_promise = return_promise || 0;
       
       var client = new mnubo.Client({
@@ -17,16 +19,17 @@ module.exports = function(RED) {
          env: thisNode.mnuboconfig.env
       });
       
+      //console.log('msg.payload=',msg.payload);
       if (return_promise==1)
       {
-         return client.objects.create(msg.payload);
+         return client.events.send(msg.payload);
       }
       else
       {
-         client.objects.create(msg.payload)
+         client.events.send(msg.payload)
          .then(function(data) { 
             ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
-            msg.payload = data; 
+            msg.payload =  data || "Event Sent"; 
             thisNode.send(msg);} )
          .catch(function(error) { 
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
@@ -37,8 +40,8 @@ module.exports = function(RED) {
    }  
    
    //If return_promise is 1, this function will return the promise result
-   function UpdateObjectFromSdk(thisNode, msg, return_promise) {  
-      //console.log('UpdateObjectFromSdk');
+   function PostEventFromDeviceFromSdk(thisNode, msg, return_promise) {    
+      //console.log('PostEventFromDeviceFromSdk');
       return_promise = return_promise || 0;
       
       var client = new mnubo.Client({
@@ -49,56 +52,28 @@ module.exports = function(RED) {
       
       var object = msg.payload.substr(0,msg.payload.indexOf(','));
       var input = msg.payload.substr(msg.payload.indexOf(",")+1);
+      //console.log('object=',object);
+      //console.log('input=',input);
       if (return_promise==1)
       {
-         return client.objects.update(object, input);
+         return client.events.sendFromDevice(object, input);
       }
       else
       {
-         client.objects.update(object, input)
+         client.events.sendFromDevice(object, input)
          .then(function(data) { 
             ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
-            msg.payload =  data || "Object Updated"; 
+            msg.payload =  data || "Device Event Sent"; 
             thisNode.send(msg);} )
          .catch(function(error) { 
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
             msg.payload = error;  
             thisNode.send(msg);} );
       }
+      
    }  
    
-   //If return_promise is 1, this function will return the promise result
-   function DeleteObjectFromSdk(thisNode, msg, return_promise) {  
-      //console.log('DeleteObjectFromSdk');
-      return_promise = return_promise || 0;
-      
-      var client = new mnubo.Client({
-         id: thisNode.mnuboconfig.credentials.id,
-         secret: thisNode.mnuboconfig.credentials.secret,
-         env: thisNode.mnuboconfig.env
-      });
-      
-      if (return_promise==1)
-      {
-         return client.objects.create(msg.payload);
-      }
-      else
-      {
-         client.objects.delete(msg.payload)
-         .then(function(data) { 
-            ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
-            msg.payload =  data || "Object Deleted"; 
-            thisNode.send(msg);} )
-         .catch(function(error) { 
-            ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-            msg.payload = error;  
-            thisNode.send(msg);} );
-      }
-   }  
-   
-   
-   function MnuboRequest(thisNode, msg) {
-      
+   function MnuboRequest(thisNode, msg) { 
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
       {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
@@ -111,21 +86,15 @@ module.exports = function(RED) {
          return;
       }
       
-      
-      if (thisNode.functionselection == "create")
+      if (thisNode.functionselection == "send")
       {
-         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"create...");
-         CreateObjectFromSdk(thisNode, msg);
+         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"Send...");
+         PostEventFromSdk(thisNode, msg);
       }
-      else if (thisNode.functionselection == "update")
+      else if (thisNode.functionselection == "sendfromdevice")
       {
-         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"update...");
-         UpdateObjectFromSdk(thisNode, msg);
-      }
-      else if (thisNode.functionselection == "delete")
-      {
-         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"delete...");
-         DeleteObjectFromSdk(thisNode, msg);
+         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"SendFromDevice...");
+         PostEventFromDeviceFromSdk(thisNode, msg);
       }
       else
       {
@@ -134,13 +103,12 @@ module.exports = function(RED) {
    }
    
    
-   function MnuboObjects(thisNode) {
-      //console.log('MnuboObjects');
+   function MnuboEvents(thisNode) {
+      //console.log('MnuboEvents');
       RED.nodes.createNode(this,thisNode);
       
       this.functionselection = thisNode.functionselection;
       this.inputtext = thisNode.inputtext;
-      
       
       // Retrieve the mnubo-credential config node
       this.mnuboconfig = RED.nodes.getNode(thisNode.mnuboconfig);
@@ -154,9 +122,9 @@ module.exports = function(RED) {
    }
    
    
-   RED.nodes.registerType("mnubo objects", MnuboObjects);
+   RED.nodes.registerType("mnubo events", MnuboEvents);
    
-   RED.httpAdmin.post("/objects/:id/button", RED.auth.needsPermission("mnubo objects.write"), function(req,res) {
+   RED.httpAdmin.post("/events/:id/button", RED.auth.needsPermission("mnubo events.write"), function(req,res) {
       var thisNode = RED.nodes.getNode(req.params.id);
       //console.log('thisNode=',thisNode);
       msg = { payload: thisNode.inputtext };
