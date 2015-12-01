@@ -17,6 +17,7 @@ module.exports = function(RED) {
          env: thisNode.mnuboconfig.env
       });
       
+      //ConfigMnuboUtils.DebugLog('msg=',msg);
       if (return_promise==1)
       {
          return client.owners.create(msg.payload);
@@ -51,6 +52,9 @@ module.exports = function(RED) {
       
       var owner = msg.payload.substr(0,msg.payload.indexOf(','));
       var input = msg.payload.substr(msg.payload.indexOf(",")+1);
+      ConfigMnuboUtils.DebugLog('owner=',owner);
+      ConfigMnuboUtils.DebugLog('input=',input);
+
       if (return_promise==1)
       {
          return client.owners.update(owner, input);
@@ -143,6 +147,7 @@ module.exports = function(RED) {
    
    
    function MnuboRequest(thisNode, msg) {
+      ConfigMnuboUtils.DebugLog();
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
       {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
@@ -182,6 +187,7 @@ module.exports = function(RED) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"unknown function");
          ConfigMnuboUtils.DebugLog("unknown function ["+thisNode.functionselection+"]");
       }
+      ConfigMnuboUtils.DebugLog('exit');
    }
    
    

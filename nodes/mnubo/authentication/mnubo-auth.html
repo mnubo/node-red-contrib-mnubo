@@ -1,44 +1,52 @@
 <script type="text/javascript">
-    RED.nodes.registerType('mnubo auth',{
-        category: 'mnubo',
-        color: '#00a1e0',
-        defaults: {
+   RED.nodes.registerType('mnubo auth',{
+      category: 'mnubo',
+      color: '#00a1e0',
+      defaults: {
             name: {value:""},
             mnuboconfig: {value:"", type:"mnubo-credentials", required:true},
-        },
-        inputs:1,
-        outputs:1,
-        icon: "mnubo_20x30.png",
-        label: function() {
+      },
+      inputs:1,
+      outputs:1,
+      icon: "mnubo_20x30.png",
+      label: function() {
             return this.name||"mnubo auth";
-        },
-       button: {
-           onclick: function() {
+      },
+      button: {
+         onclick: function() {
+               var label = this.name||"button";
+               var node = this;
                $.ajax({
-                    url: "auth/"+this.id+"/button",
-                    type:"POST",
-                });
-           }
-        },
-    });
+                  url: "auth/"+this.id+"/button",
+                  type:"POST",
+                  success: function(resp, textStatus, xhr) {
+                        RED.notify(node._("local injection",{label:label}),"success");
+                     },
+                     error:  function(resp, textStatus, xhr) {
+                        RED.notify(node._("local injection",{label:label}),"error");
+                     }
+               });
+         }
+      },
+   });
 </script>
 
 <script type="text/x-red" data-template-name="mnubo auth">
-    <div class="form-row">
-        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
-    <div class="form-row">
-        <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
-        <input type="text" id="node-input-mnuboconfig">
-    </div>
+   <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+   </div>
+   <div class="form-row">
+      <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
+      <input type="text" id="node-input-mnuboconfig">
+   </div>
 </script>
 
 <script type="text/x-red" data-help-name="mnubo auth">
-    <p>This node will do authenticatiion, on the appropriate environment system (sandbox or production), using the consumer's id (key) and secret</p>
-    <p>The requested mnubo access token will be store in the configuration for future use</p>
-    <p>The mnubo access token expiry time will also be store (for status display purpose)</p>
-    <p>This node is optional, if it is not used, the other node will request authentication automaticaly, but their status display will display the status Unauthorized until they are used</p>
-    <p>This node have an alternate input: you can press the button to request authentication, or you can inject a null payload that will also request authentication</p>
-    <p>This node require to have a configure mnubo configuration, with valid Environment, Consumer ID, and Consumer Secret</p>
+   <p>This node will do authenticatiion, on the appropriate environment system (sandbox or production), using the consumer's id (key) and secret</p>
+   <p>The requested mnubo access token will be store in the configuration for future use</p>
+   <p>The mnubo access token expiry time will also be store (for status display purpose)</p>
+   <p>This node is optional, if it is not used, the other node will request authentication automaticaly, but their status display will display the status Unauthorized until they are used</p>
+   <p>This node have an alternate input: you can press the button to request authentication, or you can inject a null payload that will also request authentication</p>
+   <p>This node require to have a configure mnubo configuration, with valid Environment, Consumer ID, and Consumer Secret</p>
 </script>

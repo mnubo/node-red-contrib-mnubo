@@ -13,6 +13,7 @@ module.exports = function(RED) {
       RED.nodes.createNode(this,thisNode);
       this.name = thisNode.name;
       this.env = thisNode.env;
+      this.proxy_url = thisNode.proxy_url;
    }
    
    

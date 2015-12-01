@@ -54,7 +54,8 @@ module.exports = function(RED) {
    }
    
    //If return_promise is 1, this function will return the promise result
-   function GetDatasetsFromSdk(thisNode, msg, return_promise) {      
+   function GetDatasetsFromSdk(thisNode, msg, return_promise) {   
+      ConfigMnuboUtils.DebugLog();
       return_promise = return_promise || 0;
       msg = msg || { payload: "GetDatasetsFromSdk" };
       
@@ -77,21 +78,23 @@ module.exports = function(RED) {
       else
       {
          client.search.getDatasets()
-         .then(function(data) { 
+         .then(function GetDatasetsFromSdk_OK(data) { 
+            ConfigMnuboUtils.DebugLog(data);
             ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
             msg.payload = data; 
             thisNode.send(msg);} )
-         .catch(function(error) { 
+         .catch(function GetDatasetsFromSdk_ERR(error) { 
+            ConfigMnuboUtils.DebugLog(error);
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
             msg.payload = error;  
             thisNode.send(msg);} );
       }
-      
+      ConfigMnuboUtils.DebugLog('exit');
    }  
    
    
    function CreateBasicQueryFromSdk(thisNode, msg) {      
-      //console.log('thisNode=',thisNode);
+      ConfigMnuboUtils.DebugLog();
       
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
       {
@@ -112,17 +115,21 @@ module.exports = function(RED) {
       });
       
       client.search.createBasicQuery(msg.payload)
-      .then(function(data) { 
+      .then(function CreateBasicQueryFromSdk_OK(data) { 
+         ConfigMnuboUtils.DebugLog(data);
          ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
          msg.payload = data; 
          thisNode.send(msg);} )
-      .catch(function(error) { 
+      .catch(function CreateBasicQueryFromSdk_ERR(error) { 
+         ConfigMnuboUtils.DebugLog(error);
          ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
          msg.payload = error;  
          thisNode.send(msg);} );
+      ConfigMnuboUtils.DebugLog('exit');
    }  
    
    function MnuboRequest(thisNode, msg) {
+      ConfigMnuboUtils.DebugLog();
       if (thisNode.searchtype == "getDatasets")
       {
          //console.log('MnuboRequest: getDatasets');
@@ -138,11 +145,13 @@ module.exports = function(RED) {
          //console.log('MnuboRequest: getDatamodel');
          msg = msg || { payload: "getDatamodel" };
          GetDatasetsFromSdk(thisNode, msg, 1)
-         .then(function(data) { 
+         .then(function MnuboRequest_getDatamodel_OK(data) { 
+            ConfigMnuboUtils.DebugLog(data);
             ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
             msg.payload = FormatDatasets(data); 
             thisNode.send(msg);} )
-         .catch(function(error) { 
+         .catch(function MnuboRequest_getDatamodel_ERR(error) { 
+            ConfigMnuboUtils.DebugLog(error);
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
             msg.payload = error;  
             thisNode.send(msg);} );
@@ -151,11 +160,12 @@ module.exports = function(RED) {
       {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"unknown searchtype");
       }
+      ConfigMnuboUtils.DebugLog('exit');
    }
    
    
    function MnuboAnalytics(thisNode) {
-      //console.log('MnuboAnalytics');
+      ConfigMnuboUtils.DebugLog();
       RED.nodes.createNode(this,thisNode);
       
       this.searchtype = thisNode.searchtype;
@@ -177,9 +187,12 @@ module.exports = function(RED) {
    RED.nodes.registerType("mnubo analytics", MnuboAnalytics);
    
    RED.httpAdmin.post("/analytics/:id/button", RED.auth.needsPermission("mnubo analytics.write"), function(req,res) {
+      ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
-      //console.log('thisNode=',thisNode);
       msg = { payload: thisNode.inputquery };
       MnuboRequest(thisNode, msg);
+      res.sendStatus(200);
+      //res.sendStatus(400);
+      ConfigMnuboUtils.DebugLog('exit');
    });
 }

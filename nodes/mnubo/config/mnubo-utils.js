@@ -57,13 +57,32 @@ function UpdateStatusLogMsg(thisNode,msg) {
 }
 exports.UpdateStatusLogMsg = UpdateStatusLogMsg;
 
+function simpleStringify (object){
+    var simpleObject = {};
+    for (var prop in object ){
+        if (!object.hasOwnProperty(prop)){
+            continue;
+        }
+        if (typeof(object[prop]) == 'object'){
+            continue;
+        }
+        if (typeof(object[prop]) == 'function'){
+            continue;
+        }
+        simpleObject[prop] = object[prop];
+    }
+    return JSON.stringify(simpleObject); // returns cleaned up JSON
+};
+
 var debug = true;
+//var debug = false;
 function DebugLog() {
    if (debug) {
       date = new Date();
       var args_vals="";
       if (arguments.length > 0) {
          for(var i=0; i<arguments.length; i++) {
+            //console.log("typeof(arguments[i]=",typeof(arguments[i]));
             if (typeof(arguments[i]) == 'string')
             {
                args_vals += arguments[i]
@@ -76,6 +95,20 @@ function DebugLog() {
          }
       }
       console.log(date.toISOString()+":", arguments.callee.caller.name, args_vals);
+      //console.log(date.toISOString()+":", arguments.callee.caller, args_vals);
    }
 }
 exports.DebugLog = DebugLog;
+
+var url=require('url');
+function ProxyUrl2HtpOptions(mnuboconfig) {
+   if (mnuboconfig.env != 'useproxyurl' || mnuboconfig.proxy_url == null || mnuboconfig.proxy_url == '') {
+      return '';
+   }
+   return {
+      protocol: url.parse(mnuboconfig.proxy_url).protocol.replace(':',''),
+      hostname: url.parse(mnuboconfig.proxy_url).hostname,
+      port:     url.parse(mnuboconfig.proxy_url).port
+   }
+}
+exports.ProxyUrl2HtpOptions = ProxyUrl2HtpOptions;

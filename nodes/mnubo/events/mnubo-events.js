@@ -10,7 +10,7 @@ module.exports = function(RED) {
    
    //If return_promise is 1, this function will return the promise result
    function PostEventFromSdk(thisNode, msg, return_promise) {    
-      //console.log('PostEventFromSdk');
+      ConfigMnuboUtils.DebugLog();
       return_promise = return_promise || 0;
       
       var client = new mnubo.Client({
@@ -27,21 +27,23 @@ module.exports = function(RED) {
       else
       {
          client.events.send(msg.payload)
-         .then(function(data) { 
+         .then(function PostEventFromSdk_OK(data) { 
+            ConfigMnuboUtils.DebugLog(data);
             ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
             msg.payload =  data || "Event Sent"; 
             thisNode.send(msg);} )
-         .catch(function(error) { 
+         .catch(function PostEventFromSdk_ERR(error) { 
+            ConfigMnuboUtils.DebugLog(error);
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
             msg.payload = error;  
             thisNode.send(msg);} );
       }
-      
+      ConfigMnuboUtils.DebugLog('exit');      
    }  
    
    //If return_promise is 1, this function will return the promise result
    function PostEventFromDeviceFromSdk(thisNode, msg, return_promise) {    
-      //console.log('PostEventFromDeviceFromSdk');
+      ConfigMnuboUtils.DebugLog();
       return_promise = return_promise || 0;
       
       var client = new mnubo.Client({
@@ -52,8 +54,8 @@ module.exports = function(RED) {
       
       var object = msg.payload.substr(0,msg.payload.indexOf(','));
       var input = msg.payload.substr(msg.payload.indexOf(",")+1);
-      //console.log('object=',object);
-      //console.log('input=',input);
+      ConfigMnuboUtils.DebugLog('object=',object);
+      ConfigMnuboUtils.DebugLog('input=',input);
       if (return_promise==1)
       {
          return client.events.sendFromDevice(object, input);
@@ -61,19 +63,22 @@ module.exports = function(RED) {
       else
       {
          client.events.sendFromDevice(object, input)
-         .then(function(data) { 
+         .then(function PostEventFromDeviceFromSdk_OK(data) { 
+            ConfigMnuboUtils.DebugLog(data);
             ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
             msg.payload =  data || "Device Event Sent"; 
             thisNode.send(msg);} )
-         .catch(function(error) { 
+         .catch(function PostEventFromDeviceFromSdk_ERR(error) { 
+            ConfigMnuboUtils.DebugLog(error);
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
             msg.payload = error;  
             thisNode.send(msg);} );
       }
-      
+      ConfigMnuboUtils.DebugLog('exit');
    }  
    
    function MnuboRequest(thisNode, msg) { 
+      ConfigMnuboUtils.DebugLog();
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
       {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
@@ -100,11 +105,12 @@ module.exports = function(RED) {
       {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"unknown function");
       }
+      ConfigMnuboUtils.DebugLog('exit');
    }
    
    
    function MnuboEvents(thisNode) {
-      //console.log('MnuboEvents');
+      ConfigMnuboUtils.DebugLog();
       RED.nodes.createNode(this,thisNode);
       
       this.functionselection = thisNode.functionselection;
@@ -125,9 +131,12 @@ module.exports = function(RED) {
    RED.nodes.registerType("mnubo events", MnuboEvents);
    
    RED.httpAdmin.post("/events/:id/button", RED.auth.needsPermission("mnubo events.write"), function(req,res) {
+      ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
-      //console.log('thisNode=',thisNode);
       msg = { payload: thisNode.inputtext };
       MnuboRequest(thisNode, msg);
+      res.sendStatus(200);
+      //res.sendStatus(400);
+      ConfigMnuboUtils.DebugLog('exit');
    });
 }

@@ -8,7 +8,8 @@ module.exports = function(RED) {
    
    //If return_promise is 1, this function will return the promise result
    function CreateObjectFromSdk(thisNode, msg, return_promise) {    
-      //console.log('CreateObjectFromSdk');
+      ConfigMnuboUtils.DebugLog();
+
       return_promise = return_promise || 0;
       
       var client = new mnubo.Client({
@@ -24,21 +25,23 @@ module.exports = function(RED) {
       else
       {
          client.objects.create(msg.payload)
-         .then(function(data) { 
+         .then(function CreateObjectFromSdk_OK(data) { 
+            ConfigMnuboUtils.DebugLog(data);
             ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
             msg.payload = data; 
             thisNode.send(msg);} )
-         .catch(function(error) { 
+         .catch(function CreateObjectFromSdk_ERR(error) { 
+            ConfigMnuboUtils.DebugLog(error);
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
             msg.payload = error;  
             thisNode.send(msg);} );
       }
-      
+      ConfigMnuboUtils.DebugLog('exit');      
    }  
    
    //If return_promise is 1, this function will return the promise result
    function UpdateObjectFromSdk(thisNode, msg, return_promise) {  
-      //console.log('UpdateObjectFromSdk');
+      ConfigMnuboUtils.DebugLog();
       return_promise = return_promise || 0;
       
       var client = new mnubo.Client({
@@ -49,6 +52,9 @@ module.exports = function(RED) {
       
       var object = msg.payload.substr(0,msg.payload.indexOf(','));
       var input = msg.payload.substr(msg.payload.indexOf(",")+1);
+      ConfigMnuboUtils.DebugLog('object=',object);
+      ConfigMnuboUtils.DebugLog('input=',input);
+
       if (return_promise==1)
       {
          return client.objects.update(object, input);
@@ -56,20 +62,23 @@ module.exports = function(RED) {
       else
       {
          client.objects.update(object, input)
-         .then(function(data) { 
+         .then(function UpdateObjectFromSdk_OK(data) { 
+            ConfigMnuboUtils.DebugLog(data);
             ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
             msg.payload =  data || "Object Updated"; 
             thisNode.send(msg);} )
-         .catch(function(error) { 
+         .catch(function UpdateObjectFromSdk_ERR(error) { 
+            ConfigMnuboUtils.DebugLog(error);
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
             msg.payload = error;  
             thisNode.send(msg);} );
       }
+      ConfigMnuboUtils.DebugLog('exit');
    }  
    
    //If return_promise is 1, this function will return the promise result
    function DeleteObjectFromSdk(thisNode, msg, return_promise) {  
-      //console.log('DeleteObjectFromSdk');
+      ConfigMnuboUtils.DebugLog();
       return_promise = return_promise || 0;
       
       var client = new mnubo.Client({
@@ -85,20 +94,23 @@ module.exports = function(RED) {
       else
       {
          client.objects.delete(msg.payload)
-         .then(function(data) { 
+         .then(function DeleteObjectFromSdk_OK(data) { 
+            ConfigMnuboUtils.DebugLog(data);
             ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
             msg.payload =  data || "Object Deleted"; 
             thisNode.send(msg);} )
-         .catch(function(error) { 
+         .catch(function DeleteObjectFromSdk_ERR(error) { 
+            ConfigMnuboUtils.DebugLog(error);
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
             msg.payload = error;  
             thisNode.send(msg);} );
       }
+      ConfigMnuboUtils.DebugLog('exit');
    }  
    
    
    function MnuboRequest(thisNode, msg) {
-      
+      ConfigMnuboUtils.DebugLog();
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
       {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
@@ -131,11 +143,11 @@ module.exports = function(RED) {
       {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"unknown function");
       }
+      ConfigMnuboUtils.DebugLog('exit');
    }
    
    
    function MnuboObjects(thisNode) {
-      //console.log('MnuboObjects');
       RED.nodes.createNode(this,thisNode);
       
       this.functionselection = thisNode.functionselection;
@@ -158,8 +170,10 @@ module.exports = function(RED) {
    
    RED.httpAdmin.post("/objects/:id/button", RED.auth.needsPermission("mnubo objects.write"), function(req,res) {
       var thisNode = RED.nodes.getNode(req.params.id);
-      //console.log('thisNode=',thisNode);
       msg = { payload: thisNode.inputtext };
       MnuboRequest(thisNode, msg);
+      res.sendStatus(200);
+      //res.sendStatus(400);
+      ConfigMnuboUtils.DebugLog('exit');
    });
 }

@@ -4,6 +4,7 @@
         defaults: {
             name: {value:""},
             env: {value:"sandbox"},
+            proxy_url: {value:""},
         },
         credentials: {
             id: {value:"", type: 'text', required:true},
@@ -11,9 +12,21 @@
             access_token: {value:"", type: 'password'},
             access_token_expiry: {value:"", type: 'text'},
         },
-        label: function() {
+      label: function() {
             return this.name||this.env;
-        }
+      },
+      oneditprepare: function() {
+            $("#node-config-input-env").change(function() {
+               var id = $("#node-config-input-env option:selected").val();
+               if (id === "useproxyurl") {
+                  $("#node-config-input-proxy_url-row").show();
+               } else {
+                  $("#node-config-input-proxy_url-row").hide();
+               }
+            });
+            $("#node-config-input-env").val(this.env);
+            $("#node-config-input-env").change();
+         }
     });
 </script>
 
@@ -32,7 +45,12 @@
           <select type="text" id="node-config-input-env" style="width:72%;">
               <option value="sandbox">sandbox</option>
               <option value="production">production</option>
+              <option value="useproxyurl">use Proxy URL</option>
           </select>
+      </div>
+      <div class="form-row" id="node-config-input-proxy_url-row">
+          <label for="node-config-input-proxy_url"><i class="fa fa-globe"></i> Proxy URL</label>
+          <input type="text" id="node-config-input-proxy_url">
       </div>
       <div class="form-row">
           <label for="node-config-input-id"><i class="fa fa-user"></i> Consumer Id</label>
@@ -44,4 +62,13 @@
       </div>
     </div>
 
+</script>
+
+<script type="text/x-red" data-help-name="mnubo events">
+   <p>This is a Mnubo configuration node</p>
+   <p>Environment can be <b>sandbox</b>, <b>production</b>, <b>use Proxy URL</b></p>
+   <p></p>
+   <p></p>
+   <p></p>
+   <p></p>
 </script>
