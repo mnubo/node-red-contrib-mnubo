@@ -65,11 +65,7 @@ module.exports = function(RED) {
          return;
       }
       
-      var client = new mnubo.Client({
-         id: thisNode.mnuboconfig.credentials.id,
-         secret: thisNode.mnuboconfig.credentials.secret,
-         env: thisNode.mnuboconfig.env
-      });
+      var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);
       
       if (return_promise==1)
       {
@@ -108,11 +104,7 @@ module.exports = function(RED) {
          return;
       }
       
-      var client = new mnubo.Client({
-         id: thisNode.mnuboconfig.credentials.id,
-         secret: thisNode.mnuboconfig.credentials.secret,
-         env: thisNode.mnuboconfig.env
-      });
+      var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
       
       client.search.createBasicQuery(msg.payload)
       .then(function CreateBasicQueryFromSdk_OK(data) { 

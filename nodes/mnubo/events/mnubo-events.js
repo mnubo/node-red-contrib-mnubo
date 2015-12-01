@@ -13,11 +13,7 @@ module.exports = function(RED) {
       ConfigMnuboUtils.DebugLog();
       return_promise = return_promise || 0;
       
-      var client = new mnubo.Client({
-         id: thisNode.mnuboconfig.credentials.id,
-         secret: thisNode.mnuboconfig.credentials.secret,
-         env: thisNode.mnuboconfig.env
-      });
+      var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
       
       //console.log('msg.payload=',msg.payload);
       if (return_promise==1)
@@ -46,11 +42,7 @@ module.exports = function(RED) {
       ConfigMnuboUtils.DebugLog();
       return_promise = return_promise || 0;
       
-      var client = new mnubo.Client({
-         id: thisNode.mnuboconfig.credentials.id,
-         secret: thisNode.mnuboconfig.credentials.secret,
-         env: thisNode.mnuboconfig.env
-      });
+      var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
       
       var object = msg.payload.substr(0,msg.payload.indexOf(','));
       var input = msg.payload.substr(msg.payload.indexOf(",")+1);

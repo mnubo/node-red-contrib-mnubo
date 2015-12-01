@@ -21,10 +21,10 @@
                   type:"POST",
                   success: function(resp, textStatus, xhr) {
                         RED.notify(node._("local injection",{label:label}),"success");
-                     },
-                     error:  function(resp, textStatus, xhr) {
+                  },
+                  error:  function(resp, textStatus, xhr) {
                         RED.notify(node._("local injection",{label:label}),"error");
-                     }
+                  }
                });
          }
       },

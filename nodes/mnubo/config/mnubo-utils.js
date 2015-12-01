@@ -74,8 +74,39 @@ function simpleStringify (object){
     return JSON.stringify(simpleObject); // returns cleaned up JSON
 };
 
-var debug = true;
-//var debug = false;
+
+
+function ProxyUrl2HtpOptions(mnuboconfig) {
+   var url=require('url');
+   if (mnuboconfig.env != 'useproxyurl' || mnuboconfig.proxy_url == null || mnuboconfig.proxy_url == '') {
+      //console.log('not using Proxy URL');
+      return '';
+   }
+   //console.log('using Proxy URL');
+   return {
+      protocol: url.parse(mnuboconfig.proxy_url).protocol.replace(':',''),
+      hostname: url.parse(mnuboconfig.proxy_url).hostname,
+      port:     url.parse(mnuboconfig.proxy_url).port
+   }
+}
+
+function GetNewMnuboClient(mnuboconfig) {
+   var mnubo = require('mnubo-sdk');
+   var client = new mnubo.Client({
+      id: mnuboconfig.credentials.id,
+      secret: mnuboconfig.credentials.secret,
+      env: mnuboconfig.env,
+      httpOptions: ProxyUrl2HtpOptions(mnuboconfig)
+   });
+   //console.log('client=',client);
+   return client;
+}
+exports.GetNewMnuboClient = GetNewMnuboClient;
+
+
+
+//var debug = true;
+var debug = false;
 function DebugLog() {
    if (debug) {
       date = new Date();
@@ -100,15 +131,4 @@ function DebugLog() {
 }
 exports.DebugLog = DebugLog;
 
-var url=require('url');
-function ProxyUrl2HtpOptions(mnuboconfig) {
-   if (mnuboconfig.env != 'useproxyurl' || mnuboconfig.proxy_url == null || mnuboconfig.proxy_url == '') {
-      return '';
-   }
-   return {
-      protocol: url.parse(mnuboconfig.proxy_url).protocol.replace(':',''),
-      hostname: url.parse(mnuboconfig.proxy_url).hostname,
-      port:     url.parse(mnuboconfig.proxy_url).port
-   }
-}
-exports.ProxyUrl2HtpOptions = ProxyUrl2HtpOptions;
+

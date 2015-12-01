@@ -20,18 +20,10 @@ module.exports = function(RED) {
       thisNode.mnuboconfig.credentials.access_token = "";
       thisNode.mnuboconfig.credentials.access_token_expiry = "";
       
-      ConfigMnuboUtils.DebugLog("proxy_url=",thisNode.mnuboconfig.proxy_url);
-      ConfigMnuboUtils.DebugLog("httpOptions=",ConfigMnuboUtils.ProxyUrl2HtpOptions(thisNode.mnuboconfig));
+      //ConfigMnuboUtils.DebugLog("proxy_url=",thisNode.mnuboconfig.proxy_url);
+      //ConfigMnuboUtils.DebugLog("httpOptions=",ConfigMnuboUtils.ProxyUrl2HtpOptions(thisNode.mnuboconfig));
       
-     
-      
-      var client = new mnubo.Client({
-         id: thisNode.mnuboconfig.credentials.id,
-         secret: thisNode.mnuboconfig.credentials.secret,
-         env: thisNode.mnuboconfig.env,
-         httpOptions: ConfigMnuboUtils.ProxyUrl2HtpOptions(thisNode.mnuboconfig)
-      });
-      console.log('client=',client);
+      var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
       
       client.getAccessToken()
       .then(function GetAccessTokenFromSdk_OK(data) {
@@ -45,7 +37,6 @@ module.exports = function(RED) {
       } )
       .catch(function GetAccessTokenFromSdk_ERR(error) { 
          //ConfigMnuboUtils.DebugLog(error);
-         console.log('error=',error);
          ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
          msg.payload = error;  
          thisNode.send(msg); 
