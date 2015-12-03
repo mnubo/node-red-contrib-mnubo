@@ -3,7 +3,7 @@
     "version"      : "0.0.1",
     "description"  : "Mnubo",
     "dependencies": {
-        "mnubo-sdk": "^1.0.3",
+        "mnubo-sdk": "^1.0.3"
     },
     "keywords": [ "node-red",
                   "mnubo",
@@ -16,7 +16,8 @@
     ],
     "node-red"     : {
         "nodes": {
-            "mnubo auth": "authentication/mnubo-auth.j",
+            "mnubo config": "config/mnubo-config.js",
+            "mnubo auth": "authentication/mnubo-auth.js",
             "mnubo analytics": "analytics/mnubo-analytics.js",
             "mnubo owners": "owners/mnubo-owners.js",
             "mnubo objects": "objects/mnubo-objects.js",
