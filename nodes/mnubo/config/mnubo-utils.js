@@ -77,12 +77,13 @@ function simpleStringify (object){
 
 
 function ProxyUrl2HtpOptions(mnuboconfig) {
-   var url=require('url');
+
    if (mnuboconfig.env != 'useproxyurl' || mnuboconfig.proxy_url == null || mnuboconfig.proxy_url == '') {
       //console.log('not using Proxy URL');
       return '';
    }
    //console.log('using Proxy URL');
+   var url=require('url');
    return {
       protocol: url.parse(mnuboconfig.proxy_url).protocol.replace(':',''),
       hostname: url.parse(mnuboconfig.proxy_url).hostname,

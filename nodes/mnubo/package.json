@@ -1,0 +1,32 @@
+{
+    "name"         : "node-red-contrib-mnubo",
+    "version"      : "0.0.1",
+    "description"  : "Mnubo",
+    "dependencies": {
+        "mnubo-sdk": "^1.0.3",
+    },
+    "keywords": [ "node-red",
+                  "mnubo",
+                  "api",
+                  "sdk",
+                  "javascript",
+                  "typescript",
+                  "iot",
+                  "smartobject"
+    ],
+    "node-red"     : {
+        "nodes": {
+            "mnubo auth": "authentication/mnubo-auth.j",
+            "mnubo analytics": "analytics/mnubo-analytics.js",
+            "mnubo owners": "owners/mnubo-owners.js",
+            "mnubo objects": "objects/mnubo-objects.js",
+            "mnubo events": "events/mnubo-events.js"
+        }
+    },
+    "author": {
+        "name": "Jerome L'Anglais",
+        "email": "jerome@mnubo.com"
+    },
+    "license": "MIT",
+    "readmeFilename": "README.md"
+}
