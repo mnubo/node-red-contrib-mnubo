@@ -183,7 +183,7 @@ module.exports = function(RED) {
       this.functionselection = thisNode.functionselection;
       this.inputtext = thisNode.inputtext;
       
-      // Retrieve the mnubo-credential config node
+      // Retrieve the mnubo config node
       this.mnuboconfig = RED.nodes.getNode(thisNode.mnuboconfig);
       ConfigMnuboUtils.UpdateStatus(this);
       

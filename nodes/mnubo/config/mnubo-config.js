@@ -1,6 +1,6 @@
 module.exports = function(RED) { 
    
-   RED.nodes.registerType("mnubo-credentials",MnuboConfigNode, {
+   RED.nodes.registerType("mnubo config",MnuboConfigNode, {
       credentials: {
          id: {type: 'text'},
          secret: {type: 'password'},

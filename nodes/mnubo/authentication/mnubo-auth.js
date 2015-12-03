@@ -50,7 +50,7 @@ module.exports = function(RED) {
       
       //console.log('thisNode=',thisNode);
       
-      // Retrieve the mnubo-credential config node
+      // Retrieve the mnubo config node
       this.mnuboconfig = RED.nodes.getNode(thisNode.mnuboconfig);
       //console.log('mnuboconfig=',this.mnuboconfig);
       

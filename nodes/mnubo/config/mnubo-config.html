@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('mnubo-credentials',{
+    RED.nodes.registerType('mnubo config',{
         category: 'config',
         defaults: {
             name: {value:""},
@@ -30,7 +30,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="mnubo-credentials">
+<script type="text/x-red" data-template-name="mnubo config">
     <div class="form-row">
         <ul style="background: #fff; min-width: 600px; margin-bottom: 20px;" id="node-config-mnubo-win"></ul>
     </div>
@@ -64,11 +64,12 @@
 
 </script>
 
-<script type="text/x-red" data-help-name="mnubo-credentials">
+<script type="text/x-red" data-help-name="mnubo config">
    <p>This is a Mnubo configuration node</p>
-   <p>Environment can be <b>sandbox</b>, <b>production</b>, <b>use Proxy URL</b></p>
-   <p></p>
-   <p></p>
-   <p></p>
-   <p></p>
+   <p><b>Environment</b> can be <b>sandbox</b>, <b>production</b>, <b>use Proxy URL</b></p>
+   <p><b>sandbox:</b>to connect to the mnubo's sandbox system</p>
+   <p><b>production:</b>to connect to the mnubo's production system</p>
+   <p><b>use Proxy URL:</b>This is optional, if you need to connect to an alternate system, or you need to go thru a proxy, you can use this field, it need to be a valid format (http://hostname:port)</p>
+   <p><b>Consumer ID</b> need to be a valid Consumer's Key</p>
+   <p><b>Consumer Secret</b> need to be the valid asociated Secret</p>
 </script>
