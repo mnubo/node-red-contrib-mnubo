@@ -22,3 +22,4 @@ To install package locally (to the user/dir, not the system)
 cd ~/.node-red
 npm install <package>
 ```
+# node-red-contrib-mnubo
