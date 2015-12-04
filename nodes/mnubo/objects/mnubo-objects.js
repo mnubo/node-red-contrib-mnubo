@@ -154,9 +154,9 @@ module.exports = function(RED) {
    }
    
    
-   RED.nodes.registerType("mnubo objects", MnuboObjects);
+   RED.nodes.registerType("SmartObjects objects", MnuboObjects);
    
-   RED.httpAdmin.post("/objects/:id/button", RED.auth.needsPermission("mnubo objects.write"), function(req,res) {
+   RED.httpAdmin.post("/objects/:id/button", RED.auth.needsPermission("SmartObjects objects.write"), function(req,res) {
       var thisNode = RED.nodes.getNode(req.params.id);
       msg = { payload: thisNode.inputtext };
       MnuboRequest(thisNode, msg);

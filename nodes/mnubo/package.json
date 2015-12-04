@@ -3,7 +3,8 @@
     "version"      : "0.0.1",
     "description"  : "Mnubo",
     "dependencies": {
-        "mnubo-sdk": "^1.0.3"
+        "mnubo-sdk": "^1.0.3",
+        "es6-shim": "^0.33.13"
     },
     "keywords": [ "node-red",
                   "mnubo",

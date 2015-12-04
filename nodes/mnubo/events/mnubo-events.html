@@ -1,5 +1,5 @@
 <script type="text/javascript">
-   RED.nodes.registerType('mnubo events',{
+   RED.nodes.registerType('SmartObjects events',{
       category: 'mnubo',
       color: '#00a1e0',
       defaults: {
@@ -10,9 +10,9 @@
       },
       inputs:1,
       outputs:1,
-      icon: "mnubo_20x30.png",
+      icon: "Events.png",
       label: function() {
-            return this.name||"events "+this.functionselection;
+            return this.name||"event "+this.functionselection;
       },
       button: {
          onclick: function() {
@@ -33,7 +33,7 @@
    });
 </script>
 
-<script type="text/x-red" data-template-name="mnubo events">
+<script type="text/x-red" data-template-name="SmartObjects events">
    <div class="form-row">
       <label for="node-input-name"><i class="icon-tag"></i> Name</label>
       <input type="text" id="node-input-name" placeholder="Name">
@@ -55,11 +55,35 @@
    </div>
 </script>
 
-<script type="text/x-red" data-help-name="mnubo events">
-   <p>This is a Mnubo Ingestion Event node</p>
-   <p>There is 2 functionality : send an event, send an event from a device</p>
-   <p><b>Send:</b> input is a validJSON String event attributes, including the "x_device_id" atribute</p>
-   <p><b>SendFromDevice:</b>input is a valid object "x_device_id", followed by a comma ",", followed by valid JSON String event's attributes (list, or single attributes)</p>
-   <p>This node have an alternate input: you can press the button to request restitution using this node optional input, or you can inject the input parameters (JSON String)</p>
-   <p>This node require to have a configure mnubo configuration, with valid Environment, Consumer ID, and Consumer Secret</p>
+<script type="text/x-red" data-help-name="SmartObjects events">
+   <p>This is a mnubo's SmartBojects Ingestion Event node.</p>
+
+   <p>There are 2 functionalities: </p>
+   <ul>
+     <li><p><b>Send:</b> send an event. The input is a valid JSON event, including the "x_device_id" attribute.</p></li>
+     <li><p><b>SendFromDevice:</b> send an event from a device. The input is a valid object "x_device_id", followed by a comma ",", followed by a valid JSON event (list, or single attributes).</p></li>
+   </ul>
+   
+   <p>This node have 2 possible input:</p>
+   <ul>
+      <li>you can press the button to inject the event, using this node optional JSON input</li> 
+      <li>you can inject a JSON event in the msg.payload</li>
+   </ul>
+
+   
+   <p>This node requires a mnubo configuration:</p>
+   <ul>
+     <li><p><b>Environment</b> can be:</p></li>
+     <ul>
+        <li><p><b>sandbox:</b>to connect to the mnubo's SmartObjects sandbox system.</p></li>
+        <li><p><b>production:</b>to connect to the mnubo's SmartObjects production system.</p></li>
+        <li><p><b>use Proxy URL:</b>If you need to connect to an alternate system, or you need to go through a proxy, you can use this field, it need to be a valid format (http://hostname:port).</p></li>
+     </ul>
+     <li><p><b>Client ID</b> need to be a valid Client's Key.</p></li>
+     <li><p><b>Client Secret</b> need to be the valid Client's Secret.</p></li>
+   </ul>
+   
+   <p>Refer to SmarObject's online documentation (under the API section) for details about this interface usage.</p>
+   
+   <p>To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
 </script>

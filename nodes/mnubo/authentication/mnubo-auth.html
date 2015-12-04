@@ -1,16 +1,16 @@
 <script type="text/javascript">
-   RED.nodes.registerType('mnubo auth',{
+   RED.nodes.registerType('SmartObjects auth',{
       category: 'mnubo',
       color: '#00a1e0',
       defaults: {
             name: {value:""},
-            mnuboconfig: {value:"", type:"mnubo config", required:true},
+            mnuboconfig: {value:"", type:"SmartObjects config", required:true},
       },
       inputs:1,
       outputs:1,
-      icon: "mnubo_auth.png",
+      icon: "Authenticate.png",
       label: function() {
-            return this.name||"mnubo auth";
+            return this.name||"Authentication";
       },
       button: {
          onclick: function() {
@@ -31,7 +31,7 @@
    });
 </script>
 
-<script type="text/x-red" data-template-name="mnubo auth">
+<script type="text/x-red" data-template-name="SmartObjects auth">
    <div class="form-row">
       <label for="node-input-name"><i class="icon-tag"></i> Name</label>
       <input type="text" id="node-input-name" placeholder="Name">
@@ -42,11 +42,31 @@
    </div>
 </script>
 
-<script type="text/x-red" data-help-name="mnubo auth">
-   <p>This node will do authenticatiion, on the appropriate environment system (sandbox or production), using the consumer's id (key) and secret</p>
-   <p>The requested mnubo access token will be store in the configuration for future use</p>
-   <p>The mnubo access token expiry time will also be store (for status display purpose)</p>
-   <p>This node is optional, if it is not used, the other node will request authentication automaticaly, but their status display will display the status Unauthorized until they are used</p>
-   <p>This node have an alternate input: you can press the button to request authentication, or you can inject a null payload that will also request authentication</p>
-   <p>This node require to have a configure mnubo configuration, with valid Environment, Consumer ID, and Consumer Secret</p>
+<script type="text/x-red" data-help-name="SmartObjects auth">
+   <p>This node will perform authentication on SmartObjects.</p>
+   <p>The requested  access token will be stored for future use.</p>
+   <p>The access token expiry time will also be stored (for status display purpose).</p>
+   <p>This node is optional.  If it is not used, the other node(s) will request authentication automatically, but their status display will show the status Unauthorized (until they are used).</p>
+   
+   <p>This node have 2 possible input:</p>
+   <ul>
+      <li>you can press the button to request authentication.</li> 
+      <li>you can inject a null msg.payload to trigger the authentication.</li>
+   </ul>
+   
+   <p>This node requires a mnubo configuration:</p>
+   <ul>
+     <li><p><b>Environment</b> can be:</p></li>
+     <ul>
+        <li><p><b>sandbox:</b>to connect to the mnubo's SmartObjects sandbox system.</p></li>
+        <li><p><b>production:</b>to connect to the mnubo's SmartObjects production system.</p></li>
+        <li><p><b>use Proxy URL:</b>If you need to connect to an alternate system, or you need to go through a proxy, you can use this field, it need to be a valid format (http://hostname:port).</p></li>
+     </ul>
+     <li><p><b>Client ID</b> need to be a valid Client's Key.</p></li>
+     <li><p><b>Client Secret</b> need to be the valid Client's Secret.</p></li>
+   </ul>
+   
+   <p>Refer to SmarObject's online documentation (under the API section) for details about this interface usage.</p>
+   
+   <p>To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
 </script>

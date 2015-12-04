@@ -53,11 +53,11 @@
           <input type="text" id="node-config-input-proxy_url">
       </div>
       <div class="form-row">
-          <label for="node-config-input-id"><i class="fa fa-user"></i> Consumer Id</label>
+          <label for="node-config-input-id"><i class="fa fa-user"></i> Client Id</label>
           <input type="text" id="node-config-input-id">
       </div>
       <div class="form-row">
-          <label for="node-config-input-secret"><i class="fa fa-key"></i> Consumer Secret</label>
+          <label for="node-config-input-secret"><i class="fa fa-key"></i> Client Secret</label>
           <input type="password" id="node-config-input-secret">
       </div>
     </div>
@@ -66,10 +66,12 @@
 
 <script type="text/x-red" data-help-name="mnubo config">
    <p>This is a Mnubo configuration node</p>
-   <p><b>Environment</b> can be <b>sandbox</b>, <b>production</b>, <b>use Proxy URL</b></p>
-   <p><b>sandbox:</b>to connect to the mnubo's sandbox system</p>
-   <p><b>production:</b>to connect to the mnubo's production system</p>
-   <p><b>use Proxy URL:</b>This is optional, if you need to connect to an alternate system, or you need to go thru a proxy, you can use this field, it need to be a valid format (http://hostname:port)</p>
-   <p><b>Consumer ID</b> need to be a valid Consumer's Key</p>
-   <p><b>Consumer Secret</b> need to be the valid asociated Secret</p>
+   <p><b>Environment</b> can be:</p>
+   <ul>
+      <li><p><b>sandbox:</b>to connect to the mnubo's sandbox system</p></li>
+      <li><p><b>production:</b>to connect to the mnubo's production system</p></li>
+      <li><p><b>use Proxy URL:</b>This is optional, if you need to connect to an alternate system, or you need to go thru a proxy, you can use this field, it need to be a valid format (http://hostname:port)</p></li>
+   </ul>
+   <p><b>Client ID</b> need to be a valid Client's Key</p>
+   <p><b>Client Secret</b> need to be the valid asociated Secret</p>
 </script>

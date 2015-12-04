@@ -63,9 +63,9 @@ module.exports = function(RED) {
       
    }
    
-   RED.nodes.registerType("mnubo auth", MnuboAuthenticate);
+   RED.nodes.registerType("SmartObjects auth", MnuboAuthenticate);
    
-   RED.httpAdmin.post("/auth/:id/button", RED.auth.needsPermission("mnubo auth.write"), function(req,res) {
+   RED.httpAdmin.post("/auth/:id/button", RED.auth.needsPermission("SmartObjects auth.write"), function(req,res) {
       ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
       GetAccessTokenFromSdk(thisNode);

@@ -1,20 +1,21 @@
-# node-red contrib mnubo 
+# node-red contrib mnubo
 
-This is the implementation of the mnubo smart oject functionality in node-red environment.
+This is the implementation of the mnubo's SmartObjects functionality in the node-red environment.
 
 ## Requirements
 
-This package is a node-red package, so it require node-red, minimum version of tested node-red was v0.10.10
+This is a node-red package, so it requires node-red, The minimum version of node-red supported is v0.10.10
 
-To use mnubo nodes, you will require to have a valid mnubo account, with access granted on a sandbox or production system.
-Official mnubo reference API can be found in: [API documentation](https://sop.mtl.mnubo.com/apps/doc/?i=t).
+To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.
+To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title **node-red-contrinb-mnubo** and include in the body of the email the name of your company, contact name and phone number.
 
-This package also require the mnubo Javascript SDK [mnubo-js-sdk](https://github.com/mnubo/mnubo-js-sdk)
-This package will be installed automatically by npm, as it is a dependencies
+Once logged into mnubo's SmartObjects, the Official reference API can be found in the following: [API documentation](https://sop.mtl.mnubo.com/apps/doc/?i=t).
 
-Note that if you are runing node.js < 4.0.0, the mnubo Javascript SDK need will require `es6-shim`, you will need to install it manually
+This package also requires the following package:
+- mnubo's SmartObjects Javascript SDK [mnubo-js-sdk](https://github.com/mnubo/mnubo-js-sdk)
+- ECMAScript 6 (Harmony) compatibility shims for legacy JavaScript engines [es6-shim](https://www.npmjs.com/package/es6-shim)
 
-    npm install --save es6-shim
+Those packages will be installed automatically by npm, as they are dependent packages.
 
 
 ## Installation
@@ -23,14 +24,21 @@ Note that if you are runing node.js < 4.0.0, the mnubo Javascript SDK need will 
 
 ## Usage
 
-In node red, all the node are under the categorie (**mnubo**), detail info is documented on the individual node, here is a high level definition:
-- `mnubo config` (**mandatory**): This is the Configuration Node that hold the Mnubo credential, all node need to have this configure.
-- `mnubo auth` (*optional*): This node is use to fetch the access token for communication, if you use this node, you will be able to have information in the status about the token state.
-- `mnubo owners` : This node is use to handle the Owners Ingestion API: `Create`, `Update`, `Delete`, `Claim Object`
-- `mnubo objects` : This node is use to handle the Object Ingestion API: `Create`, `Update`, `Delete`
-- `mnubo events` : This node is use to handle the Events Ingestion API: `Send`, `SendFromDevice`
-- `mnubo analytics` : This node is use to handle analytics Search API: `getDataset`, `getDatamodel`, `CreateBasicQuery`
-    
+In node red, all the nodes are under the category (**Mnubo**).  Detailed info is available on the individual node.
+Here is a brief description of the nodes:
+- `SmartObjects config`: This is the Configuration Node that holds the SmartObjects credential, all nodes need to have this configured.
+- `SmartObjects auth`: This node is used to fetch the access token for communication, with SmartObject, this node, you will allow you to get the status about the token.
+- `SmartObjects owners` : This node is used to handle the Owners Ingestion API: `Create`, `Update`, `Delete`, `Claim Object`
+- `SmartObjects objects` : This node is used to handle the Objectd Ingestion API: `Create`, `Update`, `Delete`
+- `SmartObjects events` : This node is used to handle the Events Ingestion API: `Send`, `SendFromDevice`
+- `SmartObjects analytics` : This node is used to handle the Search API: `getDataset`, `getDatamodel`, `baseSearchQurery`
+
 ## Examples
 
 TODO...
+
+## TODO in the sources
+change node name-prefix from mnubo to SmartObjects
+change mnubo analytics's CreateBasicQuery to baseSearchQuery
+change customerID/secret to clientID/secret
+add es6-shim to the dependancy

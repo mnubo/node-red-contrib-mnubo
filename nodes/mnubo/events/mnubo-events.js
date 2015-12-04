@@ -120,9 +120,9 @@ module.exports = function(RED) {
    }
    
    
-   RED.nodes.registerType("mnubo events", MnuboEvents);
+   RED.nodes.registerType("SmartObjects events", MnuboEvents);
    
-   RED.httpAdmin.post("/events/:id/button", RED.auth.needsPermission("mnubo events.write"), function(req,res) {
+   RED.httpAdmin.post("/events/:id/button", RED.auth.needsPermission("SmartObjects events.write"), function(req,res) {
       ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
       msg = { payload: thisNode.inputtext };
