@@ -32,7 +32,7 @@ Those packages will be installed automatically by npm, as they are dependent pac
 
 In node red, all the nodes are under the category (**Mnubo**).  Detailed info is available on the individual node.
 Here is a brief description of the nodes:
-- `SmartObjects config`: This is the Configuration Node that holds the mnubo's SmartObjects credential, all nodes need to have this configured.
+- `mnubo config`: This is the Configuration Node that holds the mnubo's SmartObjects credential, all nodes need to have this configured.
 - `SmartObjects auth`: This node is used to fetch the access token for communication, with SmartObject, this node, you will allow you to get the status about the token.
 - `SmartObjects owners` : This node is used to handle the Owners Ingestion API: `Create`, `Update`, `Delete`, `Claim Object`
 - `SmartObjects objects` : This node is used to handle the Objectd Ingestion API: `Create`, `Update`, `Delete`
