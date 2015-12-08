@@ -5,7 +5,7 @@
       defaults: {
             name: {value:""},
             mnuboconfig: {value:"", type:"mnubo config", required:true},
-            searchtype: {value:"basicSearchQuery", required:true},
+            searchtype: {value:"SearchQuery", required:true},
             inputquery: {value:"",type: 'text'},
       },
       inputs:1,
@@ -33,7 +33,7 @@
       oneditprepare: function() {
             $("#node-input-searchtype").change(function() {
                var id = $("#node-input-searchtype option:selected").val();
-               if (id === "basicSearchQuery") {
+               if (id === "SearchQuery") {
                   $("#node-input-inputquery-row").show();
                } else {
                   $("#node-input-inputquery-row").hide();
@@ -59,7 +59,7 @@
          <select type="text" id="node-input-searchtype" style="width:72%;">
             <option value="getDatasets">get datasets</option>
             <option value="getDatamodel">get data model</option>
-            <option value="basicSearchQuery">basic search query</option>
+            <option value="SearchQuery"> search query</option>
          </select>
    </div>
    <div class="form-row" id="node-input-inputquery-row">
@@ -75,8 +75,8 @@
      <li><p><b>getDatasets:</b> Get the datasets from mnubo SmartObjects.  Note that the dataset list describes what can be queried.</p></li>
      <li><p><b>getDatamodel:</b> Get the datasets from mnubo SmartObjects, and convert the output to a data model.</p></li>
      <li>
-        <p><b>basicSearchQuery:</b> Execute a mnubo SmartObjects basic search query.</p>
-        <p>basicSearchQuery have 2 possible input:</p>
+        <p><b>SearchQuery:</b> Execute a mnubo SmartObjects search query.</p>
+        <p>SearchQuery have 2 possible input:</p>
         <ul>
           <li>you can press the button to request restitution using this node optional JSON search query.</li> 
           <li>you can inject a JSON search query in the msg.payload</li>

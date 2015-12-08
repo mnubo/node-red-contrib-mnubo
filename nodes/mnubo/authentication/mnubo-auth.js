@@ -33,7 +33,7 @@ module.exports = function(RED) {
          thisNode.send(msg);
       } )
       .catch(function GetAccessTokenFromSdk_ERR(error) { 
-         //ConfigMnuboUtils.DebugLog(error);
+         ConfigMnuboUtils.DebugLog(error);
          ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
          msg.payload = error;  
          thisNode.send(msg); 

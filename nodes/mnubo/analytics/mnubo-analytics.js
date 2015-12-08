@@ -127,7 +127,7 @@ module.exports = function(RED) {
          //console.log('MnuboRequest: getDatasets');
          GetDatasetsFromSdk(thisNode, msg);
       }
-      else if (thisNode.searchtype == "basicSearchQuery")
+      else if (thisNode.searchtype == "SearchQuery")
       {
          //console.log('MnuboRequest: basicSearchQuery');
          CreateBasicQueryFromSdk(thisNode, msg);
