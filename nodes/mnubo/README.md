@@ -20,7 +20,7 @@ Those packages will be installed automatically by npm, as they are dependent pac
 
 ## Installation
 
-    npm install --save node-red-contrib-mnubo
+    sudo npm install -save --prefix ~/.node-red node-red-contrib-mnubo
 
 ## Usage
 
@@ -38,7 +38,4 @@ Here is a brief description of the nodes:
 TODO...
 
 ## TODO in the sources
-change node name-prefix from mnubo to SmartObjects
 change mnubo analytics's CreateBasicQuery to baseSearchQuery
-change customerID/secret to clientID/secret
-add es6-shim to the dependancy
