@@ -11,7 +11,7 @@ module.exports = function(RED) {
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
       {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
-         return;
+         return 0;
       }
       
       msg = msg || { payload: "GetAccessTokenFromSdk" };
@@ -19,9 +19,6 @@ module.exports = function(RED) {
       //Clear previous access_token:
       thisNode.mnuboconfig.credentials.access_token = "";
       thisNode.mnuboconfig.credentials.access_token_expiry = "";
-      
-      //ConfigMnuboUtils.DebugLog("proxy_url=",thisNode.mnuboconfig.proxy_url);
-      //ConfigMnuboUtils.DebugLog("httpOptions=",ConfigMnuboUtils.ProxyUrl2HtpOptions(thisNode.mnuboconfig));
       
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
       
@@ -42,22 +39,21 @@ module.exports = function(RED) {
          thisNode.send(msg); 
       } )
       ConfigMnuboUtils.DebugLog('exit');
+      return 200;
    }
    
    function MnuboAuthenticate(thisNode) {
       ConfigMnuboUtils.DebugLog();
       RED.nodes.createNode(this,thisNode);
       
-      //console.log('thisNode=',thisNode);
-      
       // Retrieve the mnubo config node
       this.mnuboconfig = RED.nodes.getNode(thisNode.mnuboconfig);
-      //console.log('mnuboconfig=',this.mnuboconfig);
       
       ConfigMnuboUtils.UpdateStatus(this);
       
       this.on('input', function(msg) {
          this.mnuboconfig = RED.nodes.getNode(thisNode.mnuboconfig);
+         ConfigMnuboUtils.UpdateStatusLogMsg(this, "input ...");
          GetAccessTokenFromSdk(this, msg);         
       });
       
@@ -68,9 +64,15 @@ module.exports = function(RED) {
    RED.httpAdmin.post("/auth/:id/button", RED.auth.needsPermission("SmartObjects auth.write"), function(req,res) {
       ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
-      GetAccessTokenFromSdk(thisNode);
-      res.sendStatus(200);
-      //res.sendStatus(400);
+      if (thisNode != null)
+      {
+         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode, "button input ...");
+         res.sendStatus(GetAccessTokenFromSdk(thisNode));
+      }
+      else
+      {
+         res.sendStatus(404);
+      }
       ConfigMnuboUtils.DebugLog('exit');
    });
 }

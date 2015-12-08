@@ -190,6 +190,7 @@ module.exports = function(RED) {
       this.on('input', function MnuboOwners_input(msg) {
          ConfigMnuboUtils.DebugLog();
          this.mnuboconfig = RED.nodes.getNode(thisNode.mnuboconfig);
+         ConfigMnuboUtils.UpdateStatusLogMsg(this, "input ...");
          MnuboRequest(this, msg);         
       });
       
@@ -201,9 +202,18 @@ module.exports = function(RED) {
       ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
       msg = { payload: thisNode.inputtext };
-      MnuboRequest(thisNode, msg);
-      res.sendStatus(200);
-      //res.sendStatus(400);
+      
+      if (thisNode != null)
+      {
+         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode, "button input ...");
+         MnuboRequest(thisNode, msg);
+         res.sendStatus(200);
+       }
+      else
+      {
+         res.sendStatus(404);
+      }
+      
       ConfigMnuboUtils.DebugLog('exit');
    });
 }

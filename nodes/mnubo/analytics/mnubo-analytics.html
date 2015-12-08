@@ -5,7 +5,7 @@
       defaults: {
             name: {value:""},
             mnuboconfig: {value:"", type:"mnubo config", required:true},
-            searchtype: {value:"createBasicQuery", required:true},
+            searchtype: {value:"basicSearchQuery", required:true},
             inputquery: {value:"",type: 'text'},
       },
       inputs:1,
@@ -33,7 +33,7 @@
       oneditprepare: function() {
             $("#node-input-searchtype").change(function() {
                var id = $("#node-input-searchtype option:selected").val();
-               if (id === "createBasicQuery") {
+               if (id === "basicSearchQuery") {
                   $("#node-input-inputquery-row").show();
                } else {
                   $("#node-input-inputquery-row").hide();
@@ -59,7 +59,7 @@
          <select type="text" id="node-input-searchtype" style="width:72%;">
             <option value="getDatasets">get datasets</option>
             <option value="getDatamodel">get data model</option>
-            <option value="createBasicQuery">create basic query</option>
+            <option value="basicSearchQuery">basic search query</option>
          </select>
    </div>
    <div class="form-row" id="node-input-inputquery-row">

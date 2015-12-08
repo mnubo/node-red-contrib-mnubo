@@ -127,9 +127,9 @@ module.exports = function(RED) {
          //console.log('MnuboRequest: getDatasets');
          GetDatasetsFromSdk(thisNode, msg);
       }
-      else if (thisNode.searchtype == "createBasicQuery")
+      else if (thisNode.searchtype == "basicSearchQuery")
       {
-         //console.log('MnuboRequest: createBasicQuery');
+         //console.log('MnuboRequest: basicSearchQuery');
          CreateBasicQueryFromSdk(thisNode, msg);
       }
       else if (thisNode.searchtype == "getDatamodel")
@@ -151,7 +151,9 @@ module.exports = function(RED) {
       else
       {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"unknown searchtype");
+         return 0;
       }
+      return 1;
       ConfigMnuboUtils.DebugLog('exit');
    }
    
@@ -170,6 +172,7 @@ module.exports = function(RED) {
       
       this.on('input', function(msg) {
          this.mnuboconfig = RED.nodes.getNode(thisNode.mnuboconfig);
+         ConfigMnuboUtils.UpdateStatusLogMsg(this, "input ...");
          MnuboRequest(this, msg);         
       });
       
@@ -181,10 +184,23 @@ module.exports = function(RED) {
    RED.httpAdmin.post("/analytics/:id/button", RED.auth.needsPermission("SmartObjects analytics.write"), function(req,res) {
       ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
-      msg = { payload: thisNode.inputquery };
-      MnuboRequest(thisNode, msg);
-      res.sendStatus(200);
-      //res.sendStatus(400);
+      if (thisNode != null)
+      {
+         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode, "button input ...");
+         msg = { payload: thisNode.inputquery };
+         if (MnuboRequest(thisNode, msg) == 1)
+         {
+            res.sendStatus(200);
+         }
+         else
+         {
+            res.sendStatus(400);
+         }
+      }
+      else
+      {
+         res.sendStatus(404);
+      }
       ConfigMnuboUtils.DebugLog('exit');
    });
 }
