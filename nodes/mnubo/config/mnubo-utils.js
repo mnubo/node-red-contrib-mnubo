@@ -38,7 +38,15 @@ function UpdateStatusResponseOK(thisNode,data) {
 exports.UpdateStatusResponseOK = UpdateStatusResponseOK;
 
 function UpdateStatusResponseError(thisNode,error) {
-   thisNode.status({fill:"red", shape:"dot", text:error.errorCode+":"+error.message});
+   if (error.errorCode) {
+      thisNode.status({fill:"red", shape:"dot", text:error.errorCode+":"+error.message});
+   }
+   else if (error.code) {
+      thisNode.status({fill:"red", shape:"dot", text:error.code});
+   }
+   else {
+      thisNode.status({fill:"red", shape:"dot", text:"unknown Error"});
+   }
 }
 exports.UpdateStatusResponseError = UpdateStatusResponseError;
 

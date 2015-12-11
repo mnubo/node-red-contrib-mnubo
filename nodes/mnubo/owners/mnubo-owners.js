@@ -42,8 +42,34 @@ module.exports = function(RED) {
       
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
       
-      var owner = msg.payload.substr(0,msg.payload.indexOf(','));
-      var input = msg.payload.substr(msg.payload.indexOf(",")+1);
+      try{
+         
+         if (typeof(msg.payload) == 'string')
+         {
+            myString = msg.payload;
+         }
+         else if (typeof(msg.payload) == 'object')
+         {
+            myString = JSON.stringify(msg.payload);
+         }
+         else
+         {
+            ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"not a string or object");
+            return;
+         }
+         myArray = JSON.parse(myString);
+         if (myArray.length !=2) {
+            ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"bad amount of arguments");
+            return;
+         }
+      } catch(e) {
+         ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"invalid arguments");
+         return;
+      }
+      owner = myArray[0];
+      input = myArray[1];
+
+      
       ConfigMnuboUtils.DebugLog('owner=',owner);
       ConfigMnuboUtils.DebugLog('input=',input);
 
@@ -102,9 +128,34 @@ module.exports = function(RED) {
       return_promise = return_promise || 0;
       
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
+
+      try{
+         
+         if (typeof(msg.payload) == 'string')
+         {
+            myString = msg.payload;
+         }
+         else if (typeof(msg.payload) == 'object')
+         {
+            myString = JSON.stringify(msg.payload);
+         }
+         else
+         {
+            ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"not a string or object");
+            return;
+         }
+         myArray = JSON.parse(myString);
+         if (myArray.length !=2) {
+            ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"bad amount of arguments");
+            return;
+         }
+      } catch(e) {
+         ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"invalid arguments");
+         return;
+      }
+      owner = myArray[0];
+      input = myArray[1];      
       
-      var owner = msg.payload.substr(0,msg.payload.indexOf(','));
-      var input = msg.payload.substr(msg.payload.indexOf(",")+1);
       ConfigMnuboUtils.DebugLog('owner=', owner);
       ConfigMnuboUtils.DebugLog('input=', input);
       if (return_promise==1)

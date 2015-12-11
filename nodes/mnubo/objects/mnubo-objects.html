@@ -52,7 +52,7 @@
    </div>
    <div class="form-row">
       <label for="node-input-inputtext"><i class="fa fa-pencil"></i> Input</label>
-      <textarea id="node-input-inputtext" rows="10" cols="80" placeholder="JSON's String query"></textarea>
+      <textarea id="node-input-inputtext" rows="10" cols="80" placeholder="optional input string"></textarea>
    </div>
 </script>
 
@@ -62,28 +62,39 @@
    <p>There are 3 functionalities: </p>
    <ul>
      <li><p><b>Create:</b> Allows to Create an Object. The input is a valid JSON attributes list, with mandatory  "x_device_id" and "x_object_type" attribute.</p></li>
-     <li><p><b>Update:</b> Allows to Update an Object's attributes. The input is a valid object "x_device_id", followed by a comma ",", followed by a valid JSON object (list, or single attributes).</p></li>
+     <li><p><b>Update:</b> Allows to Update an Object's attributes. The input can be a "string" or "javascript's object".  It need to be an array that is compose of the following 2 elements:</p></li>
+     <ul>
+       <li>the object's x_device_id</li>
+       <li>JSON containing the object's attributes.</li>
+     </ul>
      <li><p><b>Delete:</b> Allows to Delete an Object. The input is a valid "x_device_id".</p></li>
    </ul>
    
-   <p>This node have 2 possible input:</p>
-   <ul>
-      <li>you can press the button to manage the object using this node's optional JSON input</li> 
-      <li>you can inject a JSON in the msg.payload</li>
-   </ul>
-
-   
-   <p>This node requires a mnubo configuration:</p>
-   <ul>
-     <li><p><b>Environment</b> can be:</p></li>
+   <p>This node have 2 possible input:
      <ul>
-        <li><p><b>sandbox:</b>to connect to the mnubo's SmartObjects sandbox system.</p></li>
-        <li><p><b>production:</b>to connect to the mnubo's SmartObjects production system.</p></li>
-        <li><p><b>use Proxy URL:</b>If you need to connect to an alternate system, or you need to go through a proxy, you can use this field, it need to be a valid format (http://hostname:port).</p></li>
+        <li>you can press the button to inject the input, using this node optional input</li> 
+        <li>you can inject the input of a msg.payload</li>
      </ul>
-     <li><p><b>Client ID</b> need to be a valid Client's Key.</p></li>
-     <li><p><b>Client Secret</b> need to be the valid Client's Secret.</p></li>
-   </ul>
+   </p>
+   
+   <p>This node requires a mnubo configuration, with the following parameters:
+     <ul>
+       <p>
+         <li><b>Environment</b> that can be:</p></li>
+         <ul>
+            <li><p><b>sandbox:</b>to connect to the mnubo's SmartObjects sandbox system.</p></li>
+            <li><p><b>production:</b>to connect to the mnubo's SmartObjects production system.</p></li>
+            <li><p><b>use Proxy URL:</b>If you need to connect to an alternate system, or you need to go through a proxy, you can use this field, it need to be a valid format (http://hostname:port).</p></li>
+         </ul>
+       </p>
+       <p>
+         <li><p><b>Client ID</b> need to be a valid Client's Key.</p></li>
+       </p>
+       <p>
+         <li><p><b>Client Secret</b> need to be the valid Client's Secret.</p></li>
+       </p>
+     </ul>
+   </p>
    
    <p>Refer to SmarObject's online documentation (under the API section) for details about this interface usage.</p>
    
