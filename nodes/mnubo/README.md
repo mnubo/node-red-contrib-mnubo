@@ -35,9 +35,7 @@ This is a front-end implementation of the https://www.npmjs.com/package/mnubo-sd
 
 Detailed info is available on the individual node in node-red. Here is a brief description of the nodes:
 •	mnubo config: This is the Configuration Node that holds the mnubo's SmartObjects credential, all nodes need to have this configured.
-•	SmartObjects auth: This node is used to fetch the access token for communication, with SmartObject, this node, you will allow you to get the 
-
-status about the token.
+•	SmartObjects auth: This node is used to fetch the access token for communication, with SmartObject, this node, you will allow you to get the status about the token.
 •	SmartObjects owners : This node is used to handle the Owners Ingestion API: Create, Update, Delete,Claim Object
 •	SmartObjects objects : This node is used to handle the Objectd Ingestion API: Create, Update, Delete
 •	SmartObjects events : This node is used to handle the Events Ingestion API: Send, SendFromDevice
@@ -50,9 +48,7 @@ status about the token.
 This is a node-red package, so it requires node-red, The minimum version of node-red supported is v0.10.10
 
 To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.
-To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title **node-red-contrinb-mnubo** and 
-
-include in the body of the email the name of your company, contact name and phone number.
+To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title **node-red-contrinb-mnubo** and include in the body of the email the name of your company, contact name and phone number.
 
 Once logged into mnubo's SmartObjects, the Official reference API can be found in the following: [API documentation]
 
