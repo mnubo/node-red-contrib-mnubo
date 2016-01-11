@@ -33,12 +33,20 @@ Note that this package is also compatible with other node-red environment, like 
 
 This is a front-end implementation of the https://www.npmjs.com/package/mnubo-sdk
 
-Detailed info is available on the individual node in node-red. Here is a brief description of the nodes:
+Detailed info is available on the individual node in node-red. 
+
+Here is a brief description of the nodes:
+
 •	mnubo config: This is the Configuration Node that holds the mnubo's SmartObjects credential, all nodes need to have this configured.
+
 •	SmartObjects auth: This node is used to fetch the access token for communication, with SmartObject, this node, you will allow you to get the status about the token.
+
 •	SmartObjects owners : This node is used to handle the Owners Ingestion API: Create, Update, Delete,Claim Object
+
 •	SmartObjects objects : This node is used to handle the Objectd Ingestion API: Create, Update, Delete
+
 •	SmartObjects events : This node is used to handle the Events Ingestion API: Send, SendFromDevice
+
 •	SmartObjects analytics : This node is used to handle the Search API: getDataset, getDatamodel,SearchQurery
 
 
