@@ -26,7 +26,7 @@ Table of Content
 
 This is the implementation of the mnubo's SmartObjects functionality in the node-red environment.
 
-Note that this package is also compatible with other node-red environment, like IBM Bluemix and AT&T Flow.
+Note that this package is also compatible with other node-red environments, like IBM Bluemix and AT&T Flow.
 
 ---
 #<a name="section3"></a>2. Architecture
@@ -39,11 +39,11 @@ Here is a brief description of the nodes:
 
 •	mnubo config: This is the Configuration Node that holds the mnubo's SmartObjects credential, all nodes need to have this configured.
 
-•	SmartObjects auth: This node is used to fetch the access token for communication, with SmartObject, this node, you will allow you to get the status about the token.
+•	SmartObjects auth: This node is used to fetch the access token for communication with SmartObject. This node will also allow you to get the status about the token.
 
 •	SmartObjects owners : This node is used to handle the Owners Ingestion API: Create, Update, Delete,Claim Object
 
-•	SmartObjects objects : This node is used to handle the Objectd Ingestion API: Create, Update, Delete
+•	SmartObjects objects : This node is used to handle the Objects Ingestion API: Create, Update, Delete
 
 •	SmartObjects events : This node is used to handle the Events Ingestion API: Send, SendFromDevice
 
@@ -103,7 +103,7 @@ in the depedency:
 
 ## Example 1: Quick Demo
 
-Here is a quick demo that show how to authenticate, create owner, update owner, create object, update object, send event, do a basicSearchQuery, 
+Here is a quick demo that shows how to authenticate, create owner, update owner, create object, update object, send event, do a basicSearchQuery, 
 
 delete the object, delete the owner:
 ```
