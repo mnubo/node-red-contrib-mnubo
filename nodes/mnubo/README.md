@@ -511,7 +511,15 @@ analytics","debugBreak":false,"debugOutput":false,"name":"","mnuboconfig":"45637
 ---
 #<a name="section6"></a>6. Important notes
 
-N/A
+The nodes were renamed between version 1.0.5 and 1.1.0, if you want to convert your flow, you can edit your flows (usually in ~/.node-red/flows_$HOSTNAME.json) you created before version 1.1.0, and replace the following:
+
+| Replace                 | To        |
+| -------                 | --------- |
+| SmartObjects auth       | Auth      |
+| SmartObjects analytics  | Analytics |
+| SmartObjects events     | Events    |
+| SmartObjects objects    | Objects   |
+| SmartObjects owners     | Owner     |
 
 ---
 #<a name="section7"></a>7. Source code
