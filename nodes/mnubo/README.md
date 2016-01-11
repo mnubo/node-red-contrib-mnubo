@@ -516,7 +516,10 @@ N/A
 ---
 #<a name="section7"></a>7. Source code
 
-https://github.com/mnubo/node-red-contrib-mnubo/tree/master/nodes/mnubo
+npm path: https://www.npmjs.com/package/node-red-contrib-mnubo
+
+mnubo github sub path:  https://github.com/mnubo/node-red-contrib-mnubo/tree/master/nodes/mnubo
+
 
 ---
 #<a name="section8"></a>8. Known limitations
@@ -526,6 +529,11 @@ N/A
 ---
 #<a name="section9"></a>9. References
 
+https://www.npmjs.com/package/mnubo-sdk
+
 http://nodered.org/
 
 https://github.com/node-red/node-red
+
+https://sop.mtl.mnubo.com/apps/doc/?i=t
+
