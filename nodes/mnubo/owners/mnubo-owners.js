@@ -247,9 +247,9 @@ module.exports = function(RED) {
       
    }
    
-   RED.nodes.registerType("SmartObjects owners", MnuboOwners);
+   RED.nodes.registerType("Owners", MnuboOwners);
    
-   RED.httpAdmin.post("/owners/:id/button", RED.auth.needsPermission("SmartObjects owners.write"), function mnubo_owners_button(req,res) {
+   RED.httpAdmin.post("/owners/:id/button", RED.auth.needsPermission("Owners.write"), function mnubo_owners_button(req,res) {
       ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
       msg = { payload: thisNode.inputtext };

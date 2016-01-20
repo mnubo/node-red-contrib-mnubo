@@ -179,9 +179,9 @@ module.exports = function(RED) {
    }
    
    
-   RED.nodes.registerType("SmartObjects analytics", MnuboAnalytics);
+   RED.nodes.registerType("Analytics", MnuboAnalytics);
    
-   RED.httpAdmin.post("/analytics/:id/button", RED.auth.needsPermission("SmartObjects analytics.write"), function(req,res) {
+   RED.httpAdmin.post("/analytics/:id/button", RED.auth.needsPermission("Analytics.write"), function(req,res) {
       ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
       if (thisNode != null)

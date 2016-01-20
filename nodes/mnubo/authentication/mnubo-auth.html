@@ -1,6 +1,6 @@
 <script type="text/javascript">
-   RED.nodes.registerType('SmartObjects auth',{
-      category: 'mnubo',
+   RED.nodes.registerType('Auth',{
+      category: 'mnubo SmartObjects',
       color: '#00a1e0',
       defaults: {
             name: {value:""},
@@ -31,7 +31,7 @@
    });
 </script>
 
-<script type="text/x-red" data-template-name="SmartObjects auth">
+<script type="text/x-red" data-template-name="Auth">
    <div class="form-row">
       <label for="node-input-name"><i class="icon-tag"></i> Name</label>
       <input type="text" id="node-input-name" placeholder="Name">
@@ -42,7 +42,7 @@
    </div>
 </script>
 
-<script type="text/x-red" data-help-name="SmartObjects auth">
+<script type="text/x-red" data-help-name="Auth">
    <p>This node will perform authentication on SmartObjects.</p>
    <p>The requested  access token will be stored for future use.</p>
    <p>The access token expiry time will also be stored (for status display purpose).</p>
