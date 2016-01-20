@@ -1,6 +1,6 @@
 <script type="text/javascript">
-   RED.nodes.registerType('SmartObjects analytics',{
-      category: 'mnubo',
+   RED.nodes.registerType('Analytics',{
+      category: 'mnubo SmartObjects',
       color: '#00a1e0',
       defaults: {
             name: {value:""},
@@ -45,7 +45,7 @@
    });
 </script>
 
-<script type="text/x-red" data-template-name="SmartObjects analytics">
+<script type="text/x-red" data-template-name="Analytics">
    <div class="form-row">
       <label for="node-input-name"><i class="icon-tag"></i> Name</label>
       <input type="text" id="node-input-name" placeholder="Name">
@@ -68,7 +68,7 @@
    </div>
 </script>
 
-<script type="text/x-red" data-help-name="SmartObjects analytics">
+<script type="text/x-red" data-help-name="Analytics">
    <p>This node will perform a mnubo's SmarObjects search.</p>
    <p>There are 3 types of SmartObject searches: </p>
    <ul>
