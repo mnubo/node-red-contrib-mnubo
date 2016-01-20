@@ -59,9 +59,9 @@ module.exports = function(RED) {
       
    }
    
-   RED.nodes.registerType("Auth", MnuboAuthenticate);
+   RED.nodes.registerType("mnubo auth", MnuboAuthenticate);
    
-   RED.httpAdmin.post("/auth/:id/button", RED.auth.needsPermission("Auth.write"), function(req,res) {
+   RED.httpAdmin.post("/auth/:id/button", RED.auth.needsPermission("mnubo auth.write"), function(req,res) {
       ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
       if (thisNode != null)

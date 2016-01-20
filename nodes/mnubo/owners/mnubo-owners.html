@@ -1,6 +1,6 @@
 <script type="text/javascript">
-   RED.nodes.registerType('Owners',{
-      category: 'mnubo SmartObjects',
+   RED.nodes.registerType('mnubo owners',{
+      category: 'SmartObjects',
       color: '#00a1e0',
       defaults: {
             name: {value:""},
@@ -11,8 +11,12 @@
       inputs:1,
       outputs:1,
       icon: "Owner.png",
+      align: "left",
       label: function() {
             return this.name||"owner "+this.functionselection;
+      },
+      labelStyle: function() {
+            return this.name?"node_label_italic":"";
       },
       button: {
          onclick: function() {
@@ -33,7 +37,7 @@
    });
 </script>
 
-<script type="text/x-red" data-template-name="Owners">
+<script type="text/x-red" data-template-name="mnubo owners">
    <div class="form-row">
       <label for="node-input-name"><i class="icon-tag"></i> Name</label>
       <input type="text" id="node-input-name" placeholder="Name">
@@ -57,10 +61,10 @@
    </div>
 </script>
 
-<script type="text/x-red" data-help-name="Owners">
-   <!--<p>This is a mnubo's SmartObjects Ingestion Owner node.</p>-->
+<script type="text/x-red" data-help-name="mnubo owners">
+   <p>This is a mnubo's SmartObjects Ingestion Owner node.</p>
 
-   <!--<p>There are 4 functionalities: </p>-->
+   <p>There are 4 functionalities: </p>
    <ul>
      <p>
        <li><b>Create:</b> Allows to Create an Owner. The input is a valid JSON attributes list, with mandatory  "username" and "x_password" attribute></li>

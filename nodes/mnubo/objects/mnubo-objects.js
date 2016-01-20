@@ -1,5 +1,6 @@
 module.exports = function(RED) {
-   
+   //"use strict";
+
    //mnubo-sdk
    require('es6-shim'); /* only if running node < 4.0.0 */
    var mnubo = require('mnubo-sdk');
@@ -186,9 +187,9 @@ module.exports = function(RED) {
    }
    
    
-   RED.nodes.registerType("Objects", MnuboObjects);
-   
-   RED.httpAdmin.post("/objects/:id/button", RED.auth.needsPermission("Objects.write"), function(req,res) {
+   RED.nodes.registerType("mnubo objects", MnuboObjects);
+
+   RED.httpAdmin.post("/objects/:id/button", RED.auth.needsPermission("mnubo objects.write"), function(req,res) {
       var thisNode = RED.nodes.getNode(req.params.id);
       msg = { payload: thisNode.inputtext };
       
