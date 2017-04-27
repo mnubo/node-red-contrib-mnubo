@@ -28,14 +28,14 @@ module.exports = function(RED) {
          thisNode.mnuboconfig.credentials.access_token = data.access_token;
          thisNode.mnuboconfig.credentials.access_token_expiry = (new Date()).getTime()/1000 + data.expires_in;
          RED.nodes.addCredentials(thisNode.id,thisNode.mnuboconfig.credentials);
-         ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
+         ConfigMnuboUtils.UpdateStatusResponseOK(thisNode, data);
          msg.payload = data; 
          thisNode.send(msg);
       } )
       .catch(function GetAccessTokenFromSdk_ERR(error) { 
          ConfigMnuboUtils.DebugLog(error);
          ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-         msg.payload = error;  
+         msg.errors = [{'errorMessage': error, 'originalRequest': msg}];
          thisNode.send(msg); 
       } )
       ConfigMnuboUtils.DebugLog('exit');
