@@ -13,25 +13,49 @@ module.exports = function(RED) {
 
       return_promise = return_promise || 0;
       
-      var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
-      
-      if (return_promise==1)
-      {
-         return client.objects.create(msg.payload);
+      var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);
+
+      try {
+          if (typeof(msg.payload) == 'string') {
+             msg.payload = JSON.parse(msg.payload)
+          }
+      } catch(e) {
+         ConfigMnuboUtils.UpdateStatusErrMsg(thisNode, "Input must be a valid JSON");
+         return;
       }
-      else
-      {
-         client.objects.create(msg.payload)
-         .then(function CreateObjectFromSdk_OK(data) { 
-            ConfigMnuboUtils.DebugLog(data);
-            ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
-            msg.payload = data; 
-            thisNode.send(msg);} )
-         .catch(function CreateObjectFromSdk_ERR(error) { 
-            ConfigMnuboUtils.DebugLog(error);
-            ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-            msg.payload = error;  
-            thisNode.send(msg);} );
+      
+      if (return_promise == 1) {
+         if (msg.payload.length > 1) {
+            return client.objects.createUpdate(msg.payload);
+         } else {
+            return client.objects.create(msg.payload);
+         }
+      }
+      else {
+         if (msg.payload.length > 1) {  // Bulk Creation
+            client.objects.createUpdate(msg.payload)
+             .then((result) => {
+                ConfigMnuboUtils.CheckMultiStatusResult(thisNode, result, msg.payload)
+             })
+             .catch((error) => {
+                ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
+                msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                thisNode.send(msg);
+             });
+         } else {       // Single Creation
+            client.objects.create(msg.payload)
+             .then((result) => {
+                ConfigMnuboUtils.UpdateStatusResponseOK(thisNode, result);
+                msg.payload = result;
+                thisNode.send(msg);
+             })
+             .catch((error) => {
+                ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
+                msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                thisNode.send(msg);
+             });
+         }
+
       }
       ConfigMnuboUtils.DebugLog('exit');      
    }  
@@ -41,62 +65,59 @@ module.exports = function(RED) {
       ConfigMnuboUtils.DebugLog();
       return_promise = return_promise || 0;
       
-      var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
-            
-      //var object = msg.payload.substr(0,msg.payload.indexOf(','));
-      //var input = msg.payload.substr(msg.payload.indexOf(",")+1);
+      var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);
 
-      //ConfigMnuboUtils.DebugLog("msg.payload=",msg.payload);    
-      //ConfigMnuboUtils.DebugLog("typeof(msg.payload)=",typeof(msg.payload));    
-      try{
-         
-         if (typeof(msg.payload) == 'string')
-         {
-            myString = msg.payload;
-         }
-         else if (typeof(msg.payload) == 'object')
-         {
-            myString = JSON.stringify(msg.payload);
-         }
-         else
-         {
-            ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"not a string or object");
-            return;
-         }
-         myArray = JSON.parse(myString);
-         if (myArray.length !=2) {
-            ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"bad amount of arguments");
-            return;
-         }
+      try {
+          if (typeof(msg.payload) == 'string') {
+             msg.payload = JSON.parse(msg.payload)
+          }
       } catch(e) {
-         ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"invalid arguments");
+         ConfigMnuboUtils.UpdateStatusErrMsg(thisNode, "Input must be a valid JSON");
          return;
       }
 
-      object = myArray[0];
-      input = myArray[1];
 
-      ConfigMnuboUtils.DebugLog('object=',object);
-      ConfigMnuboUtils.DebugLog('input=',input);
+      if (typeof(msg.payload[0]) == 'string') { //[dev_id, body] Update a single Object
+         if (msg.payload.length == 2) {
+             var object = msg.payload[0];
+             var input = msg.payload[1];
 
-      if (return_promise==1)
-      {
-         return client.objects.update(object, input);
+             if (return_promise == 1) {
+                return client.objects.update(object, input);
+             } else {
+                client.objects.update(object, input)
+                  .then((result) => {
+                     ConfigMnuboUtils.UpdateStatusResponseOK(thisNode, result);
+                     msg.payload =  result || "Object Updated";
+                     thisNode.send(msg);
+                  })
+                  .catch((error) => {
+                     ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
+                     msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                     thisNode.send(msg);
+                  });
+             }
+         } else {
+               ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"bad amount of arguments");
+               return;
+         }
+      } else {          //[body] Batch Update
+
+          if (return_promise == 1) {
+            return client.objects.createUpdate(msg.payload)
+          } else {
+              client.objects.createUpdate(msg.payload)
+                .then((result) => {
+                   ConfigMnuboUtils.CheckMultiStatusResult(thisNode, result, msg.payload)
+                })
+                .catch((error) => {
+                   ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
+                   msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                   thisNode.send(msg);
+                });
+          }
       }
-      else
-      {
-         client.objects.update(object, input)
-         .then(function UpdateObjectFromSdk_OK(data) { 
-            ConfigMnuboUtils.DebugLog(data);
-            ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
-            msg.payload =  data || "Object Updated"; 
-            thisNode.send(msg);} )
-         .catch(function UpdateObjectFromSdk_ERR(error) { 
-            ConfigMnuboUtils.DebugLog(error);
-            ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-            msg.payload = error;  
-            thisNode.send(msg);} );
-      }
+
       ConfigMnuboUtils.DebugLog('exit');
    }  
    
@@ -107,60 +128,87 @@ module.exports = function(RED) {
       
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
             
-      if (return_promise==1)
-      {
-         return client.objects.create(msg.payload);
-      }
-      else
-      {
+      if (return_promise == 1) {
+         return client.objects.delete(msg.payload);
+      } else {
          client.objects.delete(msg.payload)
-         .then(function DeleteObjectFromSdk_OK(data) { 
-            ConfigMnuboUtils.DebugLog(data);
-            ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
-            msg.payload =  data || "Object Deleted"; 
-            thisNode.send(msg);} )
-         .catch(function DeleteObjectFromSdk_ERR(error) { 
+         .then((result) => {
+            ConfigMnuboUtils.UpdateStatusResponseOK(thisNode, result);
+            msg.payload =  result || "Object Deleted";
+            thisNode.send(msg);
+          })
+         .catch((error) => {
+            ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
+            msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+            thisNode.send(msg);
+          });
+      }
+      ConfigMnuboUtils.DebugLog('exit');
+   }
+
+   //If return_promise is 1, this function will return the promise result
+   function ExistsObjectFromSdk(thisNode, msg, return_promise) {
+      ConfigMnuboUtils.DebugLog();
+      return_promise = return_promise || 0;
+
+      var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);
+
+      try {
+          if (typeof(msg.payload) == 'string') {
+             msg.payload = msg.payload.replace(/'/g, '"');
+             if (msg.payload.indexOf("\"") > -1) {
+                msg.payload = JSON.parse(msg.payload);
+             }
+          }
+
+      } catch(e) {
+         ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"invalid arguments");
+         return;
+      }
+
+      if (return_promise == 1) {
+         return client.objects.exists(msg.payload);
+      } else {
+         client.objects.exists(msg.payload)
+         .then((result) => {
+            ConfigMnuboUtils.UpdateStatusResponseOK(thisNode, result);
+            msg.payload =  result;
+            thisNode.send(msg);
+         })
+         .catch((error) => {
             ConfigMnuboUtils.DebugLog(error);
-            ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-            msg.payload = error;  
+            ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
+            msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
             thisNode.send(msg);} );
       }
       ConfigMnuboUtils.DebugLog('exit');
-   }  
-   
+   }
    
    function MnuboRequest(thisNode, msg) {
       ConfigMnuboUtils.DebugLog();
-      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
-      {
+      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
          return;
       }
       
-      if (msg == null || msg.payload == null || msg.payload == "")
-      {
+      if (msg == null || msg.payload == null || msg.payload == "") {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing input");
          return;
       }
-      
-      
-      if (thisNode.functionselection == "create")
-      {
-         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"create...");
+
+      if (thisNode.functionselection == "create") {
+         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"creating...");
          CreateObjectFromSdk(thisNode, msg);
-      }
-      else if (thisNode.functionselection == "update")
-      {
-         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"update...");
+      } else if (thisNode.functionselection == "update") {
+         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"updating...");
          UpdateObjectFromSdk(thisNode, msg);
-      }
-      else if (thisNode.functionselection == "delete")
-      {
-         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"delete...");
+      } else if (thisNode.functionselection == "delete") {
+         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"deleting...");
          DeleteObjectFromSdk(thisNode, msg);
-      }
-      else
-      {
+      } else if (thisNode.functionselection == "exists") {
+         ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"checking...");
+         ExistsObjectFromSdk(thisNode, msg);
+      } else {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"unknown function");
       }
       ConfigMnuboUtils.DebugLog('exit');
@@ -172,8 +220,7 @@ module.exports = function(RED) {
       
       this.functionselection = thisNode.functionselection;
       this.inputtext = thisNode.inputtext;
-      
-      
+
       // Retrieve the mnubo config node
       this.mnuboconfig = RED.nodes.getNode(thisNode.mnuboconfig);
       ConfigMnuboUtils.UpdateStatus(this);
@@ -190,20 +237,18 @@ module.exports = function(RED) {
    RED.nodes.registerType("mnubo objects", MnuboObjects);
 
    RED.httpAdmin.post("/objects/:id/button", RED.auth.needsPermission("mnubo objects.write"), function(req,res) {
+      ConfigMnuboUtils.DebugLog("Button Input - RED.httpAdmin.post");
       var thisNode = RED.nodes.getNode(req.params.id);
       msg = { payload: thisNode.inputtext };
       
-      if (thisNode != null)
-      {
+      if (thisNode != null) {
          ConfigMnuboUtils.UpdateStatusLogMsg(thisNode, "button input ...");
          MnuboRequest(thisNode, msg);
          res.sendStatus(200);
-       }
-      else
-      {
+      } else {
          res.sendStatus(404);
       }
       
-      ConfigMnuboUtils.DebugLog('exit');
+      ConfigMnuboUtils.DebugLog('Button Input - RED.httpAdmin.post exit');
    });
 }

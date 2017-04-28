@@ -8,8 +8,7 @@ module.exports = function(RED) {
    function GetAccessTokenFromSdk(thisNode, msg) {
       ConfigMnuboUtils.DebugLog();
       
-      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
-      {
+      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
          return 0;
       }
@@ -28,14 +27,14 @@ module.exports = function(RED) {
          thisNode.mnuboconfig.credentials.access_token = data.access_token;
          thisNode.mnuboconfig.credentials.access_token_expiry = (new Date()).getTime()/1000 + data.expires_in;
          RED.nodes.addCredentials(thisNode.id,thisNode.mnuboconfig.credentials);
-         ConfigMnuboUtils.UpdateStatusResponseOK(thisNode,data);
+         ConfigMnuboUtils.UpdateStatusResponseOK(thisNode, data);
          msg.payload = data; 
          thisNode.send(msg);
       } )
       .catch(function GetAccessTokenFromSdk_ERR(error) { 
          ConfigMnuboUtils.DebugLog(error);
          ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-         msg.payload = error;  
+         msg.errors = [{'errorMessage': error, 'originalRequest': msg}];
          thisNode.send(msg); 
       } )
       ConfigMnuboUtils.DebugLog('exit');
@@ -64,13 +63,10 @@ module.exports = function(RED) {
    RED.httpAdmin.post("/auth/:id/button", RED.auth.needsPermission("mnubo auth.write"), function(req,res) {
       ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
-      if (thisNode != null)
-      {
+      if (thisNode != null) {
          ConfigMnuboUtils.UpdateStatusLogMsg(thisNode, "button input ...");
          res.sendStatus(GetAccessTokenFromSdk(thisNode));
-      }
-      else
-      {
+      } else {
          res.sendStatus(404);
       }
       ConfigMnuboUtils.DebugLog('exit');

@@ -48,11 +48,13 @@
    </div>
    <div class="form-row">
       <label for="node-input-functionselection"><i class="fa fa-list"></i> Function</label>
-         <select type="text" id="node-input-functionselection" style="width:72%;">
+         <select type="text" id="node-input-functionselection"">
             <option value="create">Create</option>
             <option value="update">Update</option>
             <option value="delete">Delete</option>
             <option value="claim">Claim</option>
+            <option value="unclaim">unClaim</option>
+            <option value="exists">Exists</option>
          </select>
    </div>
    <div class="form-row">
@@ -64,58 +66,67 @@
 <script type="text/x-red" data-help-name="mnubo owners">
    <p>This is a mnubo's SmartObjects Ingestion Owner node.</p>
 
-   <p>There are 4 functionalities: </p>
+   <p>FUNCTIONS</p>
    <ul>
-     <p>
        <li><b>Create:</b> Allows to Create an Owner. The input is a valid JSON attributes list, with mandatory  "username" and "x_password" attribute></li>
-     </p>
-     <p>
        <li><b>Update:</b> Allows to Update an Owner's attributes. The input can be a "string" or "javascript's object".  It need to be an array that is compose of the following 2 elements:</li>
-       <ul>
-         <li>the owner's username</li>
-         <li>JSON containing the owner's attributes.</li>
-       </ul>
-     </p>
-     <p>
+           <ul>
+             <li>username</li>
+             <li>JSON containing the owner's attributes.</li>
+           </ul>
        <li><b>Delete:</b> Allows to Delete an Owner. The input is the owner "username".</li>
-     </p>
-     <p>
        <li><b>Claim:</b>Allows to an owner to Claim an Object. The input can be a "string" or "javascript's object".  It need to be an array that is compose of the following 2 elements:</li>
-       <ul>
-         <li>the owner's username</li>
-         <li>the object's x_device_id</li>
-       </ul>
-
-     </p>
+           <ul>
+             <li>username</li>
+             <li>x_device_id</li>
+           </ul>
+       <li><b>unClaim:</b> Allows to an owner to unClaim an Object. The input can be a "string" or "javascript's object".  It need to be an array that is compose of the following 2 elements:</li>
+           <ul>
+             <li>username</li>
+             <li>x_device_id</li>
+           </ul>
+       <li><b>Exist:</b> Allows to check if a specific Owner (username) already exists. The input can be a "string" or an "array" with the username you want to check.</li>
    </ul>
 
-   <p>This node have 2 possible input:
+   <p>INPUTS</p>
      <ul>
         <li>you can press the button to inject the input, using this node optional input</li>
         <li>you can inject the input of a msg.payload</li>
      </ul>
-   </p>
 
-   <p>This node requires a mnubo configuration, with the following parameters:
+   <p>OUTPUTS</p>
      <ul>
-       <p>
-         <li><b>Environment</b> that can be:</p></li>
-         <ul>
-            <li><p><b>sandbox:</b>to connect to the mnubo's SmartObjects sandbox system.</p></li>
-            <li><p><b>production:</b>to connect to the mnubo's SmartObjects production system.</p></li>
-            <li><p><b>use Proxy URL:</b>If you need to connect to an alternate system, or you need to go through a proxy, you can use this field, it need to be a valid format (http://hostname:port).</p></li>
-         </ul>
-       </p>
-       <p>
-         <li><p><b>Client ID</b> need to be a valid Client's Key.</p></li>
-       </p>
-       <p>
-         <li><p><b>Client Secret</b> need to be the valid Client's Secret.</p></li>
-       </p>
+
+        <li>The straight response coming from SmartObject Platform can be found on 'msg.payload'</li>
+        <li>If <u>Report Result</u> flag is set to 'true', you can also refer to 'msg.errors' in order to check the error_message and the original event that has produced the error.</li>
      </ul>
-   </p>
+
+   <p>REQUIREMENTS</p>
+    <ol>
+       <li> Mnubo configuration, with the following parameters:</li>
+       <ul>
+          <li>
+             <b>Environment</b> that can be:
+             <ul>
+                <li>
+                   <b>sandbox:</b> to connect to the mnubo's SmartObjects sandbox system.
+                </li>
+                <li>
+                   <b>production:</b> to connect to the mnubo's SmartObjects production system.
+                </li>
+                <li>
+                   <b>use Proxy URL:</b> If you need to connect to an alternate system, or you need to go through a proxy, you can use this field, it need to be a valid format (http://hostname:port).
+                </li>
+             </ul>
+          <li>
+             <b>Client ID</b> need to be a valid Client's Key.
+          </li>
+          <li>
+             <b>Client Secret</b> need to be the valid Client's Secret.
+          </li>
+       </ul>
+    </ol>
 
    <p>Refer to SmarObject's online documentation (under the API section) for details about this interface usage.</p>
-
    <p>To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
 </script>

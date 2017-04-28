@@ -32,20 +32,28 @@ function UpdateStatus(thisNode) {
 exports.UpdateStatus = UpdateStatus;
 
 
-function UpdateStatusResponseOK(thisNode,data) {
+function UpdateStatusResponseOK(thisNode, data) {
    thisNode.status({fill:"green", shape:"dot", text:"OK"});
 }
 exports.UpdateStatusResponseOK = UpdateStatusResponseOK;
 
-function UpdateStatusResponseError(thisNode,error) {
+function UpdateStatusResponseWarning(thisNode, data) {
+   thisNode.status({fill:"yellow", shape:"dot", text:"Multi Status"});
+}
+exports.UpdateStatusResponseWarning = UpdateStatusResponseWarning;
+
+function UpdateStatusResponseError(thisNode, error) {
    if (error.errorCode) {
       thisNode.status({fill:"red", shape:"dot", text:error.errorCode+":"+error.message});
    }
    else if (error.code) {
       thisNode.status({fill:"red", shape:"dot", text:error.code});
    }
+   else if (error.length > 0){
+      thisNode.status({fill:"red", shape:"dot", text: error});
+   }
    else {
-      thisNode.status({fill:"red", shape:"dot", text:"unknown Error"});
+      thisNode.status({fill:"red", shape:"dot", text: "Unknown Error"});
    }
 }
 exports.UpdateStatusResponseError = UpdateStatusResponseError;
@@ -65,9 +73,43 @@ function UpdateStatusLogMsg(thisNode,msg) {
 }
 exports.UpdateStatusLogMsg = UpdateStatusLogMsg;
 
+function CheckMultiStatusResult(thisNode, data, request) {
+  var failed_events = [];
+  var message = {};
+
+  if (typeof request == 'string') {
+    request = JSON.parse(request)
+  }
+
+  if (data) {
+    data.forEach((obj, index) => {
+          if (obj.result == "error") {
+              failed_events.push({
+                  'errorMessage':  obj.message,
+                  'originalRequest': request[index]
+              })
+          }
+    });
+    if (failed_events.length > 0) {
+        UpdateStatusResponseWarning(thisNode, data);
+        message.errors =  failed_events;
+        message.payload =  data;
+    } else {
+        UpdateStatusResponseOK(thisNode, data);
+        message.payload =  "Ok";
+    }
+
+  } else {
+    UpdateStatusResponseOK(thisNode, data);
+    message.payload =  "Ok";
+  }
+  thisNode.send(message)
+}
+exports.CheckMultiStatusResult = CheckMultiStatusResult;
+
 function simpleStringify (object){
     var simpleObject = {};
-    for (var prop in object ){
+    for (var prop in object){
         if (!object.hasOwnProperty(prop)){
             continue;
         }
@@ -79,7 +121,7 @@ function simpleStringify (object){
         }
         simpleObject[prop] = object[prop];
     }
-    return JSON.stringify(simpleObject); // returns cleaned up JSON
+    return JSON.stringify(simpleObject); // returns a cleaned JSON
 };
 
 
@@ -107,7 +149,6 @@ function GetNewMnuboClient(mnuboconfig) {
       env: mnuboconfig.env,
       httpOptions: ProxyUrl2HtpOptions(mnuboconfig)
    });
-   //console.log('client=',client);
    return client;
 }
 exports.GetNewMnuboClient = GetNewMnuboClient;

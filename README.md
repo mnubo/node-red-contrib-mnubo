@@ -1,11 +1,14 @@
 Check [node-red](http://nodered.org/docs/getting-started/installation.html) instruction for installation.
 
-On ubuntu:
+The easiest way to install Node-RED is to use node’s package manager, npm:
 ```
-sudo npm install -g --unsafe-perm node-red`
+sudo npm install -g --unsafe-perm node-red
 ```
 
 To start node-red, you can just call node-red
+```
+node-red
+```
 
 You can connect to the server using the default port:
 `http://localhost:1880/`

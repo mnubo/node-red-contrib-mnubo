@@ -59,20 +59,16 @@ module.exports = function(RED) {
       return_promise = return_promise || 0;
       msg = msg || { payload: "GetDatasetsFromSdk" };
       
-      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
-      {
+      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
          return;
       }
       
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);
       
-      if (return_promise==1)
-      {
+      if (return_promise==1) {
          return client.search.getDatasets();
-      }
-      else
-      {
+      } else {
          client.search.getDatasets()
          .then(function GetDatasetsFromSdk_OK(data) { 
             ConfigMnuboUtils.DebugLog(data);
@@ -82,7 +78,7 @@ module.exports = function(RED) {
          .catch(function GetDatasetsFromSdk_ERR(error) { 
             ConfigMnuboUtils.DebugLog(error);
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-            msg.payload = error;  
+            msg.errors = [{'errorMessage': error, 'originalRequest': msg}];
             thisNode.send(msg);} );
       }
       ConfigMnuboUtils.DebugLog('exit');
@@ -92,14 +88,12 @@ module.exports = function(RED) {
    function CreateBasicQueryFromSdk(thisNode, msg) {      
       ConfigMnuboUtils.DebugLog();
       
-      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
-      {
+      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
          return;
       }
       
-      if (msg == null || msg.payload == null || msg.payload == "")
-      {
+      if (msg == null || msg.payload == null || msg.payload == "") {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing input query");
          return;
       }
@@ -114,27 +108,19 @@ module.exports = function(RED) {
          thisNode.send(msg);} )
       .catch(function CreateBasicQueryFromSdk_ERR(error) { 
          ConfigMnuboUtils.DebugLog(error);
-         ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-         msg.payload = error;  
+         ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
+         msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
          thisNode.send(msg);} );
       ConfigMnuboUtils.DebugLog('exit');
    }  
    
    function MnuboRequest(thisNode, msg) {
       ConfigMnuboUtils.DebugLog();
-      if (thisNode.searchtype == "getDatasets")
-      {
-         //console.log('MnuboRequest: getDatasets');
+      if (thisNode.searchtype == "getDatasets") {
          GetDatasetsFromSdk(thisNode, msg);
-      }
-      else if (thisNode.searchtype == "SearchQuery")
-      {
-         //console.log('MnuboRequest: basicSearchQuery');
+      } else if (thisNode.searchtype == "SearchQuery") {
          CreateBasicQueryFromSdk(thisNode, msg);
-      }
-      else if (thisNode.searchtype == "getDatamodel")
-      {
-         //console.log('MnuboRequest: getDatamodel');
+      } else if (thisNode.searchtype == "getDatamodel") {
          msg = msg || { payload: "getDatamodel" };
          GetDatasetsFromSdk(thisNode, msg, 1)
          .then(function MnuboRequest_getDatamodel_OK(data) { 
@@ -145,11 +131,9 @@ module.exports = function(RED) {
          .catch(function MnuboRequest_getDatamodel_ERR(error) { 
             ConfigMnuboUtils.DebugLog(error);
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-            msg.payload = error;  
+            msg.errors = [{'errorMessage': error, 'originalRequest': msg}];
             thisNode.send(msg);} );
-      }
-      else
-      {
+      } else {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"unknown searchtype");
          return 0;
       }
@@ -184,21 +168,15 @@ module.exports = function(RED) {
    RED.httpAdmin.post("/analytics/:id/button", RED.auth.needsPermission("mnubo analytics.write"), function(req,res) {
       ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
-      if (thisNode != null)
-      {
+      if (thisNode != null) {
          ConfigMnuboUtils.UpdateStatusLogMsg(thisNode, "button input ...");
          msg = { payload: thisNode.inputquery };
-         if (MnuboRequest(thisNode, msg) == 1)
-         {
+         if (MnuboRequest(thisNode, msg) == 1) {
             res.sendStatus(200);
-         }
-         else
-         {
+         } else {
             res.sendStatus(400);
          }
-      }
-      else
-      {
+      } else {
          res.sendStatus(404);
       }
       ConfigMnuboUtils.DebugLog('exit');
