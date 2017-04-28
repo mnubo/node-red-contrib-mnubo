@@ -8,8 +8,7 @@ module.exports = function(RED) {
    function GetAccessTokenFromSdk(thisNode, msg) {
       ConfigMnuboUtils.DebugLog();
       
-      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
-      {
+      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
          return 0;
       }
@@ -64,13 +63,10 @@ module.exports = function(RED) {
    RED.httpAdmin.post("/auth/:id/button", RED.auth.needsPermission("mnubo auth.write"), function(req,res) {
       ConfigMnuboUtils.DebugLog();
       var thisNode = RED.nodes.getNode(req.params.id);
-      if (thisNode != null)
-      {
+      if (thisNode != null) {
          ConfigMnuboUtils.UpdateStatusLogMsg(thisNode, "button input ...");
          res.sendStatus(GetAccessTokenFromSdk(thisNode));
-      }
-      else
-      {
+      } else {
          res.sendStatus(404);
       }
       ConfigMnuboUtils.DebugLog('exit');

@@ -14,24 +14,22 @@ module.exports = function(RED) {
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
       try {
           if (typeof(msg.payload) == 'string') {
-                  msg.payload = JSON.parse(msg.payload)
-                }
+             msg.payload = JSON.parse(msg.payload)
+          }
       } catch(e) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"Input must be a valid JSON");
          return;
       }
 
-      if (return_promise == 1)
-      {
+      if (return_promise == 1) {
          if (msg.payload.length > 1) {
             return client.owners.createUpdate(msg.payload);  // Bulk creation
          } else {
             return client.owners.create(msg.payload);  // Single creation
          }
       }
-      else
-      {
-         if (msg.payload.length > 1){
+      else {
+         if (msg.payload.length > 1) {
             client.owners.createUpdate(msg.payload)  // Bulk creation
               .then((result) => {
                  ConfigMnuboUtils.CheckMultiStatusResult(thisNode, result, msg.payload)
@@ -69,8 +67,8 @@ module.exports = function(RED) {
       
       try {
           if (typeof(msg.payload) == 'string') {
-                  msg.payload = JSON.parse(msg.payload)
-                }
+             msg.payload = JSON.parse(msg.payload)
+          }
       } catch(e) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"Input must be a valid JSON");
          return;
@@ -102,13 +100,11 @@ module.exports = function(RED) {
         } else {
               ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"bad amount of arguments");
               return;
-         }
+        }
       } else {          //[body] Batch Update
-
           if (return_promise == 1) {
             return client.owners.createUpdate(msg.payload)
-          }
-          else {
+          } else {
               client.owners.createUpdate(msg.payload)
                 .then((result) => {
                    ConfigMnuboUtils.CheckMultiStatusResult(thisNode, result, msg.payload)
@@ -120,7 +116,6 @@ module.exports = function(RED) {
                 });
           }
       }
-
       ConfigMnuboUtils.DebugLog('exit');
    }  
    
@@ -131,12 +126,9 @@ module.exports = function(RED) {
       
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
       
-      if (return_promise == 1)
-      {
+      if (return_promise == 1) {
          return client.owners.delete(msg.payload);
-      }
-      else
-      {
+      } else {
          client.owners.delete(msg.payload)
          .then((result) => {
             ConfigMnuboUtils.DebugLog(result);
@@ -163,8 +155,8 @@ module.exports = function(RED) {
 
       try {
           if (typeof(msg.payload) == 'string') {
-                  msg.payload = JSON.parse(msg.payload)
-                }
+             msg.payload = JSON.parse(msg.payload)
+          }
       } catch(e) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"Input must be a valid JSON");
          return;
@@ -172,7 +164,6 @@ module.exports = function(RED) {
 
       if (msg.payload.every(el => typeof(el) == 'string')) {  //[username, deviceid] Single Claim/ UnClaim
         if (msg.payload.length == 2) {
-
             var owner = msg.payload[0];
             var object_id = msg.payload[1];
             ConfigMnuboUtils.DebugLog('owner: ', owner);
@@ -218,7 +209,7 @@ module.exports = function(RED) {
         } else {
               ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"bad amount of arguments");
               return;
-         }
+        }
       } else {          //[body] Batch Claim/ UnClaim
           if (return_promise == 1) {
             if (action == "claim") {    // CLAIM
@@ -261,24 +252,21 @@ module.exports = function(RED) {
      var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);
 
      try {
-       if (typeof msg.payload == 'string') {
+         if (typeof msg.payload == 'string') {
             msg.payload = msg.payload.replace(/'/g, '"');
             if (msg.payload.indexOf("\"") > -1) {
                msg.payload = JSON.parse(msg.payload);
             }
-       }
+         }
 
      } catch(e) {
         ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"invalid arguments");
         return;
      }
 
-     if (return_promise == 1)
-     {
+     if (return_promise == 1) {
         return client.owners.exists(msg.payload);
-     }
-     else
-     {
+     } else {
         client.owners.exists(msg.payload)
         .then((result) => {
            ConfigMnuboUtils.UpdateStatusResponseOK(thisNode, result);
@@ -298,52 +286,43 @@ module.exports = function(RED) {
    
    function MnuboRequest(thisNode, msg) {
       ConfigMnuboUtils.DebugLog();
-      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
-      {
+      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
          ConfigMnuboUtils.DebugLog("missing config/credentials");
          return;
       }
       
-      if (msg == null || msg.payload == null || msg.payload == "")
-      {
+      if (msg == null || msg.payload == null || msg.payload == "") {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing input");
          ConfigMnuboUtils.DebugLog("missing input");
          return;
       }
       
-      if (thisNode.functionselection == "create")
-      {
+      if (thisNode.functionselection == "create") {
          ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"create...");
          CreateOwnerFromSdk(thisNode, msg);
       }
-      else if (thisNode.functionselection == "update")
-      {
+      else if (thisNode.functionselection == "update") {
          ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"update...");
          UpdateOwnerFromSdk(thisNode, msg);
       }
-      else if (thisNode.functionselection == "delete")
-      {
+      else if (thisNode.functionselection == "delete") {
          ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"delete...");
          DeleteOwnerFromSdk(thisNode, msg);
       }
-      else if (thisNode.functionselection == "claim")
-      {
+      else if (thisNode.functionselection == "claim") {
          ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"claim...");
          ClaimOrUnClaimOwnerFromSdk(thisNode, msg, "claim");
       }
-      else if (thisNode.functionselection == "unclaim")
-      {
+      else if (thisNode.functionselection == "unclaim") {
          ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"unclaim...");
          ClaimOrUnClaimOwnerFromSdk(thisNode, msg, "unclaim");
       }
-      else if (thisNode.functionselection == "exists")
-      {
+      else if (thisNode.functionselection == "exists") {
          ConfigMnuboUtils.UpdateStatusLogMsg(thisNode,"checking...");
          ExistOwnerFromSdk(thisNode, msg);
       }
-      else
-      {
+      else {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"unknown function");
          ConfigMnuboUtils.DebugLog("unknown function ["+thisNode.functionselection+"]");
       }
@@ -379,14 +358,11 @@ module.exports = function(RED) {
       var thisNode = RED.nodes.getNode(req.params.id);
       msg = { payload: thisNode.inputtext };
       
-      if (thisNode != null)
-      {
+      if (thisNode != null) {
          ConfigMnuboUtils.UpdateStatusLogMsg(thisNode, "button input ...");
          MnuboRequest(thisNode, msg);
          res.sendStatus(200);
-       }
-      else
-      {
+      } else {
          res.sendStatus(404);
       }
       

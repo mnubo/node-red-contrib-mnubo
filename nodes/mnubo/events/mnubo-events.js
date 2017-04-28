@@ -18,19 +18,17 @@ module.exports = function(RED) {
 
       try {
           if (typeof(msg.payload) == 'string') {
-                  msg.payload = JSON.parse(msg.payload)
-                }
+             msg.payload = JSON.parse(msg.payload)
+          }
       } catch(e) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"Input must be a valid JSON");
          return;
       }
 
-      if (return_promise == 1)
-      {
+      if (return_promise == 1) {
          return client.events.send(msg.payload, options);
       }
-      else
-      {
+      else {
          client.events.send(msg.payload, options)
              .then((result) => {
                 ConfigMnuboUtils.CheckMultiStatusResult(thisNode, result, msg.payload);
@@ -56,10 +54,9 @@ module.exports = function(RED) {
       }
 
       try {
-         
-         if (typeof(msg.payload) == 'string') {
-            msg.payload = JSON.parse(msg.payload);
-         }
+          if (typeof(msg.payload) == 'string') {
+             msg.payload = JSON.parse(msg.payload);
+          }
 
       } catch(e) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode, "Input must be a valid JSON");
@@ -67,21 +64,19 @@ module.exports = function(RED) {
       }
 
       if (msg.payload.length != 2) {
-          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"bad amount of arguments");
-          return;
-       }
+         ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"bad amount of arguments");
+         return;
+      }
       
       object = msg.payload[0];
       input = msg.payload[1];
       ConfigMnuboUtils.DebugLog('object: ', object);
       ConfigMnuboUtils.DebugLog('input: ', input);
       
-      if (return_promise == 1)
-      {
+      if (return_promise == 1) {
          return client.events.sendFromDevice(object, input, options);
       }
-      else
-      {
+      else {
          client.events.sendFromDevice(object, input, options)
          .then((result) => {
             ConfigMnuboUtils.CheckMultiStatusResult(thisNode, result, input)
@@ -99,14 +94,12 @@ module.exports = function(RED) {
    function MnuboRequest(thisNode, msg) { 
       ConfigMnuboUtils.DebugLog();
 
-      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
-      {
+      if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
          return;
       }
       
-      if (msg == null || msg.payload == null || msg.payload == "")
-      {
+      if (msg == null || msg.payload == null || msg.payload == "") {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing input");
          return;
       }

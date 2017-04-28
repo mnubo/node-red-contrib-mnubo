@@ -155,8 +155,8 @@ exports.GetNewMnuboClient = GetNewMnuboClient;
 
 
 
-var debug = true;
-//var debug = false;
+//var debug = true;
+var debug = false;
 function DebugLog() {
    if (debug) {
       date = new Date();
