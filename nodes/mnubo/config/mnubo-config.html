@@ -5,6 +5,9 @@
             name: {value:""},
             env: {value:"sandbox"},
             proxy_url: {value:""},
+            retries: {value:false},
+            numberOfAttempts: {value:"5", validate:RED.validators.number()},
+            initialDelayInMillis: {value:"500", validate:RED.validators.number()}
         },
         credentials: {
             id: {value:"", type: 'text', required:true},
@@ -26,6 +29,15 @@
             });
             $("#node-config-input-env").val(this.env);
             $("#node-config-input-env").change();
+
+            $("#node-config-input-retries").change(function() {
+               if ($("#node-config-input-retries")["0"].checked) {
+                  $("#node-config-input-retries-options").show();
+               } else {
+                  $("#node-config-input-retries-options").hide();
+               }
+            });
+            $("#node-config-input-retries").change();
          }
     });
 </script>
@@ -42,7 +54,7 @@
       </div>
       <div class="form-row">
           <label for="node-config-input-env"><i class="fa fa-globe"></i> Environment</label>
-          <select type="text" id="node-config-input-env" style="width:72%;">
+          <select type="text" id="node-config-input-env">
               <option value="sandbox">sandbox</option>
               <option value="production">production</option>
               <option value="useproxyurl">use Proxy URL</option>
@@ -60,6 +72,17 @@
           <label for="node-config-input-secret"><i class="fa fa-key"></i> Client Secret</label>
           <input type="password" id="node-config-input-secret">
       </div>
+
+      <div class="form-row" style="margin-top:1em">
+          <input type="checkbox" id="node-config-input-retries" style="display: inline-block; width: auto; vertical-align: top;">
+          <label for="node-config-input-retries" style="width:auto"> Exponential Backoff Retries</label>
+      </div>
+      <div class="form-row" id="node-config-input-retries-options">
+          <label for="node-config-input-numberOfAttempts" style="display: inline; vertical-align: baseline;">Number of Attempts</label>
+          <input type="text" id="node-config-input-numberOfAttempts" style="width: 10%; vertical-align: baseline;">
+          <label for="node-config-input-initialDelayInMillis" style="display: inline; vertical-align: baseline;margin-left:1em">Initial Delay in Milliseconds</label>
+          <input type="text" id="node-config-input-initialDelayInMillis" style="width: 10%; vertical-align: baseline;">
+      </div>
     </div>
 
 </script>
@@ -68,10 +91,15 @@
    <p>This is a Mnubo configuration node</p>
    <p><b>Environment</b> can be:</p>
    <ul>
-      <li><p><b>sandbox:</b>to connect to the mnubo's sandbox system</p></li>
-      <li><p><b>production:</b>to connect to the mnubo's production system</p></li>
-      <li><p><b>use Proxy URL:</b>This is optional, if you need to connect to an alternate system, or you need to go thru a proxy, you can use this field, it need to be a valid format (http://hostname:port)</p></li>
+      <li><b>sandbox:</b> to connect to the mnubo's sandbox system.</li>
+      <li><b>production:</b> to connect to the mnubo's production system.</li>
+      <li><b>use Proxy URL:</b> This is optional, if you need to connect to an alternate system, or you need to go through a proxy. It needs to be a valid format (http://hostname:port).</li>
    </ul>
-   <p><b>Client ID</b> need to be a valid Client's Key</p>
-   <p><b>Client Secret</b> need to be the valid asociated Secret</p>
+   <p><b>Client ID</b> It needs to be a valid Client ID.</p>
+   <p><b>Client Secret</b> it needs to be the valid associated Secret.</p>
+   <p><b>Exponential backoff retries</b> It allows a user to automatically retry requests when a 503 HTTP error is returned from the SmartObjects platform. It will gradually increase the interval between retries to allow the server to recover.</p>
+   <ul>
+      <li><b>Number of Attempts:</b> How many retries to make before failing. Default to 5 if undefined.</li>
+      <li><b>Initial Delay in Milliseconds:</b> number of ms to wait before the first retry. Default to 500 if undefined.</li>
+   </ul>
 </script>

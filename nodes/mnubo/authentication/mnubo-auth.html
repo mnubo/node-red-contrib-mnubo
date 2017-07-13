@@ -41,7 +41,7 @@
       <input type="text" id="node-input-name" placeholder="Name">
    </div>
    <div class="form-row">
-      <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
+      <label for="node-input-mnuboconfig" style="vertical-align: top;"><i class="fa fa-database"></i> mnubo config</label>
       <input type="text" id="node-input-mnuboconfig">
    </div>
 </script>
@@ -51,32 +51,19 @@
    <p>The requested  access token will be stored for future use.</p>
    <p>The access token expiry time will also be stored (for status display purpose).</p>
    <p>This node is optional.  If it is not used, the other node(s) will request authentication automatically, but their status display will show the status Unauthorized (until they are used).</p>
-   
-   <p>This node have 2 possible input:
+
+   <p>INPUTS</p>
      <ul>
        <li>you can press the button to request authentication.</li> 
        <li>you can inject a null msg.payload to trigger the authentication.</li>
      </ul>
-   </p>
-   
-   <p>This node requires a mnubo configuration, with the following parameters:
-     <ul>
-       <p>
-         <li><b>Environment</b> that can be:</p></li>
-         <ul>
-            <li><p><b>sandbox:</b>to connect to the mnubo's SmartObjects sandbox system.</p></li>
-            <li><p><b>production:</b>to connect to the mnubo's SmartObjects production system.</p></li>
-            <li><p><b>use Proxy URL:</b>If you need to connect to an alternate system, or you need to go through a proxy, you can use this field, it need to be a valid format (http://hostname:port).</p></li>
-         </ul>
-       </p>
-       <p>
-         <li><p><b>Client ID</b> need to be a valid Client's Key.</p></li>
-       </p>
-       <p>
-         <li><p><b>Client Secret</b> need to be the valid Client's Secret.</p></li>
-       </p>
-     </ul>
-   </p>
+
+   <p>REQUIREMENTS</p>
+    <ol>
+       <li>
+          <b>Mnubo configuration:</b> A valid Environment, ClientID and Client Secret.
+       </li>
+    </ol>
    
    <p>Refer to SmarObject's online documentation (under the API section) for details about this interface usage.</p>
    

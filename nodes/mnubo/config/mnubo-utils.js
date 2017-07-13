@@ -143,12 +143,21 @@ function ProxyUrl2HtpOptions(mnuboconfig) {
 
 function GetNewMnuboClient(mnuboconfig) {
    var mnubo = require('mnubo-sdk');
-   var client = new mnubo.Client({
+   var options = {
       id: mnuboconfig.credentials.id,
       secret: mnuboconfig.credentials.secret,
       env: mnuboconfig.env,
       httpOptions: ProxyUrl2HtpOptions(mnuboconfig)
-   });
+   }
+
+   if (mnuboconfig.retries) {
+      options.exponentialBackoff = {
+         numberOfAttempts: parseInt(mnuboconfig.numberOfAttempts),
+         initialDelayInMillis: parseInt(mnuboconfig.initialDelayInMillis),
+      }
+   }
+
+   var client = new mnubo.Client(options);
    return client;
 }
 exports.GetNewMnuboClient = GetNewMnuboClient;

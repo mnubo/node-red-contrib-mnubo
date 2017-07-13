@@ -1,6 +1,6 @@
 module.exports = function(RED) { 
    
-   RED.nodes.registerType("mnubo config",MnuboConfigNode, {
+   RED.nodes.registerType("mnubo config", MnuboConfigNode, {
       credentials: {
          id: {type: 'text'},
          secret: {type: 'password'},
@@ -14,11 +14,8 @@ module.exports = function(RED) {
       this.name = thisNode.name;
       this.env = thisNode.env;
       this.proxy_url = thisNode.proxy_url;
+      this.retries = thisNode.retries;
+      this.numberOfAttempts = thisNode.numberOfAttempts;
+      this.initialDelayInMillis = thisNode.initialDelayInMillis;
    }
-   
-   
-   
-   
-   
-   
 }
