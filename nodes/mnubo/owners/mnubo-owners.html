@@ -68,19 +68,19 @@
 
    <p>FUNCTIONS</p>
    <ul>
-       <li><b>Create:</b> Allows to Create an Owner. The input is a valid JSON attributes list, with mandatory  "username" and "x_password" attribute></li>
-       <li><b>Update:</b> Allows to Update an Owner's attributes. The input can be a "string" or "javascript's object".  It need to be an array that is compose of the following 2 elements:</li>
+       <li><b>Create:</b> Allows to Create an Owner. The input is a valid JSON attributes list, with mandatory  "username" and "x_password" attribute.></li>
+       <li><b>Update:</b> Allows to Update an Owner's attributes. The input can be a "string" or "javascript's object".  It needs to be an array that is compose of the following 2 elements:</li>
            <ul>
              <li>username</li>
              <li>JSON containing the owner's attributes.</li>
            </ul>
        <li><b>Delete:</b> Allows to Delete an Owner. The input is the owner "username".</li>
-       <li><b>Claim:</b>Allows to an owner to Claim an Object. The input can be a "string" or "javascript's object".  It need to be an array that is compose of the following 2 elements:</li>
+       <li><b>Claim:</b> Allows to an owner to Claim an Object. The input can be a "string" or "javascript's object".  It needs to be an array that is compose of the following 2 elements:</li>
            <ul>
              <li>username</li>
              <li>x_device_id</li>
            </ul>
-       <li><b>unClaim:</b> Allows to an owner to unClaim an Object. The input can be a "string" or "javascript's object".  It need to be an array that is compose of the following 2 elements:</li>
+       <li><b>unClaim:</b> Allows to an owner to unClaim an Object. The input can be a "string" or "javascript's object".  It needs to be an array that is compose of the following 2 elements:</li>
            <ul>
              <li>username</li>
              <li>x_device_id</li>
@@ -90,14 +90,14 @@
 
    <p>INPUTS</p>
      <ul>
-        <li>you can press the button to inject the input, using this node optional input</li>
-        <li>you can inject the input of a msg.payload</li>
+        <li>you can press the button to inject the input, using this node optional input.</li>
+        <li>you can inject the input of a 'msg.payload'.</li>
      </ul>
 
    <p>OUTPUTS</p>
      <ul>
 
-        <li>The straight response coming from SmartObject Platform can be found on 'msg.payload'</li>
+        <li>The straight response coming from SmartObject Platform can be found on 'msg.payload'.</li>
         <li>If <u>Report Result</u> flag is set to 'true', you can also refer to 'msg.errors' in order to check the error_message and the original event that has produced the error.</li>
      </ul>
 
