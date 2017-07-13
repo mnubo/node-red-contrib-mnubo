@@ -45,7 +45,7 @@
       <input type="text" id="node-input-name" placeholder="Name">
    </div>
    <div class="form-row">
-      <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
+      <label for="node-input-mnuboconfig" style="vertical-align: top;"><i class="fa fa-database"></i> mnubo config</label>
       <input type="text" id="node-input-mnuboconfig">
    </div>
    <div class="form-row">
@@ -57,11 +57,11 @@
    </div>
    <div class="form-row">
       <input type="checkbox" id="node-input-reportResults" style="display: inline-block; width: auto; vertical-align: top;">
-      <label for="node-input-reportResults">Report Results</label>
+      <label for="node-input-reportResults" style="width:auto" >Report Results</label>
    </div>
    <div class="form-row">
       <input type="checkbox" id="node-input-objectsMustExist" style="display: inline-block; width: auto; vertical-align: top;">
-      <label for="node-input-objectsMustExist">Objects Must Exist</label>
+      <label for="node-input-objectsMustExist" style="width:auto">Objects Must Exist</label>
    </div>
    <div class="form-row">
       <label for="node-input-inputtext"><i class="fa fa-pencil"></i> Input</label>
@@ -88,41 +88,21 @@
 
     <p>OUTPUTS</p>
     <ul>
-
        <li>The straight response coming from SmartObject Platform can be found on 'msg.payload'</li>
        <li>If <u>Report Result</u> flag is set to 'true', you can also refer to 'msg.errors' in order to check the error_message and the original event that has produced the error.</li>
     </ul>
 
     <p>REQUIREMENTS</p>
     <ol>
-       <li> Mnubo configuration, with the following parameters:</li>
-       <ul>
-          <li>
-             <b>Environment</b> that can be:
-             <ul>
-                <li>
-                   <b>sandbox:</b> to connect to the mnubo's SmartObjects sandbox system.
-                </li>
-                <li>
-                   <b>production:</b> to connect to the mnubo's SmartObjects production system.
-                </li>
-                <li>
-                   <b>use Proxy URL:</b> If you need to connect to an alternate system, or you need to go through a proxy, you can use this field, it need to be a valid format (http://hostname:port).
-                </li>
-             </ul>
-          <li>
-             <b>Client ID</b> need to be a valid Client's Key.
-          </li>
-          <li>
-             <b>Client Secret</b> need to be the valid Client's Secret.
-          </li>
-       </ul>
-       <p></p>
-       <li> Report Results (OPTIONAL)</li>
-       This flag can be added to indicate if event results are returned. When this flag is not used, it behaves as set to false.
-       <p></p>
-       <li> Objects Must Exist (OPTIONAL)</li>
-       This flag can be added to ensure an Object exists before registering the event. If this flag is not used, it behaves as set to false.
+       <li>
+          <b>Mnubo configuration:</b> A valid Environment, ClientID and Client Secret
+       </li>
+       <li>
+          <b>Report Results (OPTIONAL):</b> This flag can be added to indicate if event results are returned. When this flag is not used, it behaves as set to false.
+       </li>
+       <li>
+          <b>Objects Must Exist (OPTIONAL):</b> This flag can be added to ensure an Object exists before registering the event. If this flag is not used, it behaves as set to false.
+       </li>
     </ol>
     <p>Refer to SmarObject's online documentation (under the API section) for details about this interface usage.</p>
     <p>To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>

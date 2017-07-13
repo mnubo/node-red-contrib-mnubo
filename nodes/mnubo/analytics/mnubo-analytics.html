@@ -55,7 +55,7 @@
       <input type="text" id="node-input-name" placeholder="Name">
    </div>
    <div class="form-row">
-      <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
+      <label for="node-input-mnuboconfig" style="vertical-align: top;"><i class="fa fa-database"></i> mnubo config</label>
       <input type="text" id="node-input-mnuboconfig">
    </div>
    <div class="form-row">
@@ -74,17 +74,16 @@
 
 <script type="text/x-red" data-help-name="mnubo analytics">
    <p>This node will perform a mnubo's SmarObjects search.</p>
-   <p>There are 3 types of SmartObject searches: </p>
+   <p>There are 3 types of SmartObject search:</p>
    <ul>
-     <p>
-       <li><b>getDatasets:</b> Get the datasets from mnubo SmartObjects.  Note that the dataset list describes what can be queried.</li>
-     </p>
-     <p>
-       <li><b>getDatamodel:</b> Get the datasets from mnubo SmartObjects, and convert the output to a data model.</li>
-     </p>
-     <p>
        <li>
-         <b>SearchQuery:</b> Execute a mnubo SmartObjects search query.
+          <b>getDatasets:</b> Get the datasets from mnubo SmartObjects.  Note that the dataset list describes what can be queried.
+       </li>
+       <li>
+          <b>getDatamodel:</b> Get the datasets from mnubo SmartObjects, and convert the output to a data model.
+       </li>
+       <li>
+         <b>SearchQuery:</b> Execute a MQL query.
          <p>SearchQuery have 2 possible input:
            <ul>
              <li>you can press the button to request restitution using this node optional input</li> 
@@ -92,27 +91,14 @@
            </ul>
          </p>
        </li>
-     </p>
    </ul>
    
-   <p>This node requires a mnubo configuration, with the following parameters:
-     <ul>
-       <p>
-         <li><b>Environment</b> that can be:</p></li>
-         <ul>
-            <li><p><b>sandbox:</b>to connect to the mnubo's SmartObjects sandbox system.</p></li>
-            <li><p><b>production:</b>to connect to the mnubo's SmartObjects production system.</p></li>
-            <li><p><b>use Proxy URL:</b>If you need to connect to an alternate system, or you need to go through a proxy, you can use this field, it need to be a valid format (http://hostname:port).</p></li>
-         </ul>
-       </p>
-       <p>
-         <li><p><b>Client ID</b> need to be a valid Client's Key.</p></li>
-       </p>
-       <p>
-         <li><p><b>Client Secret</b> need to be the valid Client's Secret.</p></li>
-       </p>
-     </ul>
-   </p>
+   <p>REQUIREMENTS</p>
+    <ol>
+       <li>
+          <b>Mnubo configuration:</b> A valid Environment, ClientID and Client Secret
+       </li>
+    </ol>
    
    <p>Refer to SmarObject's online documentation (under the API section) for details about this interface usage.</p>
 

@@ -43,7 +43,7 @@
       <input type="text" id="node-input-name" placeholder="Name">
    </div>
    <div class="form-row">
-      <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
+      <label for="node-input-mnuboconfig" style="vertical-align: top;"><i class="fa fa-database"></i> mnubo config</label>
       <input type="text" id="node-input-mnuboconfig">
    </div>
    <div class="form-row">
@@ -103,28 +103,9 @@
 
    <p>REQUIREMENTS</p>
     <ol>
-       <li> Mnubo configuration, with the following parameters:</li>
-       <ul>
-          <li>
-             <b>Environment</b> that can be:
-             <ul>
-                <li>
-                   <b>sandbox:</b> to connect to the mnubo's SmartObjects sandbox system.
-                </li>
-                <li>
-                   <b>production:</b> to connect to the mnubo's SmartObjects production system.
-                </li>
-                <li>
-                   <b>use Proxy URL:</b> If you need to connect to an alternate system, or you need to go through a proxy, you can use this field, it need to be a valid format (http://hostname:port).
-                </li>
-             </ul>
-          <li>
-             <b>Client ID</b> need to be a valid Client's Key.
-          </li>
-          <li>
-             <b>Client Secret</b> need to be the valid Client's Secret.
-          </li>
-       </ul>
+       <li>
+          <b>Mnubo configuration:</b> A valid Environment, ClientID and Client Secret
+       </li>
     </ol>
 
    <p>Refer to SmarObject's online documentation (under the API section) for details about this interface usage.</p>
