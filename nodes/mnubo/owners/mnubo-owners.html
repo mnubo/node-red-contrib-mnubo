@@ -66,7 +66,19 @@
 <script type="text/x-red" data-help-name="mnubo owners">
    <p>This is a mnubo's SmartObjects Ingestion Owner node.</p>
 
-   <p>FUNCTIONS</p>
+   <h3>Inputs</h3>
+     <ul>
+        <li>you can press the button to inject the input, using this node optional input.</li>
+        <li>you can inject the input of a 'msg.payload'.</li>
+     </ul>
+
+   <h3>Outputs</h3>
+     <ul>
+        <li>The straight response coming from SmartObject Platform can be found on 'msg.payload'.</li>
+        <li>If <u>Report Result</u> flag is set to 'true', you can also refer to 'msg.errors' in order to check the error_message and the original event that has produced the error.</li>
+     </ul>
+
+   <h3>Details</h3>
    <ul>
        <li><b>Create:</b> Allows to Create an Owner. The input is a valid JSON attributes list, with mandatory  "username" and "x_password" attribute.></li>
        <li><b>Update:</b> Allows to Update an Owner's attributes. The input can be a "string" or "javascript's object".  It needs to be an array that is compose of the following 2 elements:</li>
@@ -88,26 +100,17 @@
        <li><b>Exist:</b> Allows to check if a specific Owner (username) already exists. The input can be a "string" or an "array" with the username you want to check.</li>
    </ul>
 
-   <p>INPUTS</p>
-     <ul>
-        <li>you can press the button to inject the input, using this node optional input.</li>
-        <li>you can inject the input of a 'msg.payload'.</li>
-     </ul>
-
-   <p>OUTPUTS</p>
-     <ul>
-
-        <li>The straight response coming from SmartObject Platform can be found on 'msg.payload'.</li>
-        <li>If <u>Report Result</u> flag is set to 'true', you can also refer to 'msg.errors' in order to check the error_message and the original event that has produced the error.</li>
-     </ul>
-
-   <p>REQUIREMENTS</p>
+   <h4>Requirements</h4>
     <ol>
        <li>
           <b>Mnubo configuration:</b> A valid Environment, ClientID and Client Secret
        </li>
     </ol>
 
-   <p>Refer to SmarObject's online documentation (under the API section) for details about this interface usage.</p>
    <p>To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
+   <h3>References</h3>
+    <ul>
+        <li><a href="https://smartobjects.mnubo.com/apps/doc/" target="_blank">SmarObject's online documentation </a> - (under the API section) for details about this interface usage. </li>
+        <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
+    </ul>
 </script>
