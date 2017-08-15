@@ -45,12 +45,12 @@
       <input type="text" id="node-input-name" placeholder="Name">
    </div>
    <div class="form-row">
-      <label for="node-input-mnuboconfig" style="vertical-align: top;"><i class="fa fa-database"></i> mnubo config</label>
+      <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
       <input type="text" id="node-input-mnuboconfig">
    </div>
    <div class="form-row">
       <label for="node-input-functionselection"><i class="fa fa-list"></i> Function</label>
-         <select type="text" id="node-input-functionselection">
+         <select type="text" id="node-input-functionselection" style="width: 70%;">
             <option value="send">Send</option>
             <option value="sendfromdevice">SendFromDevice</option>
          </select>
@@ -64,14 +64,26 @@
       <label for="node-input-objectsMustExist" style="width:auto">Objects Must Exist</label>
    </div>
    <div class="form-row">
-      <label for="node-input-inputtext"><i class="fa fa-pencil"></i> Input</label>
-      <textarea id="node-input-inputtext" rows="10" cols="80" placeholder="optional input string"></textarea>
+      <label for="node-input-inputtext" style="vertical-align: top;"><i class="fa fa-pencil"></i> Input</label>
+      <textarea id="node-input-inputtext" rows="10" placeholder="optional input string" style="width: 70%;"></textarea>
    </div>
 </script>
 
 <script type="text/x-red" data-help-name="mnubo events">
     <p>This is a mnubo's SmartBojects Ingestion Event node.</p>
-    <p>FUNCTIONS</p>
+    <h3>Inputs</h3>
+    <ul>
+       <li>you can press the button to inject the input, using this node optional input</li>
+       <li>you can inject the input of a msg.payload</li>
+    </ul>
+
+    <h3>Outputs</h3>
+    <ul>
+       <li>The straight response coming from SmartObject Platform can be found on 'msg.payload'</li>
+       <li>If <u>Report Result</u> flag is set to 'true', you can also refer to 'msg.errors' in order to check the error_message and the original event that has produced the error.</li>
+    </ul>
+
+    <h3>Details</h3>
     <ul>
        <li><b>Send:</b> The input is a valid JSON which contain "x_device_id".</li>
        <li><b>SendFromDevice:</b> The input is an array with the following 2 elements:</li>
@@ -80,19 +92,7 @@
           <li>JSON body</li>
        </ul>
     </ul>
-    <p>INPUTS</p>
-    <ul>
-       <li>you can press the button to inject the input, using this node optional input</li>
-       <li>you can inject the input of a msg.payload</li>
-    </ul>
-
-    <p>OUTPUTS</p>
-    <ul>
-       <li>The straight response coming from SmartObject Platform can be found on 'msg.payload'</li>
-       <li>If <u>Report Result</u> flag is set to 'true', you can also refer to 'msg.errors' in order to check the error_message and the original event that has produced the error.</li>
-    </ul>
-
-    <p>REQUIREMENTS</p>
+    <h4>Requirements</h4>
     <ol>
        <li>
           <b>Mnubo configuration:</b> A valid Environment, ClientID and Client Secret
@@ -104,6 +104,10 @@
           <b>Objects Must Exist (OPTIONAL):</b> This flag can be added to ensure an Object exists before registering the event. If this flag is not used, it behaves as set to false.
        </li>
     </ol>
-    <p>Refer to SmarObject's online documentation (under the API section) for details about this interface usage.</p>
     <p>To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
+   <h3>References</h3>
+    <ul>
+        <li><a href="https://smartobjects.mnubo.com/apps/doc/" target="_blank">SmarObject's online documentation </a> - (under the API section) for details about this interface usage. </li>
+        <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
+    </ul>
 </script>

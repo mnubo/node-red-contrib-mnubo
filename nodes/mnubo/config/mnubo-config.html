@@ -44,7 +44,7 @@
 
 <script type="text/x-red" data-template-name="mnubo config">
     <div class="form-row">
-        <ul style="background: #fff; min-width: 600px; margin-bottom: 20px;" id="node-config-mnubo-win"></ul>
+        <ul style="background: #fff; margin-bottom: 20px;" id="node-config-mnubo-win"></ul>
     </div>
 
     <div id="node-config-mnubo-win-content" style="min-height: 170px;">
@@ -54,7 +54,7 @@
       </div>
       <div class="form-row">
           <label for="node-config-input-env"><i class="fa fa-globe"></i> Environment</label>
-          <select type="text" id="node-config-input-env">
+          <select type="text" id="node-config-input-env" style="width: 70%;">
               <option value="sandbox">sandbox</option>
               <option value="production">production</option>
               <option value="useproxyurl">use Proxy URL</option>
@@ -89,6 +89,7 @@
 
 <script type="text/x-red" data-help-name="mnubo config">
    <p>This is a Mnubo configuration node</p>
+   <h3>Details</h3>
    <p><b>Environment</b> can be:</p>
    <ul>
       <li><b>sandbox:</b> to connect to the mnubo's sandbox system.</li>
@@ -102,4 +103,9 @@
       <li><b>Number of Attempts:</b> How many retries to make before failing. Default to 5 if undefined.</li>
       <li><b>Initial Delay in Milliseconds:</b> number of ms to wait before the first retry. Default to 500 if undefined.</li>
    </ul>
+   <h3>References</h3>
+    <ul>
+        <li><a href="https://smartobjects.mnubo.com/apps/doc/" target="_blank">SmarObject's online documentation </a> - (under the API section) for details about this interface usage. </li>
+        <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
+    </ul>
 </script>
