@@ -60,7 +60,6 @@ function UpdateStatusResponseError(thisNode, error) {
    else {
     thisNode.status({fill:"red", shape:"dot", text: "Empty Error"});
    }
-
 }
 exports.UpdateStatusResponseError = UpdateStatusResponseError;
 
