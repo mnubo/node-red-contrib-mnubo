@@ -43,17 +43,22 @@ function UpdateStatusResponseWarning(thisNode, data) {
 exports.UpdateStatusResponseWarning = UpdateStatusResponseWarning;
 
 function UpdateStatusResponseError(thisNode, error) {
-   if (error.errorCode) {
-      thisNode.status({fill:"red", shape:"dot", text:error.errorCode+":"+error.message});
-   }
-   else if (error.code) {
-      thisNode.status({fill:"red", shape:"dot", text:error.code});
-   }
-   else if (error.length > 0){
-      thisNode.status({fill:"red", shape:"dot", text: error});
+   if (error) {
+       if (error.errorCode) {
+             thisNode.status({fill:"red", shape:"dot", text:error.errorCode+":"+error.message});
+          }
+          else if (error.code) {
+             thisNode.status({fill:"red", shape:"dot", text:error.code});
+          }
+          else if (error.length > 0){
+             thisNode.status({fill:"red", shape:"dot", text: error});
+          }
+          else {
+             thisNode.status({fill:"red", shape:"dot", text: "Unknown Error"});
+          }
    }
    else {
-      thisNode.status({fill:"red", shape:"dot", text: "Unknown Error"});
+        thisNode.status({fill:"red", shape:"dot", text: "Empty Error"});
    }
 }
 exports.UpdateStatusResponseError = UpdateStatusResponseError;
