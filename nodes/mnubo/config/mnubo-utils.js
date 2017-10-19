@@ -157,8 +157,8 @@ function GetNewMnuboClient(mnuboconfig) {
 
    if (mnuboconfig.retries) {
       options.exponentialBackoff = {
-         numberOfAttempts: parseInt(mnuboconfig.numberOfAttempts),
-         initialDelayInMillis: parseInt(mnuboconfig.initialDelayInMillis),
+         numberOfAttempts: mnuboconfig.numberOfAttempts,
+         initialDelayInMillis: mnuboconfig.initialDelayInMillis,
       }
    }
 

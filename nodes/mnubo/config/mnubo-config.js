@@ -14,8 +14,8 @@ module.exports = function(RED) {
       this.name = thisNode.name;
       this.env = thisNode.env;
       this.proxy_url = thisNode.proxy_url;
-      this.retries = thisNode.retries;
-      this.numberOfAttempts = thisNode.numberOfAttempts;
-      this.initialDelayInMillis = thisNode.initialDelayInMillis;
+      this.retries = new Boolean(thisNode.retries)
+      this.numberOfAttempts = parseInt(thisNode.numberOfAttempts);
+      this.initialDelayInMillis = parseInt(thisNode.initialDelayInMillis);
    }
 }
