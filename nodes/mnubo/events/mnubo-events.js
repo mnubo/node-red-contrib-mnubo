@@ -12,8 +12,8 @@ module.exports = function(RED) {
 
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);
       var options = {
-                  'reportResults': new Boolean(thisNode.reportResults),
-                  'objectsMustExist': new Boolean(thisNode.objectsMustExist)
+                  'reportResults': Boolean(thisNode.reportResults),
+                  'objectsMustExist': Boolean(thisNode.objectsMustExist)
       };
 
       try {
@@ -49,8 +49,8 @@ module.exports = function(RED) {
 
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);
       var options = {
-                  'reportResults': new Boolean(thisNode.reportResults),
-                  'objectsMustExist': new Boolean(thisNode.objectsMustExist)
+                  'reportResults': Boolean(thisNode.reportResults),
+                  'objectsMustExist': Boolean(thisNode.objectsMustExist)
       }
 
       try {

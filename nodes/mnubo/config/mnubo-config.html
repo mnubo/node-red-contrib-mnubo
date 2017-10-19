@@ -6,8 +6,8 @@
             env: {value:"sandbox"},
             proxy_url: {value:""},
             retries: {value:false},
-            numberOfAttempts: {value:"5", validate:function(val) { return (this.retries && Number.isInteger(val) ) || (!this.retries) }},
-            initialDelayInMillis: {value:"500", validate:function(val) { return (this.retries && Number.isInteger(val) ) || (!this.retries) }}
+            numberOfAttempts: {value:"5", validate:function(val) { return ((this.retries && Number.isInteger(val) ) || (!this.retries)) }},
+            initialDelayInMillis: {value:"500", validate:function(val) { return ((this.retries && Number.isInteger(val) ) || (!this.retries)) }}
         },
         credentials: {
             id: {value:"", type: 'text', required:true},
