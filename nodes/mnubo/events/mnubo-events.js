@@ -9,11 +9,11 @@ module.exports = function(RED) {
    function PostEventFromSdk(thisNode, msg, return_promise) {
       ConfigMnuboUtils.DebugLog();
       return_promise = return_promise || 0;
-      
+
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);
       var options = {
-                  'reportResults': thisNode.reportResults,
-                  'objectsMustExist': thisNode.objectsMustExist
+                  'reportResults': new Boolean(thisNode.reportResults),
+                  'objectsMustExist': new Boolean(thisNode.objectsMustExist)
       };
 
       try {
@@ -39,18 +39,18 @@ module.exports = function(RED) {
                 thisNode.send(msg);
              });
       }
-      ConfigMnuboUtils.DebugLog('exit');      
-   }  
-   
+      ConfigMnuboUtils.DebugLog('exit');
+   }
+
    //If return_promise is 1, this function will return the promise result
-   function PostEventFromDeviceFromSdk(thisNode, msg, return_promise) {    
+   function PostEventFromDeviceFromSdk(thisNode, msg, return_promise) {
       ConfigMnuboUtils.DebugLog();
       return_promise = return_promise || 0;
-      
+
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);
       var options = {
-                  'reportResults': thisNode.reportResults,
-                  'objectsMustExist': thisNode.objectsMustExist
+                  'reportResults': new Boolean(thisNode.reportResults),
+                  'objectsMustExist': new Boolean(thisNode.objectsMustExist)
       }
 
       try {
