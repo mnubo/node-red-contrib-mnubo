@@ -2,7 +2,6 @@ module.exports = function(RED) {
    //"use strict";
 
    //mnubo-sdk
-   require('es6-shim'); /* only if running node < 4.0.0 */
    var mnubo = require('mnubo-sdk');
    var ConfigMnuboUtils = require('../config/mnubo-utils');
    
@@ -14,25 +13,23 @@ module.exports = function(RED) {
       return_promise = return_promise || 0;
       
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);
-
+      
       try {
-          if (typeof(msg.payload) == 'string') {
-             msg.payload = JSON.parse(msg.payload)
-          }
+        msg.payload = (typeof(msg.payload) === 'string') ? JSON.parse(msg.payload) : msg.payload
       } catch(e) {
-         ConfigMnuboUtils.UpdateStatusErrMsg(thisNode, "Input must be a valid JSON");
-         return;
+        ConfigMnuboUtils.UpdateStatusErrMsg(thisNode, "Input must be a valid JSON");
+        return;
       }
       
       if (return_promise == 1) {
-         if (msg.payload.length > 1) {
+         if (Array.isArray(msg.payload)) {
             return client.objects.createUpdate(msg.payload);
          } else {
             return client.objects.create(msg.payload);
          }
       }
       else {
-         if (msg.payload.length > 1) {  // Bulk Creation
+         if (Array.isArray(msg.payload)) {  // Bulk Creation
             client.objects.createUpdate(msg.payload)
              .then((result) => {
                 ConfigMnuboUtils.CheckMultiStatusResult(thisNode, result, msg.payload)
@@ -75,7 +72,6 @@ module.exports = function(RED) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode, "Input must be a valid JSON");
          return;
       }
-
 
       if (typeof(msg.payload[0]) == 'string') { //[dev_id, body] Update a single Object
          if (msg.payload.length == 2) {

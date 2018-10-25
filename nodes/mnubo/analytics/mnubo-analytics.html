@@ -78,10 +78,10 @@
    <p>There are 3 types of SmartObject search:</p>
    <ul>
        <li>
-          <b>getDatasets:</b> Get the datasets from mnubo SmartObjects.  Note that the dataset list describes what can be queried.
+          <b>getDatasets:</b> Get the datasets from mnubo SmartObjects.  Note that the dataset list describes what can be queried <u>(no input is required)</u>.
        </li>
        <li>
-          <b>getDatamodel:</b> Get the datasets from mnubo SmartObjects, and convert the output to a data model.
+          <b>getDatamodel:</b> Get the datasets from mnubo SmartObjects, and convert the output to a data model <u>(no input is required)</u>.
        </li>
        <li>
          <b>SearchQuery:</b> Execute a MQL query.
@@ -90,11 +90,29 @@
              <li>you can press the button to request restitution using this node optional input.</li>
              <li>you can inject the input in the 'msg.payload'.</li>
            </ul>
+           <p><u>Example:</u></p>
+             <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = 
+{
+  "from": "event",
+  "limit": 5000,
+  "select": [
+    {
+      "count": "*"
+    }
+  ],
+  "groupBy": [
+    {
+      "time": "x_timestamp",
+      "interval": "month",
+      "timeZone": "America/New_York"
+    }
+  ]
+}</pre>
          </p>
        </li>
    </ul>
    
-    <h4>Requirements</h4>
+    <h3>Requirements</h3>
     <ol>
        <li>
           <b>Mnubo configuration:</b> A valid Environment, ClientID and Client Secret.
@@ -104,7 +122,7 @@
    <p>To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
    <h3>References</h3>
     <ul>
-        <li><a href="https://smartobjects.mnubo.com/apps/doc/" target="_blank">SmarObject's online documentation </a> - (under the API section) for details about this interface usage. </li>
+        <li><a href="https://smartobjects.mnubo.com/documentation/api_search.html" target="_blank">SmarObject's online documentation </a> - (under the API section) for details about this interface usage. </li>
         <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
     </ul>
 </script>
