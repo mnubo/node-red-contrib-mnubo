@@ -85,17 +85,35 @@
 
     <h3>Details</h3>
     <ul>
-       <li><b>Send:</b> The input is a valid JSON which contain "x_device_id".</li>
-       <li><b>SendFromDevice:</b> The input is an array with the following 2 elements:</li>
-       <ul>
-          <li>x_device_id</li>
-          <li>JSON body</li>
-       </ul>
+       <li><b>Send:</b> The input needs to be a valid JSON with mandatory <i>'x_device_id'</i> and <i>'x_event_type'</i> attributes.</li>
+       <p>Example:</p>
+       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = 
+[
+  {
+    "x_object": {
+      "x_device_id": "object_500"
+    },
+    "x_event_type": "BoilerReport",
+    "temperature": 60.5
+  },
+  ... (upto 1000 events)
+]</pre>
+       <li><b>SendFromDevice:</b> The input is an "array" with [<i>'x_device_id'</i>, <i>'json body'</i>]
+       <p>Example:</p>
+       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = 
+["object_500",
+  [
+    {"x_event_type": "BoilerReport",
+      "temperature": 60.5
+    },
+    ... (upto 1000 events)
+  ]
+]</pre>
     </ul>
-    <h4>Requirements</h4>
+    <h3>Requirements</h3>
     <ol>
        <li>
-          <b>Mnubo configuration:</b> A valid Environment, ClientID and Client Secret
+          <b>Mnubo Configuration:</b> A valid Environment, ClientID and Client Secret
        </li>
        <li>
           <b>Report Results (OPTIONAL):</b> This flag can be added to indicate if event results are returned. When this flag is not used, it behaves as set to false.
@@ -107,7 +125,7 @@
     <p>To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
    <h3>References</h3>
     <ul>
-        <li><a href="https://smartobjects.mnubo.com/apps/doc/" target="_blank">SmarObject's online documentation </a> - (under the API section) for details about this interface usage. </li>
+        <li><a href="https://smartobjects.mnubo.com/documentation/api_ingestion.html#events" target="_blank">SmarObject's online documentation </a> - (under the API section) for details about this interface usage. </li>
         <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
     </ul>
 </script>

@@ -1,7 +1,6 @@
 module.exports = function(RED) {
    
    //mnubo-sdk
-   require('es6-shim'); /* only if running node < 4.0.0 */
    var mnubo = require('mnubo-sdk');
    var ConfigMnuboUtils = require('../config/mnubo-utils');
    
@@ -23,12 +22,12 @@ module.exports = function(RED) {
       
       client.getAccessToken()
       .then(function GetAccessTokenFromSdk_OK(data) {
-         ConfigMnuboUtils.DebugLog(data);
-         thisNode.mnuboconfig.credentials.access_token = data.access_token;
-         thisNode.mnuboconfig.credentials.access_token_expiry = (new Date()).getTime()/1000 + data.expires_in;
+         ConfigMnuboUtils.DebugLog(client.token);
+         thisNode.mnuboconfig.credentials.access_token = client.token.value;
+         thisNode.mnuboconfig.credentials.access_token_expiry = (new Date()).getTime()/1000 + client.token.expiresIn;
          RED.nodes.addCredentials(thisNode.id,thisNode.mnuboconfig.credentials);
-         ConfigMnuboUtils.UpdateStatusResponseOK(thisNode, data);
-         msg.payload = data; 
+         ConfigMnuboUtils.UpdateStatusResponseOK(thisNode, client.token);
+         msg.payload = client.token; 
          thisNode.send(msg);
       } )
       .catch(function GetAccessTokenFromSdk_ERR(error) { 

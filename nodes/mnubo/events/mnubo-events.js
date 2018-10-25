@@ -1,7 +1,6 @@
 module.exports = function(RED) {
    
    //mnubo-sdk
-   require('es6-shim'); /* only if running node < 4.0.0 */
    var mnubo = require('mnubo-sdk');
    var ConfigMnuboUtils = require('../config/mnubo-utils');
 
@@ -31,7 +30,13 @@ module.exports = function(RED) {
       else {
          client.events.send(msg.payload, options)
              .then((result) => {
+              if (thisNode.reportResults) { // reportResults checked
                 ConfigMnuboUtils.CheckMultiStatusResult(thisNode, result, msg.payload);
+              } else {
+                ConfigMnuboUtils.UpdateStatusResponseOK(thisNode, result, msg.payload);
+                msg.payload = result
+                thisNode.send(msg);
+              }
              })
              .catch((error) => {
                 ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
@@ -79,7 +84,13 @@ module.exports = function(RED) {
       else {
          client.events.sendFromDevice(object, input, options)
          .then((result) => {
-            ConfigMnuboUtils.CheckMultiStatusResult(thisNode, result, input)
+            if (thisNode.reportResults) { // reportResults checked
+                ConfigMnuboUtils.CheckMultiStatusResult(thisNode, result, input);
+              } else {
+                ConfigMnuboUtils.UpdateStatusResponseOK(thisNode, result, input);
+                msg.payload = result
+                thisNode.send(msg);
+              }
          })
          .catch((error) => {
             ConfigMnuboUtils.DebugLog(error);

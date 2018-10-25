@@ -1,7 +1,7 @@
 function UpdateStatus(thisNode) {
    if (thisNode ==  null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
    {
-      thisNode.status({fill:"red", shape:"ring", text:"no mnubo config"});
+      thisNode.status({fill: "red", shape: "ring", text: "no mnubo config"});
       return;
    }
    
@@ -10,103 +10,102 @@ function UpdateStatus(thisNode) {
    
    if (myCredential.id==null || myCredential.id == "" || myCredential.secret==null || myCredential.secret == "")
    {
-      thisNode.status({fill:"red", shape:"ring", text:"empty credentials"});
+      thisNode.status({fill: "red", shape: "ring", text: "empty credentials"});
    }
    else if ( myCredential.access_token == null || myCredential.access_token == "")
    {
-      thisNode.status({fill:"red", shape:"ring", text:"unauthorized"});
+      thisNode.status({fill: "red", shape: "ring", text: "unauthorized"});
    }
    else if (myCredential.access_token_expiry == null || myCredential.access_token_expiry == "" )
    {
-      thisNode.status({fill:"yellow", shape:"ring", text:"unknown token expiry"});
+      thisNode.status({fill: "yellow", shape: "ring", text: "unknown token expiry"});
    }
    else if (seconds > myCredential.access_token_expiry ) 
    {
-      thisNode.status({fill:"yellow", shape:"ring", text:"token expired"});
+      thisNode.status({fill: "yellow", shape: "ring", text: "token expired"});
    }
    else
    {
-      thisNode.status({fill:"green", shape:"ring", text:"valid token"});
+      thisNode.status({fill: "green", shape: "ring", text: "valid token"});
    }
 }
 exports.UpdateStatus = UpdateStatus;
 
 
 function UpdateStatusResponseOK(thisNode, data) {
-   thisNode.status({fill:"green", shape:"dot", text:"OK"});
+   thisNode.status({fill: "green", shape: "dot", text: "OK"});
 }
 exports.UpdateStatusResponseOK = UpdateStatusResponseOK;
 
 function UpdateStatusResponseWarning(thisNode, data) {
-   thisNode.status({fill:"yellow", shape:"dot", text:"Multi Status"});
+   thisNode.status({fill: "yellow", shape: "dot", text: "Multi Status"});
 }
 exports.UpdateStatusResponseWarning = UpdateStatusResponseWarning;
 
 function UpdateStatusResponseError(thisNode, error) {
    if (error) {
        if (error.errorCode) {
-             thisNode.status({fill:"red", shape:"dot", text:error.errorCode+":"+error.message});
+             thisNode.status({fill: "red", shape: "dot", text: error.errorCode + ": " + error.message});
           }
           else if (error.code) {
-             thisNode.status({fill:"red", shape:"dot", text:error.code});
+             thisNode.status({fill: "red", shape: "dot", text: error.code});
           }
           else if (error.length > 0){
-             thisNode.status({fill:"red", shape:"dot", text: error});
+             thisNode.status({fill: "red", shape: "dot", text: (typeof error === "string") ? error : JSON.stringify(error)});
           }
           else {
-             thisNode.status({fill:"red", shape:"dot", text: "Unknown Error"});
+             thisNode.status({fill: "red", shape: "dot", text: "Unknown Error"});
           }
    }
    else {
-        thisNode.status({fill:"red", shape:"dot", text: "Empty Error"});
+        thisNode.status({fill: "red", shape: "dot", text: "Empty Error"});
    }
 }
 exports.UpdateStatusResponseError = UpdateStatusResponseError;
 
 function UpdateStatusErrMsg(thisNode,msg) {
-   thisNode.status({fill:"red", shape:"ring", text:msg});
+   thisNode.status({fill: "red", shape: "ring", text:msg});
 }
 exports.UpdateStatusErrMsg = UpdateStatusErrMsg;
 
 function UpdateStatusWarnMsg(thisNode,msg) {
-   thisNode.status({fill:"yellow", shape:"ring", text:msg});
+   thisNode.status({fill: "yellow", shape: "ring", text:msg});
 }
 exports.UpdateStatusWarnMsg = UpdateStatusWarnMsg;
 
 function UpdateStatusLogMsg(thisNode,msg) {
-   thisNode.status({fill:"green", shape:"ring", text:msg});
+   thisNode.status({fill: "green", shape: "ring", text:msg});
 }
 exports.UpdateStatusLogMsg = UpdateStatusLogMsg;
 
 function CheckMultiStatusResult(thisNode, data, request) {
   var failed_events = [];
   var message = {};
+  request = (typeof request === 'string') ? JSON.parse(request) : request
+  
+  data.forEach((obj, index) => {
+        if (obj.result === "error") {
+            failed_events.push({
+                'errorMessage':  obj.message,
+                'originalRequest': request[index]
+            })
+        }
+  });
 
-  if (typeof request == 'string') {
-    request = JSON.parse(request)
-  }
-
-  if (data) {
-    data.forEach((obj, index) => {
-          if (obj.result == "error") {
-              failed_events.push({
-                  'errorMessage':  obj.message,
-                  'originalRequest': request[index]
-              })
-          }
-    });
-    if (failed_events.length > 0) {
-        UpdateStatusResponseWarning(thisNode, data);
-        message.errors =  failed_events;
-        message.payload =  data;
-    } else {
-        UpdateStatusResponseOK(thisNode, data);
-        message.payload =  "Ok";
+  if (failed_events.length > 0) { // Some errors
+    if (failed_events.length === request.length) { //All request have failed
+      UpdateStatusResponseError(thisNode, {"errorCode": 400, "message": "all requests have failed"});
+    } else {  // ok + failed
+      UpdateStatusResponseWarning(thisNode, data);
     }
+      message.errors =  failed_events;
+      message.payload =  data.filter( (value, index, array) => {
+        return value.result !== "error" 
+      });
 
-  } else {
-    UpdateStatusResponseOK(thisNode, data);
-    message.payload =  "Ok";
+  } else { // No errors
+      UpdateStatusResponseOK(thisNode, data);
+      message.payload =  data;
   }
   thisNode.send(message)
 }
@@ -167,8 +166,6 @@ function GetNewMnuboClient(mnuboconfig) {
 }
 exports.GetNewMnuboClient = GetNewMnuboClient;
 
-
-
 //var debug = true;
 var debug = false;
 function DebugLog() {
@@ -189,7 +186,7 @@ function DebugLog() {
             }
          }
       }
-      console.log(date.toISOString()+":", arguments.callee.caller.name, args_vals);
+      console.log(date.toISOString() + ": ", arguments.callee.caller.name, args_vals);
       //console.log(date.toISOString()+":", arguments.callee.caller, args_vals);
    }
 }

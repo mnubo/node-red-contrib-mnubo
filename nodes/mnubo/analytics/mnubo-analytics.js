@@ -1,7 +1,6 @@
 module.exports = function(RED) {
    
    //mnubo-sdk
-   require('es6-shim'); /* only if running node < 4.0.0 */
    var mnubo = require('mnubo-sdk');
    var ConfigMnuboUtils = require('../config/mnubo-utils');
    

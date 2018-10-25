@@ -1,7 +1,6 @@
 module.exports = function(RED) {
    
    //mnubo-sdk
-   require('es6-shim'); /* only if running node < 4.0.0 */
    var mnubo = require('mnubo-sdk');
    var ConfigMnuboUtils = require('../config/mnubo-utils');
    
@@ -22,15 +21,15 @@ module.exports = function(RED) {
       }
 
       if (return_promise == 1) {
-         if (msg.payload.length > 1) {
-            return client.owners.createUpdate(msg.payload);  // Bulk creation
-         } else {
-            return client.owners.create(msg.payload);  // Single creation
+         if (msg.payload.length > 0) {  // Bulk creation
+            return client.owners.createUpdate(msg.payload);  
+         } else {                       // Single creation
+            return client.owners.create(msg.payload);  
          }
       }
       else {
-         if (msg.payload.length > 1) {
-            client.owners.createUpdate(msg.payload)  // Bulk creation
+         if (msg.payload.length > 0) { // Bulk creation
+            client.owners.createUpdate(msg.payload)  
               .then((result) => {
                  ConfigMnuboUtils.CheckMultiStatusResult(thisNode, result, msg.payload)
               })
@@ -39,8 +38,8 @@ module.exports = function(RED) {
                  msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
                  thisNode.send(msg);
               });
-         } else {
-             client.owners.create(msg.payload)  // Single creation
+         } else {                   // Single creation
+             client.owners.create(msg.payload)  
                .then((result) => {
                   ConfigMnuboUtils.DebugLog(result);
                   ConfigMnuboUtils.UpdateStatusResponseOK(thisNode, result);
