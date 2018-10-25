@@ -127,8 +127,9 @@ The nodes were renamed between version 1.0.5 and 1.1.1, if you want to convert y
 
 # <a name="section7"></a>7. Source code
 
-npm path: https://www.npmjs.com/package/node-red-contrib-mnubo
-mnubo github sub path:  https://github.com/mnubo/node-red-contrib-mnubo/tree/master/nodes/mnubo
+**npm path:** https://www.npmjs.com/package/node-red-contrib-mnubo
+
+**mnubo github sub path:**  https://github.com/mnubo/node-red-contrib-mnubo/tree/master/nodes/mnubo
 
 ---
 
