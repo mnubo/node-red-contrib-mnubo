@@ -21,14 +21,14 @@ module.exports = function(RED) {
       }
 
       if (return_promise == 1) {
-         if (msg.payload.length > 0) {  // Bulk creation
+         if (Array.isArray(msg.payload)) {  // Bulk creation
             return client.owners.createUpdate(msg.payload);  
          } else {                       // Single creation
             return client.owners.create(msg.payload);  
          }
       }
       else {
-         if (msg.payload.length > 0) { // Bulk creation
+         if (Array.isArray(msg.payload)) { // Bulk creation
             client.owners.createUpdate(msg.payload)  
               .then((result) => {
                  ConfigMnuboUtils.CheckMultiStatusResult(thisNode, result, msg.payload)
