@@ -70,7 +70,7 @@
 </script>
 
 <script type="text/x-red" data-help-name="mnubo events">
-    <p>This is a mnubo's SmartObjects Ingestion Event node.</p>
+    <p>This is a SmartObjects Ingestion Event node.</p>
     <h3>Inputs</h3>
     <ul>
        <li>you can press the button to inject the input, using this node optional input</li>
@@ -79,15 +79,15 @@
 
     <h3>Outputs</h3>
     <ul>
-       <li>The straight response coming from SmartObject Platform can be found on 'msg.payload'</li>
-       <li>If <u>Report Result</u> flag is set to 'true', you can also refer to 'msg.errors' in order to check the error_message and the original event that has produced the error.</li>
+       <li>The straight response coming from SmartObject Platform can be found on "msg.payload"</li>
+       <li>If <u>Report Result</u> flag is set to "true", you can also refer to "msg.errors" in order to check the errorMessage and the originalRequest that has produced the error.</li>
     </ul>
 
     <h3>Details</h3>
     <ul>
-       <li><b>Send:</b> The input needs to be a valid JSON with mandatory <i>'x_device_id'</i> and <i>'x_event_type'</i> attributes.</li>
+       <li><b>Send:</b> The input needs to be a valid JSON with mandatory <i>"x_device_id"</i> and <i>"x_event_type"</i> attributes.</li>
        <p>Example:</p>
-       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = 
+       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px">msg.payload = 
 [
   {
     "x_object": {
@@ -98,7 +98,7 @@
   },
   ... (upto 1000 events)
 ]</pre>
-       <li><b>SendFromDevice:</b> The input is an "array" with [<i>'x_device_id'</i>, <i>'json body'</i>]
+       <li><b>SendFromDevice:</b> The input is an "array" with [<i>"x_device_id"</i>, <i>"json body"</i>]
        <p>Example:</p>
        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = 
 ["object_500",
@@ -113,7 +113,7 @@
     <h3>Requirements</h3>
     <ol>
        <li>
-          <b>Mnubo Configuration:</b> A valid Environment, ClientID and Client Secret
+          <b>Mnubo Configuration:</b> A valid Environment and Credentials.
        </li>
        <li>
           <b>Report Results (OPTIONAL):</b> This flag can be added to indicate if event results are returned. When this flag is not used, it behaves as set to false.
@@ -122,10 +122,10 @@
           <b>Objects Must Exist (OPTIONAL):</b> This flag can be added to ensure an Object exists before registering the event. If this flag is not used, it behaves as set to false.
        </li>
     </ol>
-    <p>To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
+    <p>To use SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
    <h3>References</h3>
     <ul>
-        <li><a href="https://smartobjects.mnubo.com/documentation/api_ingestion.html#events" target="_blank">SmarObject's online documentation </a> - (under the API section) for details about this interface usage. </li>
+        <li><a href="https://smartobjects.mnubo.com/documentation/api_ingestion.html#events" target="_blank">SmarObjects online documentation </a> - (under the API section) for details about this interface usage. </li>
         <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
     </ul>
 </script>

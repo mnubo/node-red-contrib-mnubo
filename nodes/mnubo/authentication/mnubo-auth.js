@@ -9,17 +9,14 @@ module.exports = function(RED) {
       
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null) {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"missing config/credentials");
-         return 0;
+         return;
       }
-      
-      msg = msg || { payload: "GetAccessTokenFromSdk" };
-      
+            
       //Clear previous access_token:
       thisNode.mnuboconfig.credentials.access_token = "";
       thisNode.mnuboconfig.credentials.access_token_expiry = "";
       
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);      
-      
       client.getAccessToken()
       .then(function GetAccessTokenFromSdk_OK(data) {
          ConfigMnuboUtils.DebugLog(client.token);
@@ -31,13 +28,13 @@ module.exports = function(RED) {
          thisNode.send(msg);
       } )
       .catch(function GetAccessTokenFromSdk_ERR(error) { 
-         ConfigMnuboUtils.DebugLog(error);
-         ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-         msg.errors = [{'errorMessage': error, 'originalRequest': msg}];
+         ConfigMnuboUtils.DebugLog(error?error.toString():'error');
+         ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error); 
+         msg.errors = {'errorMessage': error?error:'error', 'originalRequest': {"acction": "Get Access Token", "mnuboconfig": thisNode.mnuboconfig}};
          thisNode.send(msg); 
       } )
+      return 1;
       ConfigMnuboUtils.DebugLog('exit');
-      return 200;
    }
    
    function MnuboAuthenticate(thisNode) {
@@ -60,11 +57,13 @@ module.exports = function(RED) {
    RED.nodes.registerType("mnubo auth", MnuboAuthenticate);
    
    RED.httpAdmin.post("/auth/:id/button", RED.auth.needsPermission("mnubo auth.write"), function(req,res) {
-      ConfigMnuboUtils.DebugLog();
+      ConfigMnuboUtils.DebugLog("auth button input");
       var thisNode = RED.nodes.getNode(req.params.id);
       if (thisNode != null) {
          ConfigMnuboUtils.UpdateStatusLogMsg(thisNode, "button input ...");
-         res.sendStatus(GetAccessTokenFromSdk(thisNode));
+         msg = { payload: thisNode.inputtext };
+         GetAccessTokenFromSdk(thisNode, msg);
+         res.sendStatus(200);
       } else {
          res.sendStatus(404);
       }

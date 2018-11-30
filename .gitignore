@@ -1,3 +1,5 @@
 /.project
 .idea/
 node-red-contrib-mnubo.iml
+nodes/mnubo/package-lock.json
+*.DS_Store

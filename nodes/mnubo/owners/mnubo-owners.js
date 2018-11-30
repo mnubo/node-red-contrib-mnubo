@@ -35,7 +35,7 @@ module.exports = function(RED) {
               })
               .catch((error) => {
                  ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
-                 msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                 msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
                  thisNode.send(msg);
               });
          } else {                   // Single creation
@@ -47,9 +47,9 @@ module.exports = function(RED) {
                   thisNode.send(msg);
                })
                .catch((error) => {
-                  ConfigMnuboUtils.DebugLog(error);
+                  ConfigMnuboUtils.DebugLog(error?error.toString():'error');
                   ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
-                  msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                  msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
                   thisNode.send(msg);
                });
          }
@@ -92,7 +92,7 @@ module.exports = function(RED) {
                  })
                  .catch((error) => {
                     ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error);
-                    msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                    msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
                     thisNode.send(msg);
                  });
             }
@@ -110,7 +110,7 @@ module.exports = function(RED) {
                 })
                 .catch((error) => {
                    ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
-                   msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                   msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
                    thisNode.send(msg);
                 });
           }
@@ -138,7 +138,7 @@ module.exports = function(RED) {
          .catch((error) => {
             ConfigMnuboUtils.DebugLog(error);
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
-            msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+            msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
             thisNode.send(msg);
          });
       }
@@ -184,9 +184,9 @@ module.exports = function(RED) {
                       thisNode.send(msg);
                    })
                    .catch((error) => {
-                      ConfigMnuboUtils.DebugLog(error);
+                      ConfigMnuboUtils.DebugLog(error?error.toString():'error');
                       ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
-                      msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                      msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
                       thisNode.send(msg);
                    });
                } else {         // unCLAIM
@@ -198,9 +198,9 @@ module.exports = function(RED) {
                       thisNode.send(msg);
                    })
                    .catch((error) => {
-                      ConfigMnuboUtils.DebugLog(error);
+                      ConfigMnuboUtils.DebugLog(error?error.toString():'error');
                       ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
-                      msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                      msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
                       thisNode.send(msg);
                    });
                }
@@ -224,7 +224,7 @@ module.exports = function(RED) {
                     })
                     .catch((error) => {
                        ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
-                       msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                       msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
                        thisNode.send(msg);
                     });
               } else {      // unCLAIM
@@ -234,7 +234,7 @@ module.exports = function(RED) {
                     })
                     .catch((error) => {
                        ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
-                       msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                       msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
                        thisNode.send(msg);
                     });
               }
@@ -273,9 +273,9 @@ module.exports = function(RED) {
            thisNode.send(msg);
         })
         .catch((error) => {
-           ConfigMnuboUtils.DebugLog(error);
+           ConfigMnuboUtils.DebugLog(error?error.toString():'error');
            ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
-           msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+           msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
            thisNode.send(msg);} );
      }
      ConfigMnuboUtils.DebugLog('exit');

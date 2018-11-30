@@ -61,9 +61,9 @@
    <div class="form-row">
       <label for="node-input-searchtype"><i class="fa fa-search"></i> Search Type</label>
          <select type="text" id="node-input-searchtype" style="width:70%;">
-            <option value="getDatasets">get datasets</option>
-            <option value="getDatamodel">get data model</option>
-            <option value="SearchQuery"> search query</option>
+            <option value="getDatasets">Get Datasets</option>
+            <option value="getDatamodel">Get Data Model</option>
+            <option value="SearchQuery"> Search Query</option>
          </select>
    </div>
    <div class="form-row" id="node-input-inputquery-row">
@@ -73,25 +73,25 @@
 </script>
 
 <script type="text/x-red" data-help-name="mnubo analytics">
-   <p>This node will perform a mnubo's SmarObjects search.</p>
+   <p>This node will perform a search.</p>
    <h3>Details</h3>
    <p>There are 3 types of SmartObject search:</p>
    <ul>
        <li>
-          <b>getDatasets:</b> Get the datasets from mnubo SmartObjects.  Note that the dataset list describes what can be queried <u>(no input is required)</u>.
+          <b>Get Datasets:</b> Get the datasets from mnubo SmartObjects.  Note that the dataset list describes what can be queried <u>(no input is required)</u>.
        </li>
        <li>
-          <b>getDatamodel:</b> Get the datasets from mnubo SmartObjects, and convert the output to a data model <u>(no input is required)</u>.
+          <b>Get Data Model:</b> Get the datasets from mnubo SmartObjects, and convert the output to a data model <u>(no input is required)</u>.
        </li>
        <li>
-         <b>SearchQuery:</b> Execute a MQL query.
-         <p>SearchQuery have 2 possible input:
+         <b>Search Query:</b> Execute a MQL query.
+         <p>Search Query have 2 possible input:
            <ul>
              <li>you can press the button to request restitution using this node optional input.</li>
-             <li>you can inject the input in the 'msg.payload'.</li>
+             <li>you can inject the input in the "msg.payload".</li>
            </ul>
            <p><u>Example:</u></p>
-             <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = 
+             <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;overflow: scroll;height: 22em;">msg.payload = 
 {
   "from": "event",
   "limit": 5000,
@@ -108,10 +108,8 @@
     }
   ]
 }</pre>
-         </p>
        </li>
    </ul>
-   
     <h3>Requirements</h3>
     <ol>
        <li>
@@ -119,10 +117,10 @@
        </li>
     </ol>
    
-   <p>To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
+   <p>To use SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
    <h3>References</h3>
     <ul>
-        <li><a href="https://smartobjects.mnubo.com/documentation/api_search.html" target="_blank">SmarObject's online documentation </a> - (under the API section) for details about this interface usage. </li>
+        <li><a href="https://smartobjects.mnubo.com/documentation/api_search.html" target="_blank">SmarObjects online documentation </a> - (under the API section) for details about this interface usage. </li>
         <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
     </ul>
 </script>

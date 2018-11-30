@@ -40,7 +40,7 @@ module.exports = function(RED) {
              })
              .catch((error) => {
                 ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
-                msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+                msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
                 thisNode.send(msg);
              });
       }
@@ -93,9 +93,9 @@ module.exports = function(RED) {
               }
          })
          .catch((error) => {
-            ConfigMnuboUtils.DebugLog(error);
-            ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-            msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+            ConfigMnuboUtils.DebugLog(error?error.toString():'error');
+            ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error); 
+            msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
             thisNode.send(msg);
          });
       }
@@ -123,6 +123,7 @@ module.exports = function(RED) {
          PostEventFromDeviceFromSdk(thisNode, msg);
       } else {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"unknown function");
+         return;
       }
 
       ConfigMnuboUtils.DebugLog('exit');

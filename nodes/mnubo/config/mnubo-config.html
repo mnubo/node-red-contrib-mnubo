@@ -2,53 +2,109 @@
     RED.nodes.registerType('mnubo config',{
         category: 'config',
         defaults: {
-            name: {value:""},
-            env: {value:"sandbox"},
-            proxy_url: {value:""},
-            retries: {value:false},
+            name: {value: ""},
+            env: {value: "sandbox"},
+            proxy_url: { 
+              value: "",
+              validate: function(val) {
+                const env_id = $("#node-config-input-env").length?$("#node-config-input-env").val() : this.env;
+                return (env_id === "useproxyurl" && val.length > 0) || (env_id !== "useproxyurl")
+              }
+            },
+            credentials_type: {
+              value: "client_credentials",
+              validate: function(val) {
+                //backward compatibility 
+                const type = $("#node-config-input-credentials_type").length?$("#node-config-input-credentials_type").val() : this.credentials_type;
+                if (type == null || type === "") {
+                  this.credentials_type = "client_credentials"
+                }
+                return true;
+              }
+            },
+            retries: { value: false },
             numberOfAttempts: {
-                value:"5",
-                validate:function(val) {
-                            return ((Boolean(this.retries) && Number.isInteger(parseInt(val)) ) || (!Boolean(this.retries)))
-                         }
+                value: "5",
+                validate: function(val) {
+                  const retries = $("#node-config-input-retries").length?$("#node-config-input-retries")[0].checked : this.retries;
+                  return ((Boolean(retries) && Number.isInteger(parseInt(val)) ) || (!Boolean(retries)))
+                }
             },
             initialDelayInMillis: {
-                value:"500",
-                validate:function(val) {
-                            return ((Boolean(this.retries) && Number.isInteger(parseInt(val)) ) || (!Boolean(this.retries)))
-                         }
+                value: "500",
+                validate: function(val) {
+                  const retries = $("#node-config-input-retries").length?$("#node-config-input-retries")[0].checked : this.retries;
+                  return ((Boolean(retries) && Number.isInteger(parseInt(val)) ) || (!Boolean(retries)))
+                }
             }
         },
         credentials: {
-            id: {value:"", type: 'text', required:true},
-            secret: {value:"", type: 'password', required:true},
-            access_token: {value:"", type: 'password'},
-            access_token_expiry: {value:"", type: 'text'},
+            id: {
+              value: "", 
+              type: 'text', 
+              validate: function(val) {
+                const type = $("#node-config-input-credentials_type").length?$("#node-config-input-credentials_type").val() : this.credentials_type;
+                return (type === "client_credentials" && val.length > 0 && !val.match(/\s+/)) || (type !== "client_credentials")
+              }
+            },
+            secret: {
+              value: "", 
+              type: 'password', 
+              validate: function(val) {
+                const type = $("#node-config-input-credentials_type").length?$("#node-config-input-credentials_type").val() : this.credentials_type;
+                return (type === "client_credentials" && val.length > 0 && !val.match(/\s+/)) || (type !== "client_credentials")
+              }
+            },
+            access_token: {
+              value: "", 
+              type: 'password'},
+            access_token_expiry: {
+              value: "", 
+              type: 'text'},
+            app_token: {
+              value: "", 
+              type: 'password', 
+              validate: function(val) {
+                const type = $("#node-config-input-credentials_type").length?$("#node-config-input-credentials_type").val() : this.credentials_type;
+                return (type === "app_token" && val.length > 0 && !val.match(/\s+/)) || (type !== "app_token")
+              }
+            }
+  
         },
       label: function() {
-            return this.name||this.env;
+        return this.name||this.env;
       },
       oneditprepare: function() {
-            $("#node-config-input-env").change(function() {
-               var id = $("#node-config-input-env option:selected").val();
-               if (id === "useproxyurl") {
-                  $("#node-config-input-proxy_url-row").show();
-               } else {
-                  $("#node-config-input-proxy_url-row").hide();
-               }
-            });
-            $("#node-config-input-env").val(this.env);
-            $("#node-config-input-env").change();
+        $("#node-config-input-env").change(function() {
+           if ($(this).val() === "useproxyurl") {
+              $("#node-config-input-proxy_url-row").show();
+           } else {
+              $("#node-config-input-proxy_url-row").hide();
+           }
+        });
 
-            $("#node-config-input-retries").change(function() {
-               if ($("#node-config-input-retries")["0"].checked) {
-                  $("#node-config-input-retries-options").show();
-               } else {
-                  $("#node-config-input-retries-options").hide();
-               }
-            });
-            $("#node-config-input-retries").change();
-         }
+        $("#node-config-input-credentials_type").change(function() {
+           const cred_type = $(this).val()
+           if (cred_type === "app_token") {
+            $("#node-config-input-id_secret-row").hide();
+            $("#node-config-input-app_token-row").show();
+           } else if (cred_type === "client_credentials") {
+            $("#node-config-input-id_secret-row").show();
+            $("#node-config-input-app_token-row").hide();
+          } else {
+            $("#node-config-input-id_secret-row").hide();
+            $("#node-config-input-app_token-row").hide();
+          }
+        });
+
+        $("#node-config-input-retries").change(function() {
+           if ($("#node-config-input-retries")["0"].checked) {
+              $("#node-config-input-retries-options").show();
+           } else {
+              $("#node-config-input-retries-options").hide();
+           }
+        });
+      }
     });
 </script>
 
@@ -58,64 +114,87 @@
     </div>
 
     <div id="node-config-mnubo-win-content" style="min-height: 170px;">
-      <div class="form-row">
-          <label for="node-config-input-name"><i class="icon-tag"></i> Name</label>
-          <input type="text" id="node-config-input-name">
+      <div class="form-row">    <!–– NAME ––>
+        <label for="node-config-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name">
       </div>
-      <div class="form-row">
-          <label for="node-config-input-env"><i class="fa fa-globe"></i> Environment</label>
-          <select type="text" id="node-config-input-env" style="width: 70%;">
-              <option value="sandbox">sandbox</option>
-              <option value="production">production</option>
-              <option value="useproxyurl">use Proxy URL</option>
-          </select>
+      <div class="form-row">    <!–– ENVIROMENT ––>
+        <label for="node-config-input-env"><i class="fa fa-globe"></i> Environment</label>
+        <select type="text" id="node-config-input-env" style="width: 70%;">
+          <option value="sandbox">Sandbox</option>
+          <option value="production">Production</option>
+          <option value="useproxyurl">use Proxy URL</option>
+        </select>
+        <div class="form-row" style="margin-left: 2em;margin-top: 1em">
+          <div class="form-row" id="node-config-input-proxy_url-row">
+            <div class="form-row">
+              <label for="node-config-input-proxy_url"> Proxy URL</label>
+              <input type="text" id="node-config-input-proxy_url" style="width: 69%;">
+            </div>
+          </div>
+        </div>
+      </div>      
+      <div class="form-row">    <!–– CREDENTIALS ––>
+        <label for="node-config-input-credentials_type"><i class="fa fa-key"></i> Credentials</label>
+        <select type="text" id="node-config-input-credentials_type" style="width: 70%;">
+          <option value="client_credentials">Client ID/ Client Secret</option>
+          <option value="app_token">APP Token</option>
+        </select>
+        <div class="form-row" style="margin-left: 2em;margin-top: 1em">
+          <div class="form-row" id="node-config-input-id_secret-row">
+            <div class="form-row">
+              <label for="node-config-input-id"> Client Id</label>
+              <input type="text" id="node-config-input-id" style="width: 69%;">
+            </div>
+            <div class="form-row">
+                <label for="node-config-input-secret"> Client Secret</label>
+                <input type="password" id="node-config-input-secret" style="width: 69%;">
+            </div>
+          </div>
+          <div class="form-row" id="node-config-input-app_token-row">
+            <div class="form-row">
+              <label for="node-config-input-app_token"> APP Token</label>
+              <input type="text" id="node-config-input-app_token" style="width: 69%;">
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="form-row" id="node-config-input-proxy_url-row">
-          <label for="node-config-input-proxy_url"><i class="fa fa-globe"></i> Proxy URL</label>
-          <input type="text" id="node-config-input-proxy_url">
+      <div class="form-row" style="margin-top:1em">    <!–– EXPONENTIAL BACKOFF RETRIES ––>
+        <input type="checkbox" id="node-config-input-retries" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-config-input-retries" style="width:auto"> Exponential Backoff Retries</label>
       </div>
-      <div class="form-row">
-          <label for="node-config-input-id"><i class="fa fa-user"></i> Client Id</label>
-          <input type="text" id="node-config-input-id">
-      </div>
-      <div class="form-row">
-          <label for="node-config-input-secret"><i class="fa fa-key"></i> Client Secret</label>
-          <input type="password" id="node-config-input-secret">
-      </div>
-
-      <div class="form-row" style="margin-top:1em">
-          <input type="checkbox" id="node-config-input-retries" style="display: inline-block; width: auto; vertical-align: top;">
-          <label for="node-config-input-retries" style="width:auto"> Exponential Backoff Retries</label>
-      </div>
-      <div class="form-row" id="node-config-input-retries-options">
-          <label for="node-config-input-numberOfAttempts" style="display: inline; vertical-align: baseline;">Number of Attempts</label>
-          <input type="text" id="node-config-input-numberOfAttempts" style="width: 10%; vertical-align: baseline;">
-          <label for="node-config-input-initialDelayInMillis" style="display: inline; vertical-align: baseline;margin-left:1em">Initial Delay in Milliseconds</label>
-          <input type="text" id="node-config-input-initialDelayInMillis" style="width: 10%; vertical-align: baseline;">
+      <div class="form-row" id="node-config-input-retries-options" style="margin-left: 2em;">
+        <label for="node-config-input-numberOfAttempts" style="display: inline; vertical-align: baseline;">Number of Attempts</label>
+        <input type="text" id="node-config-input-numberOfAttempts" style="width: 10%; vertical-align: baseline;">
+        <label for="node-config-input-initialDelayInMillis" style="display: inline; vertical-align: baseline;margin-left:1em">Initial Delay in Milliseconds</label>
+        <input type="text" id="node-config-input-initialDelayInMillis" style="width: 10%; vertical-align: baseline;">
       </div>
     </div>
-
 </script>
 
 <script type="text/x-red" data-help-name="mnubo config">
    <p>This is a Mnubo configuration node</p>
    <h3>Details</h3>
-   <p><b>Environment</b> can be:</p>
+   <p><b>Environment</b> could be:</p>
    <ul>
-      <li><b>sandbox:</b> to connect to the mnubo's sandbox system.</li>
-      <li><b>production:</b> to connect to the mnubo's production system.</li>
-      <li><b>use Proxy URL:</b> This is optional, if you need to connect to an alternate system, or you need to go through a proxy. It needs to be a valid format (http://hostname:port).</li>
+    <li><b>sandbox:</b> to connect to sandbox system.</li>
+    <li><b>production:</b> to connect to production system.</li>
+    <li><b>use Proxy URL:</b> This is optional, if you need to connect to an alternate system, or you need to go through a proxy. It needs to be a valid format (http://hostname:port).</li>
    </ul>
-   <p><b>Client ID</b> It needs to be a valid Client ID.</p>
-   <p><b>Client Secret</b> it needs to be the valid associated Secret.</p>
+   <p><b>Credentials</b> could be:</p>
+   <ul>
+    <li><b>Client ID and Client Secret:</b> It needs to be a valid credentials associated to an account and enviroment (sandbox or production)</li>
+    <li><b>App Token:</b> It needs to be a valid Token associated to an account, enviroment (sandbox or production) and  a valid scope (Owner, Object, Events, Search, Model)</li>
+    <p><u>Note:</u> Since you already have a token, this type of credential can not be usede on Authentication Node </p>
+   </ul>
    <p><b>Exponential backoff retries</b> It allows a user to automatically retry requests when a 503 HTTP error is returned from the SmartObjects platform. It will gradually increase the interval between retries to allow the server to recover.</p>
    <ul>
-      <li><b>Number of Attempts:</b> How many retries to make before failing. Default to 5 if undefined.</li>
-      <li><b>Initial Delay in Milliseconds:</b> number of ms to wait before the first retry. Default to 500 if undefined.</li>
+    <li><b>Number of Attempts:</b> How many retries to make before failing. Default is set to 5.</li>
+    <li><b>Initial Delay in Milliseconds:</b> number of ms to wait before the first retry. Default is set to 500.</li>
    </ul>
    <h3>References</h3>
     <ul>
-        <li><a href="https://smartobjects.mnubo.com/apps/doc/" target="_blank">SmarObject's online documentation </a> - (under the API section) for details about this interface usage. </li>
-        <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
+      <li><a href="https://smartobjects.mnubo.com/apps/doc/" target="_blank">SmarObjects online documentation </a> - (under the API section) for details about this interface usage. </li>
+      <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
     </ul>
 </script>

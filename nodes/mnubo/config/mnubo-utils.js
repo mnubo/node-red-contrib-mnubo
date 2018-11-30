@@ -1,32 +1,31 @@
 function UpdateStatus(thisNode) {
-   if (thisNode ==  null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
+   if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null)
    {
       thisNode.status({fill: "red", shape: "ring", text: "no mnubo config"});
       return;
    }
-   
-   var myCredential = thisNode.mnuboconfig.credentials;;  
-   var seconds = (new Date()).getTime()/1000;
-   
-   if (myCredential.id==null || myCredential.id == "" || myCredential.secret==null || myCredential.secret == "")
-   {
-      thisNode.status({fill: "red", shape: "ring", text: "empty credentials"});
-   }
-   else if ( myCredential.access_token == null || myCredential.access_token == "")
-   {
-      thisNode.status({fill: "red", shape: "ring", text: "unauthorized"});
-   }
-   else if (myCredential.access_token_expiry == null || myCredential.access_token_expiry == "" )
-   {
-      thisNode.status({fill: "yellow", shape: "ring", text: "unknown token expiry"});
-   }
-   else if (seconds > myCredential.access_token_expiry ) 
-   {
-      thisNode.status({fill: "yellow", shape: "ring", text: "token expired"});
-   }
-   else
-   {
+
+   if (thisNode.mnuboconfig.credentials_type === "app_token") {
+    var myCredential = thisNode.mnuboconfig.credentials;
+    if (myCredential.app_token == null || myCredential.app_token === "") {
+      thisNode.status({fill: "red", shape: "ring", text: "empty token"});
+    } else {
       thisNode.status({fill: "green", shape: "ring", text: "valid token"});
+    }
+   } else {
+    var myCredential = thisNode.mnuboconfig.credentials;
+    var seconds = (new Date()).getTime()/1000;
+    if (myCredential.id == null || myCredential.id === "" || myCredential.secret == null || myCredential.secret === "") {
+      thisNode.status({fill: "red", shape: "ring", text: "empty credentials"});
+    } else if ( myCredential.access_token == null || myCredential.access_token === "") {
+      thisNode.status({fill: "red", shape: "ring", text: "unauthorized"});
+    } else if (myCredential.access_token_expiry == null || myCredential.access_token_expiry === "" ) {
+      thisNode.status({fill: "yellow", shape: "ring", text: "unknown token expiry"});
+    } else if (seconds > myCredential.access_token_expiry ) {
+      thisNode.status({fill: "yellow", shape: "ring", text: "token expired"});
+    } else {
+      thisNode.status({fill: "green", shape: "ring", text: "valid token"});
+    }
    }
 }
 exports.UpdateStatus = UpdateStatus;
@@ -44,18 +43,35 @@ exports.UpdateStatusResponseWarning = UpdateStatusResponseWarning;
 
 function UpdateStatusResponseError(thisNode, error) {
    if (error) {
+      if (typeof error === 'object') {
        if (error.errorCode) {
              thisNode.status({fill: "red", shape: "dot", text: error.errorCode + ": " + error.message});
           }
           else if (error.code) {
              thisNode.status({fill: "red", shape: "dot", text: error.code});
           }
-          else if (error.length > 0){
-             thisNode.status({fill: "red", shape: "dot", text: (typeof error === "string") ? error : JSON.stringify(error)});
+          else if (error.message) {
+            if (error.stack) {
+             thisNode.status({fill: "red", shape: "dot", text: error.stack});
+            } else {
+              thisNode.status({fill: "red", shape: "dot", text: error.message});
+            }
+          }
+          else if (error.payload) {
+            if (error.payload.error_description) {
+              thisNode.status({fill: "red", shape: "dot", text: error.payload.error_description});
+            } else {
+              thisNode.status({fill: "red", shape: "dot", text: error.payload});
+            }
           }
           else {
-             thisNode.status({fill: "red", shape: "dot", text: "Unknown Error"});
+             thisNode.status({fill: "red", shape: "dot", text: JSON.stringify(error)});
           }
+      } else if (Array.isArray(error)) {
+        thisNode.status({fill: "red", shape: "dot", text: JSON.stringify(error)});
+      } else {
+        thisNode.status({fill: "red", shape: "dot", text: error });
+      }
    }
    else {
         thisNode.status({fill: "red", shape: "dot", text: "Empty Error"});
@@ -63,17 +79,17 @@ function UpdateStatusResponseError(thisNode, error) {
 }
 exports.UpdateStatusResponseError = UpdateStatusResponseError;
 
-function UpdateStatusErrMsg(thisNode,msg) {
+function UpdateStatusErrMsg(thisNode, msg) {
    thisNode.status({fill: "red", shape: "ring", text:msg});
 }
 exports.UpdateStatusErrMsg = UpdateStatusErrMsg;
 
-function UpdateStatusWarnMsg(thisNode,msg) {
+function UpdateStatusWarnMsg(thisNode, msg) {
    thisNode.status({fill: "yellow", shape: "ring", text:msg});
 }
 exports.UpdateStatusWarnMsg = UpdateStatusWarnMsg;
 
-function UpdateStatusLogMsg(thisNode,msg) {
+function UpdateStatusLogMsg(thisNode, msg) {
    thisNode.status({fill: "green", shape: "ring", text:msg});
 }
 exports.UpdateStatusLogMsg = UpdateStatusLogMsg;
@@ -117,10 +133,10 @@ function simpleStringify (object){
         if (!object.hasOwnProperty(prop)){
             continue;
         }
-        if (typeof(object[prop]) == 'object'){
+        if (typeof(object[prop]) === 'object'){
             continue;
         }
-        if (typeof(object[prop]) == 'function'){
+        if (typeof(object[prop]) === 'function'){
             continue;
         }
         simpleObject[prop] = object[prop];
@@ -132,27 +148,42 @@ function simpleStringify (object){
 
 function ProxyUrl2HtpOptions(mnuboconfig) {
 
-   if (mnuboconfig.env != 'useproxyurl' || mnuboconfig.proxy_url == null || mnuboconfig.proxy_url == '') {
+   if (mnuboconfig.env !== 'useproxyurl' || mnuboconfig.proxy_url == null || mnuboconfig.proxy_url === '') {
       //console.log('not using Proxy URL');
       return '';
    }
    //console.log('using Proxy URL');
    var url=require('url');
+   var protocol = url.parse(mnuboconfig.proxy_url).protocol.replace(':','')
+   var port = url.parse(mnuboconfig.proxy_url).port ? url.parse(mnuboconfig.proxy_url).port : (protocol === "https") ? 443 : 80
    return {
-      protocol: url.parse(mnuboconfig.proxy_url).protocol.replace(':',''),
+      protocol: protocol,
       hostname: url.parse(mnuboconfig.proxy_url).hostname,
-      port:     url.parse(mnuboconfig.proxy_url).port
+      port:     port
    }
 }
 
 function GetNewMnuboClient(mnuboconfig) {
-   var mnubo = require('mnubo-sdk');
-   var options = {
-      id: mnuboconfig.credentials.id,
-      secret: mnuboconfig.credentials.secret,
-      env: mnuboconfig.env,
-      httpOptions: ProxyUrl2HtpOptions(mnuboconfig)
-   }
+  var mnubo = require('mnubo-sdk');
+  var options = {}
+
+  if (mnuboconfig.env === 'useproxyurl') {
+    options.httpOptions = ProxyUrl2HtpOptions(mnuboconfig)
+  } else {
+    options.env = mnuboconfig.env
+  }
+
+  switch(mnuboconfig.credentials_type) {
+    case "client_credentials":
+      options.id = mnuboconfig.credentials.id
+      options.secret = mnuboconfig.credentials.secret
+      break;
+    case "app_token":
+      options.token = mnuboconfig.credentials.app_token
+      break;
+    default:
+      DebugLog("credentials_type: " + mnuboconfig.credentials_type + "is not valid")
+  }
 
    if (mnuboconfig.retries) {
       options.exponentialBackoff = {
@@ -175,7 +206,7 @@ function DebugLog() {
       if (arguments.length > 0) {
          for(var i=0; i<arguments.length; i++) {
             //console.log("typeof(arguments[i]=",typeof(arguments[i]));
-            if (typeof(arguments[i]) == 'string')
+            if (typeof(arguments[i]) === 'string')
             {
                args_vals += arguments[i]
             }
