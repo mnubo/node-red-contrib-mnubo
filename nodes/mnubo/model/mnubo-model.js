@@ -221,7 +221,7 @@ module.exports = function(RED) {
          elements_to_deploy = elements_to_deploy.concat(msg.payload.ownerAttributes.map( el => { return {"type": "owner_attribute", "name": el }}))
       }
 
-      deployElements(elements_to_deploy, thisNode)
+      deployElements(elements_to_deploy, thisNode, msg)
    }
 
    const model = {
@@ -239,7 +239,7 @@ module.exports = function(RED) {
       }
    };
 
-   function deployElements(array, thisNode) {
+   function deployElements(array, thisNode, msg) {
       var client = ConfigMnuboUtils.GetNewMnuboClient(thisNode.mnuboconfig);
       const deployementPromises = array.map(el => {
        return model
