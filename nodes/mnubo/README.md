@@ -40,7 +40,7 @@ Here is a brief description of the nodes:
 
 •	`mnubo config`: This is the Configuration Node that holds the mnubo's SmartObjects credential, all nodes need to have this configured.
 
-•	`Auth`: This node is used to fetch the access token for communication with SmartObject. This node will also allow you to get the status about the token.
+•	`Auth`: This node is used to fetch the access token for communication with SmartObjects. This node will also allow you to get the status about the token.
 
 •	`Owners` : This node is used to handle the Owners Ingestion API: `Create`, `Update`, `Delete`, `Claim Object`, `unClaim Object`
 
