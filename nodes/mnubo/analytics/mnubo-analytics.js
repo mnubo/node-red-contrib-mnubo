@@ -75,9 +75,9 @@ module.exports = function(RED) {
             msg.payload = data; 
             thisNode.send(msg);} )
          .catch(function GetDatasetsFromSdk_ERR(error) { 
-            ConfigMnuboUtils.DebugLog(error);
-            ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-            msg.errors = [{'errorMessage': error, 'originalRequest': msg}];
+            ConfigMnuboUtils.DebugLog(error?error.toString():'error');
+            ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error); 
+            msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg};
             thisNode.send(msg);} );
       }
       ConfigMnuboUtils.DebugLog('exit');
@@ -106,9 +106,9 @@ module.exports = function(RED) {
          msg.payload = data; 
          thisNode.send(msg);} )
       .catch(function CreateBasicQueryFromSdk_ERR(error) { 
-         ConfigMnuboUtils.DebugLog(error);
+         ConfigMnuboUtils.DebugLog(error?error.toString():'error');
          ConfigMnuboUtils.UpdateStatusResponseError(thisNode, error);
-         msg.errors = [{'errorMessage': error, 'originalRequest': msg.payload}];
+         msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg.payload};
          thisNode.send(msg);} );
       ConfigMnuboUtils.DebugLog('exit');
    }  
@@ -128,9 +128,9 @@ module.exports = function(RED) {
             msg.payload = FormatDatasets(data); 
             thisNode.send(msg);} )
          .catch(function MnuboRequest_getDatamodel_ERR(error) { 
-            ConfigMnuboUtils.DebugLog(error);
+            ConfigMnuboUtils.DebugLog(error?error.toString():'error');
             ConfigMnuboUtils.UpdateStatusResponseError(thisNode,error); 
-            msg.errors = [{'errorMessage': error, 'originalRequest': msg}];
+            msg.errors = {'errorMessage': error?error:'error', 'originalRequest': msg};
             thisNode.send(msg);} );
       } else {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode,"unknown searchtype");

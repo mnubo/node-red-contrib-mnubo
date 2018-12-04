@@ -40,11 +40,11 @@
 <script type="text/x-red" data-template-name="mnubo owners">
    <div class="form-row">
       <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-      <input type="text" id="node-input-name" placeholder="Name">
+      <input type="text" id="node-input-name" placeholder="Name"></input>
    </div>
    <div class="form-row">
       <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
-      <input type="text" id="node-input-mnuboconfig">
+      <input type="text" id="node-input-mnuboconfig"></input>
    </div>
    <div class="form-row">
       <label for="node-input-functionselection"><i class="fa fa-list"></i> Function</label>
@@ -64,25 +64,25 @@
 </script>
 
 <script type="text/x-red" data-help-name="mnubo owners">
-   <p>This is a mnubo's SmartObjects Ingestion Owner node.</p>
+   <p>This is a SmartObjects Ingestion Owner node.</p>
 
    <h3>Inputs</h3>
      <ul>
         <li>you can press the button to inject the input, using this node optional input.</li>
-        <li>you can inject the input of a 'msg.payload'.</li>
+        <li>you can inject the input of a "msg.payload".</li>
      </ul>
 
    <h3>Outputs</h3>
      <ul>
-        <li>The straight response coming from SmartObject Platform can be found on 'msg.payload'.</li>
-        <li>If <u>Report Result</u> flag is set to 'true', you can also refer to 'msg.errors' in order to check the error_message and the original event that has produced the error.</li>
+        <li>The straight response coming from SmartObjects Platform can be found on "msg.payload".</li>
+        <li>If <u>Report Result</u> flag is set to "true", you can also refer to "msg.errors" in order to check the errorMessage and the originalRequest that has produced the error.</li>
      </ul>
 
    <h3>Details</h3>
    <ul>
        <li><b>Create:</b> Allows to create an owner.</li>
        <p><u>ONE OWNER CREATION</u></p>
-       <p>The input needs to be a valid JSON with mandatory <i>'username'</i> attribute.</p>
+       <p>The input needs to be a valid JSON with mandatory <i>"username"</i> attribute.</p>
        <p>Example:</p>
        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
 {
@@ -90,9 +90,9 @@
   "x_password": "12345678"
 }</pre>
        <p><u>MULTIPLE OWNERS CREATION</u></p>
-       <p>The input needs to be a valid JSON with mandatory <i>'username'</i> attribute.</p>
+       <p>The input needs to be a valid JSON with mandatory <i>"username"</i> attribute.</p>
        <p>Example:</p>
-              <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
+       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
 [
   {
     "username": "owner1@test.com",
@@ -103,9 +103,9 @@
     "x_password": "fw23re2ffw444"
   }
 ]</pre>
-       <li><b>Update:</b> Allows to update an owner's attributes</li>
+       <li><b>Update:</b> Allows to update an attributes of an owner</li>
        <p><u>ONE OWNER UPDATE</u></p>
-       <p>The input needs to be an "array" with [<i>'username'</i>, <i>'json body'</i>]</p>
+       <p>The input needs to be an "array" with [<i>"username"</i>, <i>"json body"</i>]</p>
        <p>Example:</p>
        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = 
 ["owner1@test.com",
@@ -127,14 +127,15 @@
     "location": "Chicago"
   }
   ... (upto 1000 objects)
-]</pre
+]</pre>
        <li><b>Claim:</b> Allows an owner to claim one or multiple objects.</li>
        <p><u>ONE OBJECT CLAIM</u></p>
-       <p>The input needs to be an array with [<i>'username'</i>, <i>'x_device_id'</i>]</p>
+       <p>The input needs to be an array with [<i>"username"</i>, <i>"x_device_id"</i>]</p>
        <p>Example:</p>
-       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = ["owner1@test.com"," "object_500"]</pre>
+       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = 
+["owner1@test.com"," "object_500"]</pre>
        <p><u>MULTIPLE OBJECTS CLAIM</u></p>
-       <p>The input needs to be a valid JSON composed by <i>'username'</i>, <i>'x_device_id'</i> and <i>'x_timestamp' (optional)</i></p>
+       <p>The input needs to be a valid JSON composed by <i>"username"</i>, <i>"x_device_id"</i> and <i>"x_timestamp" (optional)</i></p>
        <p>Example:</p>
        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
 [
@@ -152,11 +153,12 @@
 ]</pre>
        <li><b>unClaim:</b> Allows an owner to unClaim one or multiple objects.</li>
        <p><u>ONE OBJECT UnCLAIM</u></p>
-       <p>The input needs to be an array with [<i>'username'</i> and <i>'x_device_id'</i>]</p>
+       <p>The input needs to be an array with [<i>"username"</i> and <i>"x_device_id"</i>]</p>
        <p>Example:</p>
-       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = ["owner1@test.com"," "object_500"]</pre>
+       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = 
+["owner1@test.com"," "object_500"]</pre>
        <p><u>MULTIPLE OBJECTS UnCLAIM</u></p>
-       <p>The input needs to be a valid JSON composed by <i>'username'</i>, <i>'x_device_id'</i> and <i>'x_timestamp' (optional)</i></p>
+       <p>The input needs to be a valid JSON composed by <i>"username"</i>, <i>"x_device_id"</i> and <i>"x_timestamp" (optional)</i></p>
        <p>Example:</p>
        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
 [
@@ -173,11 +175,11 @@
   ... (upto 1000 events)
 ]</pre>
        <li><b>Exist:</b> Allows to check if a specific Owner (username) already exists.</li>
-       <p>The input needs to be a "string" or an "array" with the <i>'username'</i> you want to check.</p>
+       <p>The input needs to be a "string" or an "array" with the <i>"username"</i> you want to check.</p>
        <p>Example:</p>
        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = ["owner1@test.com", "owner2@test.com"]</pre>
        <li><b>Delete:</b> Allows to Delete an Owner.</li>
-       <p>The input needs to be an "string" identifying the <i>'username'<i> you want to delete (you can delete 1 (one) owner at the time).</p>
+       <p>The input needs to be an "string" identifying the <i>"username"</i> you want to delete (you can delete one owner at the time).</p>
        <p>Example:</p>
        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = "owner1@test.com"</pre>
    </ul>
@@ -185,14 +187,14 @@
    <h3>Requirements</h3>
     <ol>
        <li>
-          <b>Mnubo Configuration:</b> A valid Environment, ClientID and Client Secret
+          <b>Mnubo Configuration:</b> A valid Environment and Credentials.
        </li>
     </ol>
 
-   <p>To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
+   <p>To use SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
    <h3>References</h3>
     <ul>
-        <li><a href="https://smartobjects.mnubo.com/documentation/api_ingestion.html#owners" target="_blank">SmarObject's online documentation </a> - (under the API section) for details about this interface usage. </li>
+        <li><a href="https://smartobjects.mnubo.com/documentation/api_ingestion.html#owners" target="_blank">SmartObjects online documentation </a> - (under the API section) for details about this interface usage. </li>
         <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
     </ul>
 </script>

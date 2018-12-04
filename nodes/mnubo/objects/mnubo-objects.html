@@ -40,11 +40,11 @@
 <script type="text/x-red" data-template-name="mnubo objects">
    <div class="form-row">
       <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-      <input type="text" id="node-input-name" placeholder="Name">
+      <input type="text" id="node-input-name" placeholder="Name"></input>
    </div>
    <div class="form-row">
       <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
-      <input type="text" id="node-input-mnuboconfig" style="width: 70%;">
+      <input type="text" id="node-input-mnuboconfig" style="width: 70%;"></input>
    </div>
    <div class="form-row">
       <label for="node-input-functionselection"><i class="fa fa-list"></i> Function</label>
@@ -62,25 +62,25 @@
 </script>
 
 <script type="text/x-red" data-help-name="mnubo objects">
-   <p>This is a mnubo's SmartObjects Ingestion Object node.</p>
+   <p>This is a SmartObjects Ingestion Object node.</p>
    
     <h3>Inputs</h3>
      <ul>
         <li>you can press the button to inject the input, using this node optional input.</li>
-        <li>you can inject the input of a 'msg.payload'.</li>
+        <li>you can inject the input of a "msg.payload".</li>
      </ul>
 
     <h3>Outputs</h3>
     <ul>
-       <li>The straight response coming from SmartObject Platform can be found on 'msg.payload'.</li>
-       <li>If <u>Report Result</u> flag is set to 'true', you can also refer to 'msg.errors' in order to check the error_message and the original event that has produced the error.</li>
+       <li>The straight response coming from SmartObjects Platform can be found on "msg.payload".</li>
+       <li>If <u>Report Result</u> flag is set to "true", you can also refer to "msg.errors" in order to check the errorMessage and the originalRequest that has produced the error.</li>
     </ul>
 
    <h3>Details</h3>
      <ul>
        <li><b>Create:</b> Allows to create a one or multiples objects.</li>
        <p><u>ONE OBJECT CREATION</u></p>
-       <p>The input should be a valid JSON with mandatory <i>'x_device_id'</i> and <i>'x_object_type'</i> attributes.</p>
+       <p>The input should be a valid JSON with mandatory <i>"x_device_id"</i> and <i>"x_object_type"</i> attributes.</p>
        <p>Example:</p>
        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
 {
@@ -88,7 +88,7 @@
   "x_object_type": "Boiler"
 }</pre>
       <p><u>MULTIPLE OBJECTS CREATION</u></p>
-      <p>The input should be a valid JSON with mandatory <i>'x_device_id'</i> and <i>'x_object_type'</i> attributes.</p>
+      <p>The input should be a valid JSON with mandatory <i>"x_device_id"</i> and <i>"x_object_type"</i> attributes.</p>
       <p>Example:</p>
       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
 [
@@ -102,9 +102,9 @@
   },
   ... (upto 1000 events)
 ]</pre>
-       <li><b>Update:</b> Allows to update one or multiples objects's attributes.</li>
+       <li><b>Update:</b> Allows to update one or multiples attributes of an object.</li>
        <p><u>ONE OBJECT UPDATE:</u></p>
-       <p>The input needs to be an "array" with [<i>'x_device_id'</i>, <i>'json body'</i>].</p>
+       <p>The input needs to be an "array" with [<i>"x_device_id"</i>, <i>"json body"</i>].</p>
        <p>Example:</p>
        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = 
 ["object_500",
@@ -128,11 +128,11 @@
   ... (upto 1000 objects)
 ]</pre>
        <li><b>Exist:</b> Allows to check if a specific object (x_device_id) already exists.</li>
-       <p>The input can be a "string" or an "array" with <i>'x_device_id'</i> you want to check.</p>
+       <p>The input can be a "string" or an "array" with <i>"x_device_id"</i> you want to check.</p>
        <p>Example:</p>
        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = ["device1", "device2"]</pre>
        <li><b>Delete:</b> Allows to delete an object.</li>
-       <p>The input is an "string" identifying the <i>'x_device_id'</i> you want to delete (you can delete 1 (one) object at the time).</p>
+       <p>The input is an "string" identifying the <i>"x_device_id"</i> you want to delete (you can delete one object at the time).</p>
        <p>Example:</p>
        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = "device1"</pre>
      </ul>
@@ -140,14 +140,14 @@
     <h3>Requirements</h3>
     <ol>
        <li>
-          <b>Mnubo Configuration:</b> A valid Environment, ClientID and Client Secret.
+          <b>Mnubo Configuration:</b> A valid Environment and Credentials.
        </li>
     </ol>
    
-   <p>To use the mnubo's SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
+   <p>To use SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
    <h3>References</h3>
     <ul>
-        <li><a href="https://smartobjects.mnubo.com/documentation/api_ingestion.html#objects" target="_blank">SmarObject's online documentation </a> - (under the API section) for details about this interface usage. </li>
+        <li><a href="https://smartobjects.mnubo.com/documentation/api_ingestion.html#objects" target="_blank">SmartObjects online documentation </a> - (under the API section) for details about this interface usage. </li>
         <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
     </ul>
 </script>

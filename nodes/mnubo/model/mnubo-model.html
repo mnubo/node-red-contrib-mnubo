@@ -1,0 +1,332 @@
+<style>
+.reset_data_model {
+    fill: #bf1818
+}
+</style>
+
+<script type="text/javascript">
+   RED.nodes.registerType('mnubo model',{
+      category: 'SmartObjects',
+      color: '#00a1e0',
+      defaults: {
+            name: {value: ""},
+            mnuboconfig: {value: "", type: "mnubo config", required: true},
+            functionselection: {value: "getDatamodel", required: true},
+            inputtext: {value: "", type: 'text'},
+      },
+      inputs:1,
+      outputs:1,
+      icon: "model.png",
+      align: "left",
+      label: function() {
+        return this.name || "model: " + this.functionselection;
+      },
+      labelStyle: function() {
+        const style = [];
+
+        if (($("#node-input-functionselection").length?$("#node-input-functionselection").val() : this.functionselection) === "resetDatamodel") {
+          style.push("reset_data_model")
+        }
+        if (this.name) {
+          style.push("node_label_italic")
+        }
+
+        return style.join(' ')
+        
+      },
+      button: {
+         onclick: function() {
+               var label = this.name || "button";
+               var node = this;
+               $.ajax({
+                  url: "model/"+this.id+"/button",
+                  type:"POST",
+                  success: function(resp, textStatus, xhr) {
+                     RED.notify(node._("local injection",{label:label}),"success");
+                  },
+                  error:  function(resp, textStatus, xhr) {
+                     RED.notify(node._("local injection",{label:label}),"error");
+                  }
+               });
+         }
+      },
+      oneditprepare: function() {
+            $("#node-input-functionselection").change(function() {
+               var id = $(this).val();
+               if (id !== "createDatamodel" && id !== "promoteDatamodel") {
+                  $("#node-input-inputtext-row").hide();
+               } else {
+                  $("#node-input-inputtext-row").show();
+               }
+            });
+         }
+   });
+</script>
+
+<script type="text/x-red" data-template-name="mnubo model">
+   <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name"></input>
+   </div>
+   <div class="form-row">
+      <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
+      <input type="text" id="node-input-mnuboconfig"></input>
+   </div>
+   <div class="form-row">
+      <label for="node-input-functionselection"><i class="fa fa-search"></i> Function</label>
+         <select type="text" id="node-input-functionselection" style="width:70%;">
+            <option value="getDatamodel">Get Data Model</option>
+            <option value="createUpdateDatamodel">Create/ Update Data Model</option>
+            <option value="promoteDatamodel">Promote Data Model to Production</option>
+            <option value="resetDatamodel">Reset Data Model (wipe data)</option>
+         </select>
+   </div>
+   <div class="form-row" id="node-input-inputtext-row">
+      <label for="node-input-inputtext" style="vertical-align: top;"><i class="fa fa-pencil"></i> Input</label>
+      <textarea id="node-input-inputtext" rows="10" placeholder="optional input string" style="width: 70%;"></textarea>
+   </div>
+</script>
+
+<script type="text/x-red" data-help-name="mnubo model">
+   <p>This node will manage SmartObjects Data Model</p>
+   <h3>Inputs</h3>
+    <ul>
+       <li>you can press the button to inject the input on the optional parameter</li>
+       <li>you can inject the input into msg.payload</li>
+    </ul>
+    <h3>Outputs</h3>
+    <ul>
+       <li>You can find the result of your operation in "msg.payload" </li>
+       <li>If trere is an error, you can refer to "msg.errors" in order to check the errorMessage and the originalRequest.</li>
+    </ul>
+   <h3>Details</h3>
+   <p>There are 4 types of Data Model Operations:</p>
+   <ul>
+       <li>
+          <b>Get Data Model:</b> Get current Data Model from mnubo SmartObjects. <u>(no input is required)</u>.
+       </li>
+       <li>
+          <b>Create Data Model:</b> Create the Data Model in Sandbox. The input format should be a valid json that cointans some or all of the following keys:
+          <ul>
+            <li>
+              <u>objectTypes:</u> a list of obejcts types that includes a list objectAttributes.</li>
+              <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;margin-top: 3px;">{                
+  "objectTypes": [
+      {
+          <b>"key"</b>: "car", 
+          "displayName": "Car",
+          "description": "General",
+          <b>"objectAttributes"</b>: [
+            <a name="objectAttributeStructure"><i>{object attribute structure}</i></a>
+          ] 
+      },
+      <b>...</b>
+  ]
+}</pre>
+              <p style="font-style: italic;">Note: Mandatory items are in <b>bold</b>.</p>
+              <p id="objectAttributeStructure" style="color: #0090d1;font-style: italic;">object attribute structure</p>
+              <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;margin-top: 3px;">{
+    <b>"key"</b>: "companyid",
+    "displayName": "CompanyId",
+    "description": "",
+    <b>"type"</b>: {
+        <b>"highLevelType"</b>: "INT",
+        <b>"containerType"</b>: "none"
+}</pre>
+            <p style="font-style: italic;">Note: Mandatory items are in <b>bold</b>.</p>
+            <li>
+              <u>eventTypes:</u> a list of event types that includes a list timeseries.</li>
+              <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;margin-top: 3px;">{                
+  "eventTypes": [
+      {
+          <b>"key"</b>: "harsh_acceleration",
+          "displayName": "",
+          "description": "Harsh Acceleration",
+          "origin": "unscheduled",
+          <b>"timeseries"</b>: [
+            <a name="timeseriesStructure"><i>{timeseries structure}</i></a>
+              
+          ]
+      },
+      <b>...</b>
+}</pre>
+              <p style="font-style: italic;">Note: Mandatory items are in <b>bold</b>.</p>
+              <p id="timeseriesStructure" style="color: #0090d1;font-style: italic;">timeseries structure</p>
+              <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;margin-top: 3px;">{
+    <b>"key"</b>: "seatbelt_fastened_indicator",
+    "displayName": "",
+    "description": "",
+    <b>"type"</b>: {
+        <b>"highLevelType"</b>: "TEXT"
+}</pre>
+            <p style="font-style: italic;">Note: Mandatory items are in <b>bold</b>.</p>
+            <li><u>ownerAttributes:</u> a list owner attributes.</li>
+              <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;margin-top: 3px;">{
+  "ownerAttributes": [
+    {
+      <b>"key"</b>: "customername",
+      "displayName": "",
+      "description": "",
+      <b>"type"</b>: {
+          <b>"highLevelType"</b>: "TEXT",
+          <b>"containerType"</b>: "none"
+    },
+    <b>...</b>
+  ]
+}</pre>
+            <p style="font-style: italic;">Note: Mandatory items are in <b>bold</b>.</p>
+            
+        </ul>
+       </li>
+       <p>Example:</p>
+       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;overflow: scroll;height: 22em;">msg.payload = 
+{
+    "objectTypes": [
+        {
+            "key": "car",
+            "displayName": "Car",
+            "description": "General",
+            "objectAttributes": [
+                {
+                    "key": "companyid",
+                    "displayName": "CompanyId",
+                    "description": "",
+                    "type": {
+                        "highLevelType": "INT",
+                        "containerType": "none"
+                    }
+                },
+                {
+                    "key": "unitname",
+                    "displayName": "",
+                    "description": "",
+                    "type": {
+                        "highLevelType": "TEXT",
+                        "containerType": "none"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "truck",
+            "displayName": "12 wheels dump truck",
+            "description": "",
+            "objectAttributes": [
+                {
+                    "key": "companyid",
+                    "displayName": "CompanyId",
+                    "description": "",
+                    "type": {
+                        "highLevelType": "INT",
+                        "containerType": "none"
+                    }
+                },
+                {
+                    "key": "unitname",
+                    "displayName": "",
+                    "description": "",
+                    "type": {
+                        "highLevelType": "TEXT",
+                        "containerType": "none"
+                    }
+                }
+            ]
+        }
+    ],
+    "eventTypes": [
+        {
+            "key": "harsh_acceleration",
+            "displayName": "",
+            "description": "Harsh Acceleration",
+            "origin": "unscheduled",
+            "timeseries": [
+                {
+                    "key": "seatbelt_fastened_indicator",
+                    "displayName": "",
+                    "description": "",
+                    "type": {
+                        "highLevelType": "TEXT"
+                    }
+                }
+            ]
+        },
+        {
+            "key": "ignition_on",
+            "displayName": "",
+            "description": "Ignition off",
+            "origin": "unscheduled",
+            "timeseries": []
+        },
+        {
+            "key": "ignition_off",
+            "displayName": "",
+            "description": "Ignition off",
+            "origin": "unscheduled",
+            "timeseries": []
+        }
+    ],
+    "ownerAttributes": [
+        {
+            "key": "customername",
+            "displayName": "Customer Name",
+            "description": "",
+            "type": {
+                "highLevelType": "TEXT",
+                "containerType": "none"
+            }
+        },
+        {
+            "key": "inserteddate",
+            "displayName": "Created",
+            "description": "",
+            "type": {
+                "highLevelType": "DATETIME",
+                "containerType": "none"
+            }
+        }
+    ]
+}</pre>
+       <li>
+          <b>Promote Data Model to Production:</b> Promote Timeseries/ Object Attributes/ Owner Attributes to Production enviroment.</li>
+          <ul style="list-style-type: none">
+            <style>#dash:before { content: "-";position: absolute;margin-left: -1em; }</style>
+            <li id="dash">
+              The input format should be a valid json with some or all of the following keys "<u>timeseries</u>", "<u>objectAttributes</u>", "<u>ownerAttributes</u>".
+            </li>
+            <li id="dash">
+              Each key contatins a list of timeseries/ attributes to be deployed on production enviroment.
+            </li>
+          </ul>
+          <p>Example:</p>
+          <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;margin-top: 3px;">{
+  "timeseries": [
+    "seatbelt_fastened_indicator"
+  ],
+  "objectAttributes": [
+    "companyid",
+    "unitname"
+  ],
+  "ownerAttributes": [
+    "customername",
+    "inserteddate"
+  ]
+}</pre>
+       <li>
+          <b>Reset Data Model:</b> Reset the Data Model in Sandbox. <font color="#C70039">This operation will wipe all your data in Sandbox enviroment</font>. <u>(no input is required)</u>.
+       </li>
+   </ul>
+   
+    <h3>Requirements</h3>
+    <ol>
+       <li>
+          <b>Mnubo configuration:</b> A valid Environment and Credentials.
+       </li>
+    </ol>
+   
+   <p>To use SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
+   <h3>References</h3>
+    <ul>
+        <li><a href="https://smartobjects.mnubo.com/documentation/api_modeler.html" target="_blank">SmartObjects online documentation </a> - (under the API section) for details about this interface usage. </li>
+        <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
+    </ul>
+</script>
