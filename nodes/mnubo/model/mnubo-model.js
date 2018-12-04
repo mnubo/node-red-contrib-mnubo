@@ -6,7 +6,7 @@ module.exports = function(RED) {
 
    
    //If return_promise is 1, this function will return the promise result
-   function GetModelFromSdk(thisNode, msg, return_promise) {   
+   function GetDataModel(thisNode, msg, return_promise) {   
       ConfigMnuboUtils.DebugLog();
       return_promise = return_promise || 0;
       
@@ -106,7 +106,7 @@ module.exports = function(RED) {
       }
    }
 
-   function CreateUpdateModelFromSdk(thisNode, msg) {      
+   function CreateUpdateDataModel(thisNode, msg) {      
       ConfigMnuboUtils.DebugLog();
 
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null) {
@@ -190,7 +190,7 @@ module.exports = function(RED) {
 
    }
 
-   function PromoteModelFromSdk(thisNode, msg, return_promise) {   
+   function PromoteDataModel(thisNode, msg, return_promise) {   
       ConfigMnuboUtils.DebugLog();
 
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null) {
@@ -281,7 +281,7 @@ module.exports = function(RED) {
      });
    }
 
-   function ResetModelFromSdk(thisNode, msg, return_promise) {   
+   function ResetDataModel(thisNode, msg, return_promise) {   
       ConfigMnuboUtils.DebugLog();
       return_promise = return_promise || 0;      
       if (thisNode == null || thisNode.mnuboconfig == null || thisNode.mnuboconfig.credentials == null) {
@@ -311,14 +311,14 @@ module.exports = function(RED) {
    
    function MnuboRequest(thisNode, msg) {
       ConfigMnuboUtils.DebugLog();
-      if (thisNode.functionselection == "getDatamodel") {
-         GetModelFromSdk(thisNode, msg);
-      } else if (thisNode.functionselection == "createDatamodel") {
-         CreateUpdateModelFromSdk(thisNode, msg);
-      } else if (thisNode.functionselection == "promoteDatamodel") {
-         PromoteModelFromSdk(thisNode, msg);
-      } else if (thisNode.functionselection == "resetDatamodel") {
-         ResetModelFromSdk(thisNode, msg);
+      if (thisNode.functionselection === "getDatamodel") {
+         GetDataModel(thisNode, msg);
+      } else if (thisNode.functionselection === "createDatamodel") {
+         CreateUpdateDataModel(thisNode, msg);
+      } else if (thisNode.functionselection === "promoteDatamodel") {
+         PromoteDataModel(thisNode, msg);
+      } else if (thisNode.functionselection === "resetDatamodel") {
+         ResetDataModel(thisNode, msg);
       } else {
          ConfigMnuboUtils.UpdateStatusErrMsg(thisNode, "unknown selected function: " + thisNode.functionselection);
          return;
