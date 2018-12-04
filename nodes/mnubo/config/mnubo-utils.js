@@ -146,7 +146,7 @@ function simpleStringify (object){
 
 
 
-function ProxyUrl2HtpOptions(mnuboconfig) {
+function ProxyUrl2HttpOptions(mnuboconfig) {
 
    if (mnuboconfig.env !== 'useproxyurl' || mnuboconfig.proxy_url == null || mnuboconfig.proxy_url === '') {
       //console.log('not using Proxy URL');
@@ -168,7 +168,7 @@ function GetNewMnuboClient(mnuboconfig) {
   var options = {}
 
   if (mnuboconfig.env === 'useproxyurl') {
-    options.httpOptions = ProxyUrl2HtpOptions(mnuboconfig)
+    options.httpOptions = ProxyUrl2HttpOptions(mnuboconfig)
   } else {
     options.env = mnuboconfig.env
   }
