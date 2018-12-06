@@ -1,153 +1,153 @@
 <script type="text/javascript">
-   RED.nodes.registerType('mnubo objects',{
-      category: 'SmartObjects',
-      color: '#00a1e0',
-      defaults: {
-            name: {value:""},
-            mnuboconfig: {value:"", type:"mnubo config", required:true},
-            functionselection: {value:"create", required:true},
-            inputtext: {value:"",type: 'text'},
+  RED.nodes.registerType('mnubo objects', {
+    category: 'SmartObjects',
+    color: '#00a1e0',
+    defaults: {
+      name: { value: '' },
+      mnuboconfig: { value: '', type: 'mnubo config', required: true },
+      functionselection: { value: 'create', required: true },
+      inputtext: { value: '', type: 'text' },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: 'Object.png',
+    align: 'left',
+    label: function() {
+      return this.name || 'object ' + this.functionselection;
+    },
+    labelStyle: function() {
+      return this.name ? 'node_label_italic' : '';
+    },
+    button: {
+      onclick: function() {
+        var label = this.name || 'button';
+        var node = this;
+        $.ajax({
+          url: 'objects/' + this.id + '/button',
+          type: 'POST',
+          success: function(resp, textStatus, xhr) {
+            RED.notify(node._('local injection', { label: label }), 'success');
+          },
+          error: function(resp, textStatus, xhr) {
+            RED.notify(node._('local injection', { label: label }), 'error');
+          },
+        });
       },
-      inputs:1,
-      outputs:1,
-      icon: "Object.png",
-      align: "left",
-      label: function() {
-            return this.name||"object "+this.functionselection;
-      },
-      labelStyle: function() {
-            return this.name?"node_label_italic":"";
-      },
-      button: {
-         onclick: function() {
-               var label = this.name||"button";
-               var node = this;
-               $.ajax({
-                  url: "objects/"+this.id+"/button",
-                  type:"POST",
-                  success: function(resp, textStatus, xhr) {
-                     RED.notify(node._("local injection",{label:label}),"success");
-                  },
-                  error:  function(resp, textStatus, xhr) {
-                     RED.notify(node._("local injection",{label:label}),"error");
-                  }
-               });
-         }
-      },
-   });
+    },
+  });
 </script>
 
 <script type="text/x-red" data-template-name="mnubo objects">
-   <div class="form-row">
-      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-      <input type="text" id="node-input-name" placeholder="Name"></input>
-   </div>
-   <div class="form-row">
-      <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
-      <input type="text" id="node-input-mnuboconfig" style="width: 70%;"></input>
-   </div>
-   <div class="form-row">
-      <label for="node-input-functionselection"><i class="fa fa-list"></i> Function</label>
-         <select type="text" id="node-input-functionselection" style="width:70%;">
-            <option value="create">Create</option>
-            <option value="update">Update</option>
-            <option value="delete">Delete</option>
-            <option value="exists">Exists</option>
-         </select>
-   </div>
-   <div class="form-row">
-      <label for="node-input-inputtext"><i class="fa fa-pencil" style="vertical-align: top;"></i> Input</label>
-      <textarea id="node-input-inputtext" rows="10" placeholder="optional input string" style="width: 70%;"></textarea>
-   </div>
+  <div class="form-row">
+     <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+     <input type="text" id="node-input-name" placeholder="Name"></input>
+  </div>
+  <div class="form-row">
+     <label for="node-input-mnuboconfig"><i class="fa fa-database"></i> mnubo config</label>
+     <input type="text" id="node-input-mnuboconfig" style="width: 70%;"></input>
+  </div>
+  <div class="form-row">
+     <label for="node-input-functionselection"><i class="fa fa-list"></i> Function</label>
+        <select type="text" id="node-input-functionselection" style="width:70%;">
+           <option value="create">Create</option>
+           <option value="update">Update</option>
+           <option value="delete">Delete</option>
+           <option value="exists">Exists</option>
+        </select>
+  </div>
+  <div class="form-row">
+     <label for="node-input-inputtext"><i class="fa fa-pencil" style="vertical-align: top;"></i> Input</label>
+     <textarea id="node-input-inputtext" rows="10" placeholder="optional input string" style="width: 70%;"></textarea>
+  </div>
 </script>
 
 <script type="text/x-red" data-help-name="mnubo objects">
-   <p>This is a SmartObjects Ingestion Object node.</p>
-   
-    <h3>Inputs</h3>
-     <ul>
-        <li>you can press the button to inject the input, using this node optional input.</li>
-        <li>you can inject the input of a "msg.payload".</li>
-     </ul>
+     <p>This is a SmartObjects Ingestion Object node.</p>
 
-    <h3>Outputs</h3>
-    <ul>
-       <li>The straight response coming from SmartObjects Platform can be found on "msg.payload".</li>
-       <li>If <u>Report Result</u> flag is set to "true", you can also refer to "msg.errors" in order to check the errorMessage and the originalRequest that has produced the error.</li>
-    </ul>
+      <h3>Inputs</h3>
+       <ul>
+          <li>you can press the button to inject the input, using this node optional input.</li>
+          <li>you can inject the input of a "msg.payload".</li>
+       </ul>
 
-   <h3>Details</h3>
-     <ul>
-       <li><b>Create:</b> Allows to create a one or multiples objects.</li>
-       <p><u>ONE OBJECT CREATION</u></p>
-       <p>The input should be a valid JSON with mandatory <i>"x_device_id"</i> and <i>"x_object_type"</i> attributes.</p>
-       <p>Example:</p>
-       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
-{
-  "x_device_id": "object_500",
-  "x_object_type": "Boiler"
-}</pre>
-      <p><u>MULTIPLE OBJECTS CREATION</u></p>
-      <p>The input should be a valid JSON with mandatory <i>"x_device_id"</i> and <i>"x_object_type"</i> attributes.</p>
-      <p>Example:</p>
-      <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
-[
+      <h3>Outputs</h3>
+      <ul>
+         <li>The straight response coming from SmartObjects Platform can be found on "msg.payload".</li>
+         <li>If <u>Report Result</u> flag is set to "true", you can also refer to "msg.errors" in order to check the errorMessage and the originalRequest that has produced the error.</li>
+      </ul>
+
+     <h3>Details</h3>
+       <ul>
+         <li><b>Create:</b> Allows to create a one or multiples objects.</li>
+         <p><u>ONE OBJECT CREATION</u></p>
+         <p>The input should be a valid JSON with mandatory <i>"x_device_id"</i> and <i>"x_object_type"</i> attributes.</p>
+         <p>Example:</p>
+         <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
   {
     "x_device_id": "object_500",
     "x_object_type": "Boiler"
-  },
-  {
-    "x_device_id": "object_501",
-    "x_object_type": "Boiler"
-  },
-  ... (upto 1000 events)
-]</pre>
-       <li><b>Update:</b> Allows to update one or multiples attributes of an object.</li>
-       <p><u>ONE OBJECT UPDATE:</u></p>
-       <p>The input needs to be an "array" with [<i>"x_device_id"</i>, <i>"json body"</i>].</p>
-       <p>Example:</p>
-       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = 
-["object_500",
-{"colour":"green"
-"firmware_version": 0.1.3
-}]</pre>
-      <p><u>MULTIPLE OBJECTS UPDATE:</u></p>
-      <p>The input needs to be a valid JSON.</p>
-      <p>Example:</p>
-      <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = 
-[
-  {
-    "x_device_id": "object_500",
-    "firmware_version": 0.1.3,
-    "colour": "green"
-  },
-  {
-    "x_device_id": "object_501",
-    "firmware_version": 0.1.3
-  }
-  ... (upto 1000 objects)
-]</pre>
-       <li><b>Exist:</b> Allows to check if a specific object (x_device_id) already exists.</li>
-       <p>The input can be a "string" or an "array" with <i>"x_device_id"</i> you want to check.</p>
-       <p>Example:</p>
-       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = ["device1", "device2"]</pre>
-       <li><b>Delete:</b> Allows to delete an object.</li>
-       <p>The input is an "string" identifying the <i>"x_device_id"</i> you want to delete (you can delete one object at the time).</p>
-       <p>Example:</p>
-       <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = "device1"</pre>
-     </ul>
+  }</pre>
+        <p><u>MULTIPLE OBJECTS CREATION</u></p>
+        <p>The input should be a valid JSON with mandatory <i>"x_device_id"</i> and <i>"x_object_type"</i> attributes.</p>
+        <p>Example:</p>
+        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
+  [
+    {
+      "x_device_id": "object_500",
+      "x_object_type": "Boiler"
+    },
+    {
+      "x_device_id": "object_501",
+      "x_object_type": "Boiler"
+    },
+    ... (upto 1000 events)
+  ]</pre>
+         <li><b>Update:</b> Allows to update one or multiples attributes of an object.</li>
+         <p><u>ONE OBJECT UPDATE:</u></p>
+         <p>The input needs to be an "array" with [<i>"x_device_id"</i>, <i>"json body"</i>].</p>
+         <p>Example:</p>
+         <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
+  ["object_500",
+  {"colour":"green"
+  "firmware_version": 0.1.3
+  }]</pre>
+        <p><u>MULTIPLE OBJECTS UPDATE:</u></p>
+        <p>The input needs to be a valid JSON.</p>
+        <p>Example:</p>
+        <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload =
+  [
+    {
+      "x_device_id": "object_500",
+      "firmware_version": 0.1.3,
+      "colour": "green"
+    },
+    {
+      "x_device_id": "object_501",
+      "firmware_version": 0.1.3
+    }
+    ... (upto 1000 objects)
+  ]</pre>
+         <li><b>Exist:</b> Allows to check if a specific object (x_device_id) already exists.</li>
+         <p>The input can be a "string" or an "array" with <i>"x_device_id"</i> you want to check.</p>
+         <p>Example:</p>
+         <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = ["device1", "device2"]</pre>
+         <li><b>Delete:</b> Allows to delete an object.</li>
+         <p>The input is an "string" identifying the <i>"x_device_id"</i> you want to delete (you can delete one object at the time).</p>
+         <p>Example:</p>
+         <pre style="font-size: 12px;line-height: normal;padding-top: 4px;padding-bottom: 4px;">msg.payload = "device1"</pre>
+       </ul>
 
-    <h3>Requirements</h3>
-    <ol>
-       <li>
-          <b>Mnubo Configuration:</b> A valid Environment and Credentials.
-       </li>
-    </ol>
-   
-   <p>To use SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
-   <h3>References</h3>
-    <ul>
-        <li><a href="https://smartobjects.mnubo.com/documentation/api_ingestion.html#objects" target="_blank">SmartObjects online documentation </a> - (under the API section) for details about this interface usage. </li>
-        <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
-    </ul>
+      <h3>Requirements</h3>
+      <ol>
+         <li>
+            <b>Mnubo Configuration:</b> A valid Environment and Credentials.
+         </li>
+      </ol>
+
+     <p>To use SmartObjects nodes, you will need to have a valid mnubo account, with access granted on a namespace.  To obtain your unique namespace in the SmartObjects platform, contact sales@mnubo.com . Please use the subject title <b>node-red-contrinb-mnubo</b> and include in the body of the email the name of your company, contact name and phone number.</p>
+     <h3>References</h3>
+      <ul>
+          <li><a href="https://smartobjects.mnubo.com/documentation/api_ingestion.html#objects" target="_blank">SmartObjects online documentation </a> - (under the API section) for details about this interface usage. </li>
+          <li><a href="https://github.com/mnubo/node-red-contrib-mnubo" target="_blank">GitHub</a> - the nodes github repository</li>
+      </ul>
 </script>
