@@ -23,7 +23,7 @@
             "mnubo owners": "owners/mnubo-owners.js",
             "mnubo objects": "objects/mnubo-objects.js",
             "mnubo events": "events/mnubo-events.js",
-            "mnubo model": "events/mnubo-model.js"
+            "mnubo model": "model/mnubo-model.js"
         }
     },
     "author": {
