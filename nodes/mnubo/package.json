@@ -1,6 +1,6 @@
 {
     "name": "node-red-contrib-mnubo",
-    "version": "1.5.0",
+    "version": "1.5.1",
     "description": "Mnubo",
     "dependencies": {
         "mnubo-sdk": "^1.9.0"
@@ -22,7 +22,8 @@
             "mnubo analytics": "analytics/mnubo-analytics.js",
             "mnubo owners": "owners/mnubo-owners.js",
             "mnubo objects": "objects/mnubo-objects.js",
-            "mnubo events": "events/mnubo-events.js"
+            "mnubo events": "events/mnubo-events.js",
+            "mnubo model": "model/mnubo-model.js"
         }
     },
     "author": {
