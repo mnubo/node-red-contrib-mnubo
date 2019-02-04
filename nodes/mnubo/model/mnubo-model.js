@@ -371,13 +371,13 @@ module.exports = function(RED) {
 
   function MnuboRequest(thisNode, msg) {
     ConfigMnuboUtils.DebugLog();
-    if (thisNode.functionselection === 'getDatamodel') {
+    if (thisNode.functionselection === 'getDataModel') {
       GetDataModel(thisNode, msg);
-    } else if (thisNode.functionselection === 'createDatamodel') {
+    } else if (thisNode.functionselection === 'createUpdateDataModel') {
       CreateUpdateDataModel(thisNode, msg);
-    } else if (thisNode.functionselection === 'promoteDatamodel') {
+    } else if (thisNode.functionselection === 'promoteDataModel') {
       PromoteDataModel(thisNode, msg);
-    } else if (thisNode.functionselection === 'resetDatamodel') {
+    } else if (thisNode.functionselection === 'resetDataModel') {
       ResetDataModel(thisNode, msg);
     } else {
       ConfigMnuboUtils.UpdateStatusErrMsg(thisNode, 'unknown selected function: ' + thisNode.functionselection);
