@@ -11,7 +11,7 @@
     defaults: {
       name: { value: '' },
       mnuboconfig: { value: '', type: 'mnubo config', required: true },
-      functionselection: { value: 'getDatamodel', required: true },
+      functionselection: { value: 'getDataModel', required: true },
       inputtext: { value: '', type: 'text' },
     },
     inputs: 1,
@@ -27,7 +27,7 @@
       if (
         ($('#node-input-functionselection').length
           ? $('#node-input-functionselection').val()
-          : this.functionselection) === 'resetDatamodel'
+          : this.functionselection) === 'resetDataModel'
       ) {
         style.push('reset_data_model');
       }
@@ -56,7 +56,7 @@
     oneditprepare: function() {
       $('#node-input-functionselection').change(function() {
         var id = $(this).val();
-        if (id !== 'createDatamodel' && id !== 'promoteDatamodel') {
+        if (id !== 'createUpdateDataModel' && id !== 'promoteDataModel') {
           $('#node-input-inputtext-row').hide();
         } else {
           $('#node-input-inputtext-row').show();
@@ -78,10 +78,10 @@
   <div class="form-row">
      <label for="node-input-functionselection"><i class="fa fa-search"></i> Function</label>
         <select type="text" id="node-input-functionselection" style="width:70%;">
-           <option value="getDatamodel">Get Data Model</option>
-           <option value="createUpdateDatamodel">Create/ Update Data Model</option>
-           <option value="promoteDatamodel">Promote Data Model to Production</option>
-           <option value="resetDatamodel">Reset Data Model (wipe data)</option>
+           <option value="getDataModel">Get Data Model</option>
+           <option value="createUpdateDataModel">Create/ Update Data Model</option>
+           <option value="promoteDataModel">Promote Data Model to Production</option>
+           <option value="resetDataModel">Reset Data Model (wipe data)</option>
         </select>
   </div>
   <div class="form-row" id="node-input-inputtext-row">
@@ -109,7 +109,7 @@
             <b>Get Data Model:</b> Get current Data Model from mnubo SmartObjects. <u>(no input is required)</u>.
          </li>
          <li>
-            <b>Create Data Model:</b> Create the Data Model in Sandbox. The input format should be a valid json that cointans some or all of the following keys:
+            <b>Create Data Model:</b> Create the Data Model in Sandbox. The input format should be a valid json that contains some or all of the following keys:
             <ul>
               <li>
                 <u>objectTypes:</u> a list of obejcts types that includes a list objectAttributes.</li>
